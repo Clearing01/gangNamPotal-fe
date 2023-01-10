@@ -1,0 +1,504 @@
+.app-table-wrapper{
+  &.card-table-wrapper {
+    min-height: calc(100% - 52px);
+    height: auto;
+    .q-table__middle {
+      display: none;
+    }
+    .app-table {
+      box-shadow: none;
+    }
+  }
+}
+.app-table {
+  height: auto;
+  max-height: 100%;
+  filter: drop-shadow(0px 2px 6px rgba(22, 61, 140, 0.04));
+  border-radius: 12px;
+  border: 0;
+
+  .q-table {
+    table-layout:fixed;
+    thead {
+      tr {
+        th{
+          padding: 0 8px;
+          font-size: $font-04;
+          color: $blue-gray-8;
+          white-space: normal !important;
+          background: $blue-gray-0;
+          border-color: transparent;
+          div {
+            display: inline-block;
+            vertical-align: middle;
+          }
+          .btn-sort{
+            margin: 0 4px;
+            transition: transform 0.2s;
+            vertical-align: middle;
+            &.descending{
+              transform: rotate(180deg);
+            }
+          }
+        }
+        .empty-line {
+          padding: 0 3px;
+          width: 6px;
+        }
+      }
+    }
+    tbody {
+      tr {
+        width: 100%;
+        &:hover{
+          background: $white !important;
+        }
+        td {
+          padding: 0 8px;
+          color: $blue-gray-10;
+          font-size: $font-04;
+          white-space: normal !important;
+          border-color: $blue-gray-2;
+          &:before, &:after {
+            display: none;
+          }
+        }
+        .table-icon {
+          font-size: $font-04;
+          font-family: 'Pretendard' !important;
+          .q-icon {
+            font-size: $font-20;
+            font-family: 'portal-icon' !important;
+          }
+          &.icon-gray {
+            .q-icon {
+              color: $blue-gray-6;
+            }
+          }
+          &.icon-red{
+            .q-icon{
+              color: $error;
+            }
+          }
+        }
+        .table-gray7 {
+          color: $blue-gray-7;
+        }
+        .empty-line {
+          padding: 0 3px;
+          width: 6px;
+        }
+        .table-ellipsis {
+          text-overflow: ellipsis;
+          white-space: nowrap !important;
+          overflow: hidden;
+        }
+        .table-action-btn {
+          padding: 0;
+        }
+        .app-color-approval{
+          color: $primary-hover;
+        }
+        .app-color-reject{
+          color: $error-hover;
+        }
+        &:hover {
+          background: $blue-gray-1;
+        }
+        &.selected {
+          background: rgba(110, 152, 248, 0.04);
+        }
+      }
+    }
+    tr {
+      .table-checkbox {
+        width: 52px;
+        text-align: center;
+      }
+      .q-table--col-auto-width {
+        width: 66px;
+        padding: 0 20px 0 26px;
+      }
+      // disabled
+      &.table-disabled {
+        pointer-events: none;
+        background: $blue-gray-1;
+        td {
+          color: $blue-gray-7;
+        }
+        .table-icon {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+  // no-data
+  .q-table__bottom--nodata {
+    &.q-table__bottom {
+      display: flex;
+      justify-content: center;
+      height: 96px;
+      font-size: $font-04;
+      line-height: $font-08;
+      color: $blue-gray-7;
+      border-color: transparent;
+      i {
+        display: none;
+      }
+    }
+  }
+
+
+  // sticky-table
+  &.sticky-header-table {
+    thead{
+      tr {
+        th {
+          position: sticky;
+          z-index: 1
+        }
+
+        &:last-child th {
+          top: 44px
+        }
+
+        &:first-child th {
+          top: 0
+        }
+      }
+    }
+  }
+
+  // no-footer-table
+  &.no-footer-table {
+
+
+  }
+
+  // footer - pagination
+  .q-table__bottom {
+    width: 100%;
+    display: block;
+    padding: 0;
+    border-color: $blue-gray-2;
+  }
+  .app-pagination-wrapper {
+    //background: $white;
+    padding: 8px 20px;
+    .page-info {
+      font-size: $font-02;
+      color: $blue-gray-7;
+
+    }
+    .page-number {
+      .q-btn {
+        width: 34px;
+        height: 34px;
+        font-size: $font-02;
+        font-weight: 500;
+        color: $blue-gray-8 !important;
+        padding: 0 !important;
+        min-width: 0 !important;
+        background: transparent !important;
+        &:before {
+          display: none;
+        }
+        &:hover {
+          color: $primary !important;
+        }
+        &.q-btn--standard {
+          color: $primary !important;
+        }
+        .q-ripple {
+          display: none;
+        }
+      }
+    }
+    .page-option {
+      font-size: $font-02;
+      color: $blue-gray-9;
+      .app-input {
+        width: 70px;
+        margin-right: 8px;
+      }
+    }
+  }
+
+
+  // footer - Payment
+  .payment-line-wrapper {
+    height: 50px;
+    background: $blue-gray-0;
+    &.q-tr {
+      &:hover {
+        background: $blue-gray-0;
+      }
+      td {
+        border-top:1px solid $blue-gray-2;
+      }
+    }
+    .payment-line-container {
+      justify-content: left;
+      font-size: $font-02;
+      line-height: $font-06;
+      color: $blue-gray-10;
+    }
+    .payment-chip {
+      background: $blue-gray-3;
+      border-radius: 4px;
+      padding: 5px 8px;
+      font-size: $font-02;
+      line-height: $font-06;
+      font-weight: 600;
+    }
+    .payment-line {
+      font-weight: 500;
+      .comma {
+        margin-right: 4px;
+      }
+      &:last-child {
+        .comma{
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+//연차현황 페이지 테이블
+.q-table__card{
+  box-shadow: none;
+  border-radius: 12px;
+}
+.app-vacation-summary-table{
+  .q-table{
+    table-layout: fixed;
+    tr{
+      height: 44px;
+      th{
+        padding: 0 8px;
+        font-size: $font-04;
+        line-height: $font-06;
+        font-weight: 500;
+        color: $blue-gray-8;
+        background: $blue-gray-0;
+        .btn-sort{
+          margin: 0 4px;
+          transition: transform 0.2s;
+          &.descending{
+            transform: rotate(180deg);
+          }
+        }
+      }
+      td{
+        width: 9.7%;
+        padding: 0 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      &:nth-of-type(1){
+        th:first-child{
+          width: 6px;
+          padding: 0;
+        }
+        th:nth-child(5){
+          width: 13.2%;
+          border-left: 1px solid $blue-gray-2;
+          border-right: 1px solid $blue-gray-2;
+        }
+        th:nth-child(6){
+          border-bottom: 1px solid $blue-gray-2;
+        }
+        th:nth-child(7){
+          border-left: 1px solid $blue-gray-2;
+          border-bottom: 1px solid $blue-gray-2;
+        }
+        th:last-child{
+          width: 6px;
+          padding: 0;
+        }
+      }
+
+      &:nth-of-type(2){
+        th:nth-child(4){
+          border-left: 1px solid $blue-gray-2;
+        }
+      }
+
+      &:nth-of-type(3){
+        height: 48px;
+        font-size: $font-04;
+        line-height: $font-08;
+        text-align: center;
+        color: $blue-gray-10;
+        td:first-child{
+          width: 6px;
+          padding: 0;
+        }
+        td:nth-child(2){
+          font-weight: 600;
+        }
+        td:nth-child(5){
+          border-left: 1px solid $blue-gray-2;
+          border-right: 1px solid $blue-gray-2;
+        }
+        td:nth-child(9){
+          border-left: 1px solid $blue-gray-2;
+        }
+        td:last-child{
+          width: 6px;
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
+//연차관리 페이지 테이블
+.app-vacation-management-table{
+  .q-table{
+    table-layout: fixed;
+    tr{
+      height: 44px;
+      th{
+        padding: 0 8px;
+        font-size: $font-04;
+        line-height: $font-06;
+        font-weight: 500;
+        color: $blue-gray-8;
+        background: $blue-gray-0;
+        .btn-sort{
+          margin: 0 4px;
+          transition: transform 0.2s;
+          &.descending{
+            transform: rotate(180deg);
+          }
+        }
+      }
+      td{
+        padding: 0 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      &:nth-of-type(1){
+        th:first-child{
+          min-width: 6px;
+          width: 6px;
+          padding: 0;
+        }
+        th:nth-child(2), th:nth-child(3){
+          min-width: 60px;
+          width: 60px;
+          padding: 0;
+        }
+        th:nth-child(4){
+          width: 9.9%;
+        }
+        th:nth-child(5){
+          width: 11.3%;
+        }
+        th:nth-child(6){
+          width: 9.3%;
+        }
+        th:nth-child(7){
+          width: 9.3%;
+        }
+        th:nth-child(8){
+          width: 13.4%;
+        }
+        th:nth-child(9){
+          width: 10.3%;
+          border-right: 1px solid $blue-gray-2;
+          border-left: 1px solid $blue-gray-2;
+        }
+        th:nth-child(10){
+          border-right: 1px solid $blue-gray-2;
+        }
+        th:nth-child(11){
+          border-right: 1px solid $blue-gray-2;
+        }
+        th:nth-last-child(2){
+          min-width: 44px;
+          padding: 0;
+        }
+        th:last-child{
+          width: 6px;
+          padding: 0;
+        }
+      }
+
+      &:nth-of-type(2){
+        th{
+          width: 6.2%;
+          border-top: 1px solid $blue-gray-2;
+        }
+        th:nth-child(3n){
+          border-right: 1px solid $blue-gray-2;
+        }
+      }
+
+      &:nth-of-type(n+3){
+        height: 48px;
+        font-size: $font-04;
+        line-height: $font-08;
+        text-align: center;
+        color: $blue-gray-10;
+        td:first-child{
+          min-width: 6px;
+          padding: 0;
+        }
+        td:nth-child(2), td:nth-child(3){
+          min-width: 60px;
+          padding: 0;
+        }
+        td:nth-child(4){
+          width: 9.9%;
+        }
+        td:nth-child(5){
+          width: 11.3%;
+        }
+        td:nth-child(6){
+          width: 9.3%;
+        }
+        td:nth-child(7){
+          width: 9.3%;
+        }
+        td:nth-child(8){
+          width: 13.4%;
+        }
+        td:nth-child(9){
+          width: 10.3%;
+          border-left: 1px solid $blue-gray-2;
+          border-right: 1px solid $blue-gray-2;
+        }
+        td:nth-child(n+10):nth-child(-n+15){
+          width: 6.2%;
+        }
+        td:nth-child(12){
+          border-right: 1px solid $blue-gray-2;
+        }
+        td:nth-child(15){
+          border-right: 1px solid $blue-gray-2;
+        }
+        td:nth-last-child(2){
+          min-width: 44px;
+          padding: 0;
+        }
+        td:last-child{
+          min-width: 6px;
+          padding: 0;
+        }
+      }
+
+      &:nth-of-type(n+4){
+        td{
+          border-top: 1px solid $blue-gray-2;
+        }
+      }
+    }
+  }
+}

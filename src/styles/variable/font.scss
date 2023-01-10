@@ -1,0 +1,43 @@
+$font-family: 'Pretendard', 'NotoSansKR';
+
+$font-00: 10px;
+$font-01: 11px;
+$font-02: 12px;
+$font-03: 13px;
+$font-04: 14px;
+$font-05: 15px;
+$font-06: 16px;
+$font-07: 17px;
+$font-08: 18px;
+$font-20: 20px;
+$font-22: 22px;
+$font-24: 24px;
+$font-28: 28px;
+$font-30: 30px;
+$font-40: 40px;
+
+
+
+:root{
+  --font-family: #{$font-family}; /* important붙여야 하는지 확인 */
+
+  --font-00: 10px;
+  --font-01: 11px;
+  --font-02: 12px;
+  --font-03: 13px;
+  --font-04: 14px;
+  --font-05: 15px;
+  --font-06: 16px;
+  --font-07: 17px;
+  --font-08: 18px;
+  --font-20: 20px;
+  --font-22: 22px;
+  --font-24: 24px;
+  --font-28: 28px;
+  --font-30: 30px;
+  --font-40: 40px;
+}
+
+:export {
+  font-family: #{$font-family};
+}

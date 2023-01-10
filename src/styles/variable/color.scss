@@ -1,0 +1,247 @@
+$black: #000000;
+$white: #FFFFFF;
+
+$blue-gray-16: #0C1D2F;
+$blue-gray-15: #132538;
+$blue-gray-14: #233348;
+$blue-gray-12: #44546A;
+$blue-gray-11: #374155; // 색상값이 같은 $blue-gray-13도 $blue-gray-11로 표기
+$blue-gray-10: #4D586F;
+$blue-gray-9: #65728A;
+$blue-gray-8: #8592AB;
+$blue-gray-7: #A3AEC3;
+$blue-gray-6: #BFC8DA;
+$blue-gray-5: #D8DFEA;
+$blue-gray-4: #E0E5EE;
+$blue-gray-3: #E7EBF3;
+$blue-gray-2: #F0F3F9;
+$blue-gray-1: #F7F9FC;
+$blue-gray-0: #FBFCFD;
+
+
+$primary: #6E98F8;
+$primary-op-6: rgba(110, 152, 248, 0.06);
+$primary-op-10: rgba(110, 152, 248, 0.1);
+$primary-disable: #B5C5E8;
+$primary-disable-op-20: rgba(181, 197, 232, 0.2);
+$primary-disable-active: #AEC6FD;
+$primary-hover: #4B7AE4;
+$primary-hover-op-6: rgba(110, 152, 248, 0.06);
+
+$error: #FB6B6B;
+$error-op-10: rgba(251, 107, 107, 0.1);
+$error-hover: #E54A4A;
+$error-deep: #D22B2B;
+
+$secondary01: #AA94F6;
+$secondary01-deep: #7550F3;
+
+$secondary02: #FBB04E;
+$secondary02-deep: #FB9107;
+$secondary02-op-10: rgba(251, 176, 78, 0.1);
+
+
+/*chip-icon*/
+$teal-chip: #4CAABE;
+$teal-chip-bg: rgba(76, 170, 190, 0.06);
+
+$yellow-chip: #CA9328;
+$yellow-chip-bg: rgba(202, 147, 40, 0.06);
+
+$orange-chip: #D78131;
+$orange-chip-bg: rgba(215, 129, 49, 0.06);
+
+$green-chip: #5F935C;
+$green-chip-bg: rgba(95, 147, 92, 0.06);
+
+$blue-chip: #4F79B9;
+$blue-chip-bg: rgba(79, 121, 185, 0.06);
+
+$purple-chip: #7E64B8;
+$purple-chip-bg: rgba(126, 100, 184, 0.06);
+
+$pink-chip: #A56581;
+$pink-chip-bg: rgba(165, 101, 129, 0.06);
+
+$red-chip: #CF5F54;
+$red-chip-bg: rgba(207, 95, 84, 0.06);
+
+$brown-chip: #675546;
+$brown-chip-bg: rgba(103, 85, 70, 0.06);
+
+
+/*color-icon*/
+$green-icon: #5AB155;
+$green-icon-bg: rgba(90, 177, 85, 0.08);
+
+$purple-icon: #987CF6;
+$purple-icon-bg: rgba(152, 124, 246, 0.08);
+
+$blue-icon: #1BA4F1;
+$blue-icon-bg: rgba(27, 164, 241, 0.06);
+
+$pink-icon: #FA387E;
+$pink-icon-bg: rgba(250, 56, 126, 0.08);
+
+:root {
+  --black: #{$black};
+  --white: #{$white};
+
+  --blue-gray-16: #{$blue-gray-16};
+  --blue-gray-15: #{$blue-gray-15};
+  --blue-gray-14: #{$blue-gray-14};
+  //--blue-gray-13: #{$blue-gray-13}; $blue-gray-11과 색상이 동일하여 11로 통일해 쓰기로 함.
+  --blue-gray-12: #{$blue-gray-12};
+  --blue-gray-11: #{$blue-gray-11};
+  --blue-gray-10: #{$blue-gray-10};
+  --blue-gray-9: #{$blue-gray-9};
+  --blue-gray-8: #{$blue-gray-8};
+  --blue-gray-7: #{$blue-gray-7};
+  --blue-gray-6: #{$blue-gray-6};
+  --blue-gray-5: #{$blue-gray-5};
+  --blue-gray-4: #{$blue-gray-4};
+  --blue-gray-3: #{$blue-gray-3};
+  --blue-gray-2: #{$blue-gray-2};
+  --blue-gray-1: #{$blue-gray-1};
+  --blue-gray-0: #{$blue-gray-0};
+
+  --primary: #{$primary};
+  --primary-op-6: #{$primary-op-6};
+  --primary-op-10: #{$primary-op-10};
+  --primary-disable: #{$primary-disable};
+  --primary-disable-op-20: #{$primary-disable-op-20};
+  --primary-disable-active: #{$primary-disable-active};
+  --primary-hover: #{$primary-hover};
+  --primary-hover-op-6: #{$primary-hover-op-6};
+
+  --error: #{$error};
+  --error-op-10: #{$error-op-10};
+  --error-hover: #{$error-hover};
+  --error-deep: #{$error-deep};
+
+  --secondary01: #{$secondary01};
+  --secondary01-deep: #{$secondary01-deep};
+
+  --secondary02: #{$secondary02};
+  --secondary02-deep: #{$secondary02-deep};
+  --secondary02-op-10: #{$secondary02-op-10};
+
+  --teal-chip: #{$teal-chip};
+  --teal-chip-bg: #{$teal-chip-bg};
+
+  --yellow-chip: #{$yellow-chip};
+  --yellow-chip-bg: #{$yellow-chip-bg};
+
+  --orange-chip: #{$orange-chip};
+  --orange-chip-bg: #{$orange-chip-bg};
+
+  --green-chip: #{$green-chip};
+  --green-chip-bg: #{$green-chip-bg};
+
+  --blue-chip: #{$blue-chip};
+  --blue-chip-bg: #{$blue-chip-bg};
+
+  --purple-chip: #{$purple-chip};
+  --purple-chip-bg: #{$purple-chip-bg};
+
+  --pink-chip: #{$pink-chip};
+  --pink-chip-bg: #{$pink-chip-bg};
+
+  --red-chip: #{$red-chip};
+  --red-chip-bg: #{$red-chip-bg};
+
+  --green-icon: #{$green-icon};
+  --green-icon-bg: #{$green-icon-bg};
+
+  --purple-icon: #{$purple-icon};
+  --purple-icon-bg: #{$purple-icon-bg};
+
+  --blue-icon: #{$blue-icon};
+  --blue-icon-bg: #{$blue-icon-bg};
+
+  --pink-icon: #{$pink-icon};
+  --pink-icon-bg: #{$pink-icon-bg};
+}
+
+:export{
+  --black: #{$black};
+  --white: #{$white};
+
+  --blue-gray-16: #{$blue-gray-16};
+  --blue-gray-15: #{$blue-gray-15};
+  --blue-gray-14: #{$blue-gray-14};
+  //--blue-gray-13: #{$blue-gray-13}; $blue-gray-11과 색상이 동일하여 11로 통일해 쓰기로 함.
+  --blue-gray-12: #{$blue-gray-12};
+  --blue-gray-11: #{$blue-gray-11};
+  --blue-gray-10: #{$blue-gray-10};
+  --blue-gray-9: #{$blue-gray-9};
+  --blue-gray-8: #{$blue-gray-8};
+  --blue-gray-7: #{$blue-gray-7};
+  --blue-gray-6: #{$blue-gray-6};
+  --blue-gray-5: #{$blue-gray-5};
+  --blue-gray-4: #{$blue-gray-4};
+  --blue-gray-3: #{$blue-gray-3};
+  --blue-gray-2: #{$blue-gray-2};
+  --blue-gray-1: #{$blue-gray-1};
+  --blue-gray-0: #{$blue-gray-0};
+
+  --primary: #{$primary};
+  --primary-op-6: #{$primary-op-6};
+  --primary-op-10: #{$primary-op-10};
+  --primary-disable: #{$primary-disable};
+  --primary-disable-op-20: #{$primary-disable-op-20};
+  --primary-disable-active: #{$primary-disable-active};
+  --primary-hover: #{$primary-hover};
+  --primary-hover-op-6: #{$primary-hover-op-6};
+
+  --error: #{$error};
+  --error-op-10: #{$error-op-10};
+  --error-hover: #{$error-hover};
+  --error-deep: #{$error-deep};
+
+  --secondary01: #{$secondary01};
+  --secondary01-deep: #{$secondary01-deep};
+
+  --secondary02: #{$secondary02};
+  --secondary02-deep: #{$secondary02-deep};
+  --secondary02-op-10: #{$secondary02-op-10};
+
+  --teal-chip: #{$teal-chip};
+  --teal-chip-bg: #{$teal-chip-bg};
+
+  --yellow-chip: #{$yellow-chip};
+  --yellow-chip-bg: #{$yellow-chip-bg};
+
+  --orange-chip: #{$orange-chip};
+  --orange-chip-bg: #{$orange-chip-bg};
+
+  --green-chip: #{$green-chip};
+  --green-chip-bg: #{$green-chip-bg};
+
+  --blue-chip: #{$blue-chip};
+  --blue-chip-bg: #{$blue-chip-bg};
+
+  --purple-chip: #{$purple-chip};
+  --purple-chip-bg: #{$purple-chip-bg};
+
+  --pink-chip: #{$pink-chip};
+  --pink-chip-bg: #{$pink-chip-bg};
+
+  --red-chip: #{$red-chip};
+  --red-chip-bg: #{$red-chip-bg};
+
+  --brown-chip: #{$brown-chip};
+  --brown-chip-bg: #{$brown-chip-bg};
+
+  --green-icon: #{$green-icon};
+  --green-icon-bg: #{$green-icon-bg};
+
+  --purple-icon: #{$purple-icon};
+  --purple-icon-bg: #{$purple-icon-bg};
+
+  --blue-icon: #{$blue-icon};
+  --blue-icon-bg: #{$blue-icon-bg};
+
+  --pink-icon: #{$pink-icon};
+  --pink-icon-bg: #{$pink-icon-bg};
+}

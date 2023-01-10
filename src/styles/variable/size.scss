@@ -1,0 +1,14 @@
+$default: 40px;
+$medium: 36px;
+$small: 32px;
+$x-small: 28px;
+$xx-small: 24px;
+$xxx-small: 20px;
+
+:root {
+  --default: #{$default};
+  --medium: #{$medium};
+  --small: #{$small};
+  --x-small: #{$x-small};
+  --xx-small: #{$xx-small};
+}
