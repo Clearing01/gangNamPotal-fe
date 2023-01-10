@@ -2,6 +2,7 @@
 import 'quasar/src/css/index.sass';
 import '@quasar/extras/roboto-font/roboto-font.css';
 import '@quasar/extras/material-icons/material-icons.css';
+import '@/styles/index.scss';
 
 import { Dialog, Loading, LoadingBar, Notify, QSpinnerTail, Quasar } from 'quasar';
 import langKr from 'quasar/lang/ko-KR';

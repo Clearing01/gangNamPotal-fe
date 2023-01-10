@@ -8,7 +8,7 @@ yarn add moment
 yarn add vue-jwt-decode
 
 //fullcalendar
-yarn add --save @fullcalendar/vue3 @fullcalendar/core @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/moment
+yarn add --save @fullcalendar/vue3 @fullcalendar/core @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/moment @fullcalendar/timegrid
 
 //vue3-smooth-dnd
 yarn add vue3-smooth-dnd
