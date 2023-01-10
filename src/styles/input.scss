@@ -1,0 +1,2087 @@
+//1. Basic
+.app-input{
+  height: $default;
+  color: $blue-gray-7;
+  background: $white;
+  border-radius: 4px;
+  .q-field__bottom{
+    display: none;
+  }
+  .q-field__control{
+    height: $default;
+    padding: 0 14px;
+    color: $primary;
+    &::before{
+      border-color: $blue-gray-4;
+    }
+    &::after{
+      border: 1px solid transparent;
+    }
+  }
+
+  .q-field__native{
+    padding: 11px 0;
+    font-size: $font-04;
+    line-height: $font-08;
+    color: $blue-gray-7;
+  }
+
+  &.number-input {
+    .q-field__native {
+      text-align: right;
+    }
+  }
+
+  //Hover
+  &:hover {
+    .q-field__native{
+      color: $blue-gray-11;
+    }
+    .q-field__control::before{
+      border-color: $blue-gray-7;
+    }
+  }
+
+  //Filled: 값은 들어있지만 focus 상태가 아닐 때
+  &.q-field--float{
+    .q-field__native{
+      color: $blue-gray-11;
+    }
+  }
+
+  //Focus
+  &.q-field--highlighted{
+    .q-field__control::after{
+      border: 1px solid $primary;
+    }
+  }
+  &.q-field--focused.q-field--highlighted{
+    .q-field__native{
+      color: $blue-gray-11;
+    }
+  }
+
+  //Error
+  &.q-field--error{
+    padding-bottom: 0;
+    .q-field__control{
+      color: $error;
+    }
+    &.q-field--outlined {
+      .q-field__control:before{
+        border: 1px solid $error;
+      }
+    }
+    .q-field__native{
+      color: $error;
+    }
+
+    &.q-field--highlighted{
+      .q-field__control::after{
+        border: 1px solid $error;
+      }
+    }
+    &:hover{
+      .q-field__control::before{
+        border-color: $error;
+      }
+    }
+    &.q-field--focused.q-field--highlighted{
+      .q-field__native{
+        color: $error;
+      }
+    }
+    &.q-field--float{
+      .q-field__native{
+        color: $error;
+      }
+    }
+    .q-field__append{
+      display: none;
+    }
+  }
+
+  //disable
+  &.q-field--disabled{
+    .q-field__control{
+      color: $blue-gray-7;
+    }
+    .q-field__control::before{
+      background-color: $blue-gray-2;
+      border-color: $blue-gray-4;
+    }
+    .q-field__native{
+      color: $blue-gray-7;
+    }
+
+    &.q-field--highlighted{
+      .q-field__control::after{
+        border: 1px solid $blue-gray-4;
+      }
+    }
+    &:hover .q-field__control::before{
+      border-color: $blue-gray-4;
+    }
+    &.q-field--focused.q-field--highlighted{
+      .q-field__native{
+        color: $blue-gray-7;
+      }
+    }
+    &.q-field--float{
+      .q-field__native{
+        color: $blue-gray-7;
+      }
+    }
+  }
+
+  //readonly
+  &.q-field--readonly{
+    .q-field__control{
+      color: $blue-gray-11;
+    }
+    .q-field__control::before{
+      background-color: $blue-gray-2;
+      border: 1px solid $blue-gray-4;
+    }
+    .q-field__native{
+      color: $blue-gray-11;
+    }
+
+    &.q-field--highlighted{
+      .q-field__control::after{
+        border: 1px solid $blue-gray-4;
+      }
+    }
+    &:hover{
+      .q-field__control::before{
+        border-color: $blue-gray-4;
+      }
+    }
+    &.q-field--focused.q-field--highlighted{
+      .q-field__native{
+        color: $blue-gray-11;
+      }
+    }
+    &.q-field--float{
+      .q-field__native{
+        color: $blue-gray-11;
+      }
+    }
+  }
+
+  //Medium
+  &.input-medium{
+    height: $medium;;
+    .q-field__control{
+      height: $medium;;
+    }
+    .q-field__native{
+      padding: 9px 0;
+      line-height: 18px;
+    }
+  }
+
+  //Small
+  &.input-small{
+    height: $small;
+    & .q-field__control {
+      padding: 0 12px;
+    }
+    .q-field__control{
+      height: $small;
+    }
+    .q-field__native{
+      padding: 8px 0;
+      font-size: $font-02;
+      line-height: $font-06;
+    }
+  }
+
+  //2. Append-search-icon
+  &.input-append-search-icon {
+    & .q-field__control {
+      padding: 0 11px 0 14px;
+    }
+
+    &.mobile {
+      .q-field__marginal {
+        color: $blue-gray-5;
+      }
+    }
+
+    .q-field__marginal {
+      height: $default;
+      > * {
+        margin-left: 0;
+      }
+    }
+
+    .q-field__append {
+      padding-left: 10px;
+    }
+
+    .q-btn {
+      padding: 0;
+      &:nth-child(1){
+        .q-icon {
+          display: none;
+          margin-right: 10px;
+          font-size: $font-06;
+          color: $blue-gray-5;
+        }
+      }
+      &:nth-child(2){
+        .q-icon {
+          font-size: $font-20;
+          color: $blue-gray-5;
+        }
+      }
+    }
+
+    //auto-complete
+    &.input-auto-complete{
+      .q-field__control, .q-field__native{
+        min-height: auto;
+        height: $medium;
+        padding: 0;
+      }
+      .q-field__append + .q-field__append{
+        display: none;
+      }
+      .q-field__input{
+        color: $blue-gray-7;
+        line-height: $font-08;
+      }
+
+      //:hover
+      &:hover{
+        .q-field__input{
+          color: $blue-gray-11;
+        }
+      }
+
+      //:focus, active
+      &.q-field--float{
+        .q-field__input{
+          color: $blue-gray-11;
+        }
+      }
+    }
+
+    //hover
+    &:hover {
+      .q-btn {
+        &:nth-child(2) .q-icon {
+          color: $blue-gray-7;
+        }
+      }
+    }
+
+    //filled: 값은 들어있지만 focus 상태가 아닐 때
+    &.q-field--float {
+      .q-btn {
+        &:nth-child(1){
+          .q-icon {
+            display: block;
+            color: $blue-gray-5;
+          }
+        }
+      }
+      //Focus
+      &.q-field--highlighted {
+        .q-btn{
+          &:nth-child(1){
+            cursor: pointer;
+            z-index: 10;
+            .q-icon {
+              display: block;
+            }
+          }
+          &:nth-child(2){
+             .q-icon {
+              color: $blue-gray-9;
+            }
+          }
+        }
+      }
+    }
+
+    //Error
+    &.q-field--error {
+      .q-field__append {
+        display: flex;
+
+        &.q-anchor--skip {
+          display: none;
+        }
+
+        .q-btn {
+          &:nth-child(1) .q-icon {
+            display: block;
+          }
+          &:nth-child(2) .q-icon {
+            color: $error;
+          }
+        }
+      }
+    }
+
+    //Disable
+    &.q-field--disabled {
+      &:hover {
+        .q-btn:nth-child(2) {
+          & .q-icon {
+            color: $blue-gray-5;
+          }
+        }
+      }
+    }
+
+    //readonly
+    &.q-field--readonly {
+      &:hover {
+        .q-btn:nth-child(2) {
+          & .q-icon {
+            color: $blue-gray-5;
+          }
+        }
+      }
+    }
+
+    //Medium
+    &.input-medium {
+      & .q-field__control {
+        padding: 0 8px 0 14px;
+      }
+      .q-field__marginal {
+        height: $medium;
+      }
+    }
+
+    //Small
+    &.input-small {
+      & .q-field__control {
+        padding: 0 8px 0 12px;
+      }
+      .q-field__marginal {
+        height: $small;
+      }
+
+      .q-field__append {
+        padding-left: 8px;
+      }
+
+      .q-btn {
+        &:nth-child(1) {
+          .q-icon {
+            font-size: $font-04;
+          }
+        }
+        &:nth-child(2) {
+          .q-icon {
+            font-size: $font-06;
+          }
+        }
+      }
+    }
+  }
+
+  //3. Prepend-search-icon
+  &.input-prepend-search-icon{
+    & .q-field__control {
+      padding: 0 10px;
+    }
+    .q-field__marginal {
+      height: $default;
+    }
+    .q-field__prepend {
+      padding-right: 10px;
+      .q-btn {
+        padding: 0;
+        & .q-icon {
+          font-size: $font-20;
+          color: $blue-gray-5;
+        }
+      }
+    }
+    .q-field__append{
+      display: none;
+      padding-left: 8px;
+      .q-btn {
+        padding: 0;
+        & .q-icon {
+          font-size: $font-06;
+          color: $blue-gray-5;
+        }
+      }
+    }
+
+    //Hover
+    &:hover {
+      .q-field__prepend{
+        .q-btn {
+          & .q-icon {
+            color: $blue-gray-7;
+          }
+        }
+      }
+    }
+
+    //Filled: 값은 들어있지만 focus 상태가 아닐 때
+    &.q-field--float {
+      .q-field__append {
+        display: flex;
+      }
+    }
+
+    //Focus
+    &.q-field--highlighted {
+      .q-field__prepend {
+        .q-btn {
+          & .q-icon {
+            color: $blue-gray-9;
+          }
+        }
+      }
+      .q-field__append {
+        display: block;
+        cursor: pointer;
+        z-index: 10;
+      }
+    }
+
+    //Error
+    &.q-field--error {
+      .q-field__prepend {
+        .q-btn {
+          & .q-icon {
+            color: $error;
+          }
+        }
+      }
+      .q-field__append{
+        display: flex;
+      }
+
+      //filled
+      &.q-field--float {
+        .q-field__append{
+          display: flex;
+        }
+      }
+
+      //focus
+      &.q-field--focused {
+        .q-field__prepend {
+          .q-btn {
+            & .q-icon {
+              color: $error;
+            }
+          }
+        }
+        .q-field__append {
+          display: flex;
+        }
+      }
+    }
+
+    //Disable
+    &.q-field--disabled {
+      &:hover {
+        .q-btn {
+          & .q-icon {
+            color: $blue-gray-5;
+          }
+        }
+      }
+      .q-field__append{
+        display: none;
+      }
+    }
+
+    //Readonly
+    &.q-field--readonly {
+      &:hover {
+        .q-btn {
+          & .q-icon {
+            color: $blue-gray-5;
+          }
+        }
+      }
+      .q-field__append{
+        display: none;
+      }
+    }
+
+    //Medium
+    &.input-medium {
+      .q-field__marginal {
+        height: $medium;;
+      }
+    }
+
+    //Small
+    &.input-small {
+      .q-field__append {
+        .q-field__append {
+          padding-left: 8px;
+        }
+      }
+      .q-field__marginal {
+        height: $small;
+      }
+      .q-field__prepend {
+        padding-right: 8px;
+        .q-btn {
+          & .q-icon {
+            font-size: $font-06;
+          }
+        }
+      }
+      .q-field__append{
+        padding-left: 6px;
+        .q-btn {
+          padding: 0;
+          & .q-icon {
+            font-size: $font-04;
+          }
+        }
+      }
+    }
+  }
+
+  //4. Input-password
+  &.input-password {
+    & .q-field__control {
+      padding: 0 10px 0 14px;
+    }
+
+    .q-field__marginal {
+      height: $default;
+      color: $blue-gray-5;
+    }
+
+    .q-field__append {
+      padding-left: 10px;
+    }
+
+    .q-icon {
+      font-size: $font-20;
+    }
+
+    //:hover
+    &:hover {
+      .q-field__marginal {
+        color: $blue-gray-7;
+      }
+    }
+
+    //:focus
+    &.q-field--highlighted{
+      .q-field__append {
+        color: $blue-gray-9;
+      }
+    }
+
+    // Error
+    &.q-field--error {
+      .q-field__append {
+        display: flex;
+        color: $error;
+
+        &.q-anchor--skip {
+          display: none;
+        }
+      }
+    }
+
+    //Disable
+    &.q-field--disabled {
+      &:hover {
+        .q-field__marginal {
+          color: $blue-gray-5;
+        }
+      }
+    }
+
+    //Readonly
+    &.q-field--readonly {
+      &:hover {
+        .q-field__marginal {
+          color: $blue-gray-5;
+        }
+      }
+    }
+
+    //Medium
+    &.input-medium {
+      & .q-field__control {
+        padding: 0 8px 0 14px;
+      }
+      .q-field__marginal {
+        height: $medium;;
+      }
+    }
+
+    //Small
+    &.input-small {
+      & .q-field__control {
+        padding: 0 8px 0 12px;
+      }
+      .q-field__marginal {
+        height: $small;
+      }
+      .q-field__prepend {
+        padding-left: 8px;
+        .q-btn {
+          & .q-icon {
+            font-size: $font-06;
+          }
+        }
+      }
+      .q-field__append {
+        padding-left: 8px;
+        .q-btn {
+          & .q-icon {
+            font-size: $font-04;
+          }
+        }
+      }
+    }
+  }
+
+  //5. Time-picker: picker은 클릭 영역을 위해 v-btn으로 처리하여 클래스를 예외로 둠.
+  @at-root .app-input-picker{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: $default;
+    min-height: auto;
+    padding: 10px;
+    background: $white;
+    border: 1px solid $blue-gray-4;
+    border-radius: 6px;
+    transition: border-color 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+    .q-btn__content{
+      flex-wrap: nowrap;
+      text-overflow: ellipsis;
+      white-space: nowrap !important;
+      overflow: hidden;
+    }
+    .justify-center{
+      justify-content: flex-start;
+    }
+    [class^="icon-"]{
+      margin-right: 10px;
+      font-size: $font-20;
+      color: $blue-gray-7;
+    }
+    .picker-text{
+      font-weight: 400;
+      color: $blue-gray-7;
+      text-transform: none;
+    }
+
+    //hover
+    &:hover{
+      border: 1px solid $blue-gray-7;
+      [class^="icon-"]{
+        color: $blue-gray-7;
+      }
+      .picker-text{
+        color: $blue-gray-11;
+      }
+    }
+
+    //active
+    &.q-btn--active{
+      border: 1px solid $primary;
+      [class^="icon-"]{
+        color: $blue-gray-9;
+      }
+      .picker-text{
+        color: $blue-gray-11;
+      }
+    }
+
+    //filled: 입력값 있을 때
+    &.selected-picker{
+      .picker-text {
+        color: $blue-gray-11;
+      }
+    }
+
+    //error
+    &.error-picker{
+      border: 1px solid $error;
+      [class^="icon-"]{
+        color: $error;
+      }
+      .picker-text{
+        color: $error;
+      }
+    }
+
+    //disabled
+    &.disabled{
+      background: $blue-gray-2;
+      border: 1px solid $blue-gray-4;
+      [class^="icon-"]{
+        color: $blue-gray-5;
+      }
+      .picker-text{
+        color: $blue-gray-7;
+      }
+      &:hover {
+        border: 1px solid $blue-gray-4;
+        [class^="icon-"] {
+          color: $blue-gray-5;
+        }
+        .picker-text {
+          color: $blue-gray-7;
+        }
+      }
+    }
+
+    //read-only
+    &.readonly-picker{
+      background: $blue-gray-2;
+      border: 1px solid $blue-gray-4;
+      pointer-events : none;
+      [class^="icon-"]{
+        color: $blue-gray-5;
+      }
+      .picker-text{
+        color: $blue-gray-11;
+      }
+      &:hover {
+        border: 1px solid $blue-gray-4;
+        [class^="icon-"]{
+          color: $blue-gray-5;
+        }
+        .picker-text{
+          color: $blue-gray-11;
+        }
+      }
+    }
+
+    //medium
+    &.input-picker-medium{
+      height: $medium;;
+    }
+
+    //small
+    &.input-picker-small{
+      height: $small;
+      [class^="icon-"]{
+        font-size: 16px;
+        margin-right: 8px;
+      }
+      .picker-text{
+        font-size: 12px;
+        line-height: 16px;
+      }
+    }
+  }
+
+  @at-root .q-time{
+    .q-time__header{
+      background-color: $primary;
+      transition: background-color 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .q-time__link{
+      opacity: 0.7 !important;
+      &:hover{
+        opacity: 1 !important;
+      }
+      &.q-time__link--active{
+        opacity: 1 !important;
+      }
+    }
+    .q-time__content::after{
+      content: '\ecd5';
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      width: 30px;
+      height: 30px;
+      font-family: 'portal-icon' !important;
+      font-size: 16px;
+      text-align: center;
+      line-height: 30px;
+      color: $white;
+      background: $primary;
+      border-radius: 50%;
+      transition: background-color 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .q-time__container-child{
+      background: $blue-gray-3;
+    }
+    .q-time__clock-pointer{
+      background-color: $primary;
+    }
+    .q-time__clock-pointer:before, .q-time__clock-pointer:after{
+      background-color: $primary;
+    }
+    .q-time__clock-position--active{
+      background-color: $primary;
+    }
+    .q-time__clock-position{
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 500;
+      color: $blue-gray-11;
+      &.q-time__clock-position--active{
+        color: $white;
+      }
+    }
+
+    //Hover
+    &:hover{
+      .q-time__content::after{
+        background: #4a75c5;
+      }
+    }
+  }
+
+  //6. Date-picker
+  @at-root .q-date{
+    width: 320px;
+    .q-date__view{
+      min-height: auto;
+      padding: 20px;
+    }
+    .q-date__navigation{
+      height: 32px;
+      .q-icon{
+        font-size: 16px;
+        color: $blue-gray-8;
+      }
+      .q-btn__content{
+        flex-wrap: nowrap;
+        text-overflow: ellipsis;
+        white-space: nowrap !important;
+        overflow: hidden;
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 600;
+        color: $blue-gray-10;
+      }
+    }
+
+    .q-date__calendar-weekdays{
+      height: 40px;
+      margin-top: 12px;
+      >div{
+        height: 100% !important;
+      }
+      .q-date__calendar-item {
+        height: 18px;
+        font-size: 14px;
+        line-height: 18px;
+        color: $blue-gray-7;
+      }
+    }
+
+    .q-date__calendar-days-container{
+      min-height: auto;
+      margin-top: 4px;
+      .q-date__calendar-days{
+        .q-date__calendar-item{
+          width: 40px !important;
+          height: 40px !important;
+          font-size: 14px;
+          line-height: 18px;
+          color: $blue-gray-11;
+
+          //Hover
+          &:hover{
+            color: $primary;
+            background: $primary-op-6 !important;
+            border-radius: 50%;
+          }
+
+          .q-btn{
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            font-weight: 600;
+
+            //Active
+            &.bg-primary{
+              background: $primary !important;
+            }
+            &.q-btn--unelevated {
+              border: 2px solid $primary-hover;
+            }
+          }
+        }
+      }
+    }
+
+    .q-date__actions{
+      .q-btn{
+        padding: 11px 20px;
+        font-size: 14px;
+        line-height: 18px;
+        color: $blue-gray-10;
+        border: 1px solid $blue-gray-4;
+        border-radius: 6px;
+      }
+    }
+  }
+
+  //7. Range-picker (day)
+  @at-root .q-date{
+    .q-btn__content{
+      flex-wrap: nowrap;
+      text-overflow: ellipsis;
+      white-space: nowrap !important;
+      overflow: hidden;
+    }
+    .q-date__calendar-days-container{
+      .q-date__calendar-days{
+        .q-date__calendar-item{
+          //Hover
+          &.q-date__range-from, &.q-date__range-to{
+            &::before{
+              opacity: 0.1;
+            }
+            &:hover{
+              //active
+              .q-btn{
+                &.bg-primary{
+                  background: $primary-hover !important;
+                }
+                &.q-btn--unelevated {
+                  border: 2px solid $primary-hover;
+                }
+              }
+            }
+          }
+          &.q-date__edit-range-from:after{
+            left: 0;
+            border-top-left-radius: 50%;
+            border-bottom-left-radius: 50%;
+          }
+          &.q-date__edit-range-to:after{
+            right: 0;
+            border-top-right-radius: 50%;
+            border-bottom-right-radius: 50%;
+          }
+          &.q-date__range{
+            &::before{
+              opacity: 0.1;
+            }
+            &:hover{
+              background: $primary-op-10;
+            }
+            .q-btn{
+              color: $blue-gray-11 !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  //8. Range-picker (year)
+  @at-root .q-menu{
+    .q-date{
+      border-radius: 6px;
+      box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
+      .q-date__years{
+        padding: 20px 16.5px;
+        .col-auto{
+          .q-btn{
+            width: 40px;
+            height: 40px;
+            .q-icon{
+              font-size: 24px;
+              color: $blue-gray-7;
+            }
+          }
+        }
+        .q-date__years-content{
+          padding: 0 6px;
+          .q-date__years-item{
+            .q-btn{
+              padding: 8px 10px;
+              border-radius: 4px;
+              &:hover{
+                background: $primary-hover-op-6;
+              }
+              .q-btn__content{
+                flex-wrap: nowrap;
+                font-size: 16px;
+                line-height: 20px;
+                color: $blue-gray-10;
+                font-weight: 600;
+              }
+              &.q-btn--unelevated{
+                .q-btn__content {
+                  color: $white;
+                }
+              }
+            }
+          }
+        }
+      }
+      .q-date__months{
+        padding: 40px 32px;
+        .q-date__months-item:nth-child(n+4){
+          margin-top: 34px;
+        }
+        .q-btn{
+          padding: 8px 14px;
+          &:hover{
+            background: $primary-hover-op-6;
+          }
+          .q-btn__content{
+            flex-wrap: nowrap;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 20px;
+            color: $blue-gray-10;
+          }
+          &.q-btn--unelevated{
+            .q-btn__content{
+              color: $white;
+            }
+          }
+        }
+      }
+      .q-date__main{
+        .q-date__actions{
+          padding: 12px 20px 20px 20px;
+        }
+      }
+    }
+  }
+
+  //9.Input-select
+  &.input-select{
+    &.q-field--auto-height{
+      .q-field__control{
+        height: $default;
+        min-height: auto;
+        padding: 0 10px 0 14px;
+      }
+    }
+    .q-field__control-container{
+      height: 100%;
+      padding-top: 0;
+    }
+    .q-field__native {
+      height: $default;
+      min-height: auto;
+      padding: 0;
+    }
+
+    .q-field__marginal{
+      height: $default;
+      color: $blue-gray-5;
+    }
+
+    .q-field__label{
+      top: 10px;
+      font-size: $font-04;
+      line-height: 18px;
+      color: $blue-gray-7;
+    }
+
+    .q-icon{
+      width: 20px;
+      height: 20px;
+    }
+    //:hover
+    &:hover{
+      .q-field__label{
+        color: $blue-gray-11;
+      }
+      .q-field__marginal{
+        color: $blue-gray-7;
+      }
+    }
+
+    //filled: 입력값 있을 때
+    &.q-field--float {
+      .q-field__label{
+        display: none;
+        transform: none;
+      }
+    }
+
+    //:focus
+    &.q-field--focused{
+      .q-field__marginal{
+        color: $blue-gray-9;
+      }
+    }
+
+    //Error
+    &.q-field--error{
+      .q-field__label{
+        color: $error;
+      }
+      .q-field__marginal + .q-field__marginal{
+        display: flex;
+      }
+      .q-field__marginal{
+        color: $error;
+      }
+      //:hover
+      &:hover{
+        .q-field__label{
+          color: $error;
+        }
+        .q-field__marginal{
+          color: $error;
+        }
+      }
+    }
+
+    //Disable
+    &.q-field--disabled{
+      .q-field__control > div{
+        opacity: 1 !important;
+      }
+      //:hover
+      &:hover{
+        .q-field__label{
+          color: $blue-gray-7;
+        }
+        .q-field__marginal{
+          color: $blue-gray-5;
+        }
+      }
+    }
+
+    //Readonly
+    &.q-field--readonly{
+      .q-field__label{
+        color: $blue-gray-11;
+      }
+      //:hover
+      &:hover{
+        .q-field__marginal{
+          color: $blue-gray-5;
+        }
+      }
+    }
+
+    //Medium
+    &.input-medium {
+      &.q-field--auto-height {
+        .q-field__control {
+          height: $medium;;
+          padding: 0 8px 0 14px;
+        }
+      }
+      .q-field__native {
+        height: $medium;;
+      }
+      .q-field__marginal {
+        height: $medium;;
+      }
+      .q-field__label{
+        top: 9px;
+      }
+    }
+
+    //Small
+    &.input-small {
+      &.q-field--auto-height {
+        .q-field__control {
+          height: $small;
+          padding: 0 8px 0 12px;
+        }
+      }
+      .q-field__native {
+        height: $small;
+      }
+      .q-field__marginal {
+        height: $small;
+      }
+      .q-field__label{
+        top: 8px;
+        font-size: 12px;
+        line-height: 16px;
+      }
+      .q-icon{
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    //popup
+    @at-root .select-popup{
+      min-width: 120px;
+      max-width: 400px;
+      max-height: 468px;
+      padding: 4px;
+      border: 1px solid $blue-gray-4;
+      box-shadow: 3px 2px 10px rgba(0, 0, 0, 0.04);
+      overflow-y: auto;
+      .q-virtual-scroll__content{
+        .q-manual-focusable--focused {
+          .q-focus-helper{
+            background-color: $primary-hover-op-6;
+            opacity: 1;
+            &::before {
+              display: none;
+            }
+            &::after {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .q-item{
+        min-height: auto;
+        height: $default;
+        padding: 11px 12px;
+        border-radius: 4px;
+        font-weight: 500;
+        color: $blue-gray-10;
+        .q-item__section{
+          .q-item__label{
+            span{
+              display: block;
+              margin: 0 !important;
+              white-space: nowrap !important;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+        &.q-item--active{
+          background: $primary-hover-op-6;
+        }
+        &:active{
+          .q-item__section{
+            color: $primary;
+          }
+        }
+        &.disabled{
+          color: $blue-gray-5;
+          opacity: 1 !important;
+        }
+
+        .q-item__label {
+          color: $blue-gray-10;
+        }
+      }
+      .q-item + .q-item{
+        margin-top: 4px;
+      }
+      .q-item__section{
+        z-index: 100;
+      }
+
+      .btn-wrap{
+        position: sticky;
+        left: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        height: 36px;
+        background: $white;
+        box-shadow: 0px -2px 4px rgba(22, 61, 140, 0.04);
+        .btn-cancel{
+          font-size: $font-04;
+          line-height: $font-08;
+          font-weight: 500;
+          color: $primary;
+        }
+      }
+
+      .multi-select-search{
+        position: sticky;
+        left: 0;
+        top: 0;
+        background: $white;
+        z-index: 10;
+      }
+
+      .multi-all-check{
+        z-index: 9;
+      }
+
+      &.multi-check {
+        max-height: 519px;
+        padding: 0;
+        .multi-all-check {
+          &.q-item{
+            height: 56px;
+            padding: 8px;
+            margin: 0;
+            border-radius: 0;
+            border-bottom: 1px solid $blue-gray-4;
+            .all-check-wrapper {
+              display: flex;
+              width: 100%;
+              height: $default;
+              padding: 11px 10px;
+              border-radius: 4px;
+              cursor: pointer;
+              .q-item__section--side{
+                padding-right: 0;
+                margin-right: 10px;
+              }
+              .q-item__label{
+                line-height: $font-08 !important;
+              }
+              &:hover {
+                background-color: $primary-hover-op-6;
+              }
+              &.active-check {
+                background-color: $primary-hover-op-6;
+              }
+            }
+          }
+        }
+        &.search-select{
+          max-height: 362px;
+        }
+        .multi-select-search {
+          height: 56px;
+          padding: 8px 4px;
+          border-bottom: 1px solid $blue-gray-4;
+          border-radius: 0;
+          .app-input{
+            width: 204px;
+          }
+        }
+        .q-virtual-scroll__content {
+          padding: 8px;
+          .q-item{
+            padding: 11px 10px;
+            .q-item__section--side{
+              padding-right: 0;
+              margin-right: 10px;
+            }
+            .q-item__label{
+              line-height: $font-08 !important;
+            }
+          }
+        }
+      }
+      .btn-wrapper{
+        width: 100%;
+        height: 36px;
+        padding: 0 12px;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        background: orange;
+        .btn-cancel{
+          font-size: $font-02;
+          line-height: $font-06;
+          color: $primary;
+          font-weight: 500;
+        }
+      }
+
+      //mobile
+      &.mobile-select-popup{
+        .q-item{
+          .q-item__section {
+            .q-item__label {
+              span {
+                width: calc(100% - 75px);
+              }
+            }
+          }
+        }
+      }
+
+      //medium
+      &.medium-select-popup{
+        max-height: 426px;
+        .q-item {
+          min-height: auto;
+          height: $medium;
+          padding: 9px 12px;
+        }
+        &.multi-check{
+          max-height: 280px;
+          .multi-all-check {
+            height: 52px;
+            .all-check-wrapper {
+              height: $medium;
+              padding: 9px 10px;
+              .q-item__section--side{
+                margin-right: 8px;
+              }
+            }
+          }
+          .multi-select-search{
+            height: 52px;
+            padding: 8px 4px;
+          }
+          .q-virtual-scroll__content {
+            .q-item{
+              padding: 9px 10px;
+              .q-item__section--side{
+                margin-right: 8px;
+              }
+            }
+          }
+        }
+        &.search-select{
+          max-height: 332px;
+        }
+      }
+
+      //small
+      &.small-select-popup{
+        max-height: 404px;
+        .q-item {
+          min-height: auto;
+          height: 34px;
+          padding: 9px 10px;
+          .app-btn{
+            &.btn-checkbox{
+              .q-checkbox__icon{
+                font-size: $font-06;
+              }
+            }
+          }
+          .q-item__label{
+            font-size: $font-02;
+            line-height: $font-06 !important;
+          }
+        }
+        &.multi-check{
+          max-height: 254px;
+          .multi-select-search{
+            height: 48px;
+            padding: 8px 4px;
+          }
+          .multi-all-check {
+            height: 48px;
+            .all-check-wrapper {
+              height: $small;
+              padding: 8px 10px;
+              .q-item__section--side{
+                margin-right: 8px;
+              }
+            }
+          }
+          .q-virtual-scroll__content {
+            .q-item{
+              height: $small;
+              padding: 8px 10px;
+              .q-item__section--side{
+                margin-right: 8px;
+              }
+            }
+          }
+        }
+        &.search-select{
+          max-height: 302px;
+        }
+      }
+    }
+  }
+
+  //10.Input-file
+  &.input-file{
+    position: relative;
+    padding: 0 10px 0 40px;
+    margin-top: 20px;
+    line-height: $font-08;
+    border: 1px solid $blue-gray-4;
+    border-radius: 6px;
+    transition: border-color 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    &::before{
+      content: '\edf7';
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      font-family: 'portal-icon', 'serif';
+      font-size: 20px;
+      color: $blue-gray-5;
+    }
+    .q-field__control{
+      min-height: auto;
+      padding: 0;
+      &::after{
+        border: none !important;
+      }
+      .q-field__control-container{
+        padding-top: 0;
+      }
+      .q-field__native{
+        min-height: auto;
+        padding: 0;
+        .q-field__input{
+          min-height: auto;
+          font-size: $font-04;
+          line-height: $font-08;
+          color: $blue-gray-11;
+        }
+        .q-field__input + div{
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+      .q-field__label{
+        max-width: none;
+        top: 10px;
+        font-size: $font-04;
+        line-height: $font-08;
+        color: $blue-gray-7;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        transform: none;
+      }
+      .q-field__append{
+        height: auto;
+        padding-left: 10px;
+        .q-icon{
+          width: 20px;
+          height: 20px;
+          padding: 0;
+          font-size: $font-20;
+          color: $blue-gray-5;
+          opacity: 1;
+        }
+      }
+    }
+
+    //hover
+    &:not(.input-file-disable):hover, &:not(.input-file-error):hover{
+      color: $blue-gray-11;
+      border: 1px solid $blue-gray-7;
+      &::before{
+        color: $blue-gray-7;
+      }
+      .q-field__label{
+        color: $blue-gray-11;
+      }
+    }
+
+    //filled
+    &.input-uploaded{
+      padding: 0 10px 0 14px;
+      background: $blue-gray-0;
+      border: 1px solid $blue-gray-4;
+      &::before{
+        display: none;
+      }
+      .q-field__control{
+        .q-field__native{
+          color: $primary-hover;
+        }
+        .q-field__label{
+          display: none;
+        }
+      }
+    }
+
+    //active
+    &:active:not(.input-file-disable), &:active:not(.input-file-error), {
+      border-color: $primary;
+      &::before{
+        color: $blue-gray-9;
+      }
+    }
+
+    //error
+    &.input-file-error{
+      padding: 0 10px 0 14px;
+      color: $error;
+      background: $white;
+      border: 1px solid $error;
+      &:hover{
+        border: 1px solid $error;
+      }
+      &::before{
+        display: none;
+      }
+      .q-field__control{
+        .q-field__label{
+          color: $error;
+        }
+        .q-field__native{
+          color: $error;
+        }
+      }
+      .q-field__append{
+        .q-icon{
+          color: $error;
+        }
+      }
+    }
+
+    //disable
+    &.input-file-disable{
+      padding: 0 10px 0 14px;
+      color: $blue-gray-7;
+      background: $blue-gray-2;
+      border: 1px solid $blue-gray-4;
+      opacity: 1 !important;
+      pointer-events: none;
+      &::before{
+        display: none;
+      }
+      //hover
+      &:hover{
+        border: 1px solid $blue-gray-4;
+        .q-field__control {
+          .q-field__label {
+            color: $blue-gray-7;
+          }
+        }
+      }
+    }
+
+    //readonly
+    &.input-file-readonly{
+      padding: 0 10px 0 14px;
+      color: $primary-hover;
+      background: $blue-gray-2;
+      border: 1px solid $blue-gray-4;
+      pointer-events: none;
+      &::before{
+        display: none;
+      }
+      .q-field__control {
+        .q-field__label {
+          color: $blue-gray-11;
+        }
+      }
+      //hover
+      &:hover{
+        color: $primary-hover;
+        border: 1px solid $blue-gray-4;
+        &::before{
+          display: none;
+        }
+      }
+    }
+  }
+  /*
+  &.input-file{
+    position: relative;
+    padding: 10px 10px 0 40px;
+    line-height: $font-08);
+   border: 1px solid $blue-gray-4;
+    border-radius: 6px;
+    transition: border-color 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    &::before{
+      content: '\edf7';
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      font-family: 'portal-icon', 'serif';
+      font-size: 20px;
+      color: $blue-gray-5;
+    }
+    &::file-selector-button {
+      display: none;
+    }
+    &::after{
+      display: none;
+      content: '\ea00';
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      font-family: 'portal-icon', 'serif';
+      font-size: 20px;
+    }
+
+    //hover
+    &:hover{
+      color: $blue-gray-11;
+      border: 1px solid $blue-gray-7;
+      &::before{
+        color: $blue-gray-7;
+      }
+    }
+
+    //filled
+    &.input-uploaded{
+      padding: 11px 40px 11px 14px;
+      color: $primary-hover;
+      background: $blue-gray-0;
+      border: 1px solid $blue-gray-4;
+      &::before{
+        display: none;
+      }
+      &::after{
+        display: block;
+        color: $blue-gray-5;
+      }
+    }
+
+    //error
+    &.input-file-error{
+      padding: 10px 10px 0 14px;
+      color: $error;
+      border: 1px solid $error;
+      &::before{
+        display: none;
+      }
+      &::after{
+        display: block;
+      }
+    }
+
+    //disable
+    &[disabled]{
+      padding: 10px 10px 0 14px;
+      color: $blue-gray-7;
+      background: $blue-gray-2;
+      border: 1px solid $blue-gray-4;
+      opacity: 1 !important;
+      &::before{
+        display: none;
+      }
+      &::after{
+        display: block;
+        color: $blue-gray-5;
+      }
+      //hover
+      &:hover{
+        color: $blue-gray-7;
+        border: 1px solid $blue-gray-4;
+        &::after{
+          color: $blue-gray-5;
+        }
+      }
+    }
+
+    //readonly
+    &.input-file-readonly{
+      padding: 10px 10px 0 14px;
+      color: $primary-hover;
+      background: $blue-gray-2;
+      border: 1px solid $blue-gray-4;
+      pointer-events: none;
+      &::before{
+        display: none;
+      }
+      &::after{
+        display: block;
+        color: $blue-gray-5;
+      }
+      //hover
+      &:hover{
+        color: $primary-hover;
+        border: 1px solid $blue-gray-4;
+        &::before{
+          display: none;
+        }
+        &::after{
+          display: block;
+          color: $blue-gray-5;
+        }
+      }
+    }
+  }*/
+
+  //10.5.drag & drop
+  @at-root .app-dragdrop{
+    .dragdrop-wrapper{
+      width: 100%;
+      max-height: none;
+      border: 1px dashed $blue-gray-7;
+      border-radius: 10px;
+      box-shadow: none;
+      cursor: pointer;
+      .q-uploader__header{
+        display: none;
+      }
+      .q-uploader__list{
+        padding: 0;
+      }
+      .list-wrapper{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 160px;
+        padding: 41px 0;
+        [class^="icon-"]{
+          font-size: 48px;
+          color: $blue-gray-6;
+        }
+        .announce{
+          margin-top: 12px;
+          font-size: $font-04;
+          line-height: $font-08;
+          font-weight: 600;
+          color: $blue-gray-8;
+        }
+      }
+      &:not(.disabled):hover{
+        background: $blue-gray-2;
+      }
+      &:active{
+        background: $white;
+      }
+      &.disabled{
+        opacity: 0.6;
+        .list-wrapper{
+          [class^="icon-"]{
+            color: $blue-gray-4;
+          }
+          .announce{
+            color: $blue-gray-4;
+          }
+        }
+      }
+    }
+    .preview-container{
+      .input-file{
+        width: 100%;
+      }
+      .bar{
+        display: none;
+      }
+      .img-wrapper{
+        .img-section{
+          width: 120px;
+          height: 96px;
+          margin: 20px auto 0;
+        }
+        img{
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+    }
+    .preview-container + .preview-container{
+      margin-top: 20px;
+      .bar{
+        display: block;
+        width: 100%;
+        height: 1px;
+        margin-top: 20px;
+        background: $blue-gray-2;
+      }
+    }
+  }
+
+  //11.Input-number
+  @at-root.input-number-container{
+    position: relative;
+    width: 106px;
+    height: $default;
+    &:before{
+      content: '';
+      position: absolute;
+      right: 1px;
+      top: 1px;
+      width: 24px;
+      height: 38px;
+      background-color: $blue-gray-1;
+      border-left: 1px solid $blue-gray-4;
+      border-radius: 0 3px 3px 0;
+      z-index: 1;
+    }
+    .input-number{
+      position: absolute;
+      width: 106px;
+      .q-field__control{
+        padding: 0 38px 0 14px;
+      }
+    }
+    .btn-plus, .btn-minus{
+      position: absolute;
+      right: 4px;
+      width: 16px;
+      height: $font-06;
+      cursor: pointer;
+      z-index: 2;
+      &:hover, &:active{
+        &::before{
+          color: $blue-gray-11;
+        }
+      }
+    }
+    .btn-plus{
+      top: 4px;
+      &::before{
+        content: '\e9f7';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'portal-icon', serif;
+        font-size: 16px;
+        color: $blue-gray-9;
+      }
+    }
+    .btn-minus{
+      bottom: 4px;
+      &::before{
+        content: '\e9f5';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'portal-icon';
+        font-size: 16px;
+        color: $blue-gray-9;
+      }
+    }
+  }
+
+  //12. Input-textarea
+  &.input-textarea{
+    height: 98px;
+    .q-field__control{
+      height: 100%;
+      padding: 12px 14px;
+      .q-field__control-container{
+        height: 100%;
+        .q-field__native{
+          height: auto;
+          padding: 0;
+          margin-top: 0 !important;
+          margin-bottom: 0;
+          font-size: $font-04;
+          line-height: $font-04;
+          resize: none;
+        }
+      }
+    }
+  }
+
+  //13. input태그로 만든 input-file (사용 안함)
+  &.input-no-use-file{
+    padding: 10px;
+    line-height: $font-08;
+    font-weight: 400;
+    text-transform: none;
+    border: 1px solid $blue-gray-4;
+    border-radius: 6px;
+    transition: border-color 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -10;
+    .icon-file-present{
+      width: 20px;
+      margin-right: 10px;
+      font-family: 'portal-icon';
+      font-size: 20px;
+      color: $blue-gray-5;
+    }
+    .q-btn__content{
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+    }
+    .icon-cancel{
+      display: none;
+      width: 20px;
+      font-family: 'portal-icon';
+      font-size: 20px;
+    }
+
+    //hover
+    @at-root .input-file-container{
+      cursor: pointer;
+      &:hover{
+        .input-file{
+          color: $blue-gray-11;
+          border: 1px solid $blue-gray-7;
+          .icon-file-present{
+            color: $blue-gray-7;
+          }
+        }
+      }
+    }
+
+    //error
+    &.input-file-error{
+      .q-btn__content{
+        display: flex;
+        justify-content: space-between;
+      }
+      color: $error;
+      border: 1px solid $error;
+      .icon-file-present{
+        display: none;
+      }
+      .icon-cancel{
+        display: block;
+      }
+    }
+
+    //disable
+    &.input-file-disabled{
+      .q-btn__content{
+        display: flex;
+        justify-content: space-between;
+      }
+      color: $blue-gray-7;
+      background: $blue-gray-2;
+      border: 1px solid $blue-gray-4;
+      cursor: auto;
+      .icon-file-present{
+        display: none;
+      }
+      .icon-cancel{
+        display: block;
+        color: $blue-gray-5;
+      }
+      &:hover{
+        color: $blue-gray-7;
+        border: 1px solid $blue-gray-4;
+        .icon-cancel{
+          color: $blue-gray-5;
+        }
+      }
+    }
+
+    //readonly
+    &.input-file-readonly{
+      color: $primary-hover;
+      background: $blue-gray-2;
+      border: 1px solid $blue-gray-4;
+      cursor: auto;
+      .icon-file-present{
+        display: none;
+      }
+      //hover
+      &:hover{
+        color: $primary-hover;
+        border: 1px solid $blue-gray-4;
+        .icon-file-present{
+          display: none;
+        }
+      }
+    }
+  }
+
+  //ripple제거
+  .q-ripple{
+    display: none;
+  }
+
+  //input placeholder opacity reset
+  input::-webkit-input-placeholder {
+    opacity: 1 !important;
+  }
+}
+
+//Input-file 감춤
+.hidden-input {
+  display: none;
+}

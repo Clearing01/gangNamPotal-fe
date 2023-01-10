@@ -17,15 +17,26 @@
 		"*.ts": "eslint --fix"
 	},
 	"dependencies": {
+		"@fullcalendar/core": "^6.0.2",
+		"@fullcalendar/daygrid": "^6.0.2",
+		"@fullcalendar/interaction": "^6.0.2",
+		"@fullcalendar/moment": "^6.0.2",
+		"@fullcalendar/timegrid": "^6.0.2",
+		"@fullcalendar/vue3": "^6.0.2",
 		"@quasar/extras": "^1.15.0",
 		"@vueuse/core": "^8.4.2",
 		"@vueuse/integrations": "^7.7.1",
 		"axios": "^0.27.2",
 		"lodash-es": "^4.17.21",
+		"moment": "^2.29.4",
 		"pinia": "^2.0.17",
 		"quasar": "^2.7.5",
 		"vue": "^3.2.37",
-		"vue-router": "^4.1.2"
+		"vue-jwt-decode": "^0.1.0",
+		"vue-moment": "^4.1.0",
+		"vue-router": "^4.1.2",
+		"vue3-json-excel": "^1.0.10-alpha",
+		"vue3-smooth-dnd": "^0.0.2"
 	},
 	"devDependencies": {
 		"@quasar/vite-plugin": "^1.1.1",

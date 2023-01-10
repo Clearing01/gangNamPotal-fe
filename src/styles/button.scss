@@ -1,0 +1,862 @@
+.app-btn{
+  min-height: auto;
+  padding: 0;
+  font-weight: 500;
+  text-transform: initial;
+  &.btn-basic{
+    height: $default;
+    padding: 0 20px;
+    font-size: $font-04;
+    line-height: $font-08;
+    color: $white;
+    border-radius: 6px;
+  }
+
+  // 버튼 클릭 이펙트 제거 => 하늘님의 요청으로 클릭 이펙트 다시 추가했습니다.
+  .q-ripple{
+    // display: none;
+  }
+  &.q-btn.btn-basic.disabled{
+    color: $blue-gray-1;
+    background-color: $blue-gray-5;
+  }
+
+  &.btn-primary{
+    background-color: $primary;
+    &:not(.disabled):hover{
+      background-color: $primary-hover;
+    }
+    &:not(.disabled):active{
+      background-color: $primary;
+    }
+  }
+  &.btn-error{
+    background-color: $error;
+    &:not(.disabled):hover{
+      background-color: $error-hover;
+    }
+    &:not(.disabled):active{
+      background-color: $error;
+    }
+  }
+  &.btn-gray{
+    color: $blue-gray-10;
+    background-color: $blue-gray-2;
+    &:not(.disabled):hover{
+      background-color: $blue-gray-4;
+    }
+    &:not(.disabled):active{
+      background-color: $blue-gray-2;
+    }
+    &.btn-prepend-icon{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-7;
+      }
+    }
+    &.btn-append-icon{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-7;
+      }
+    }
+    &.btn-only-icon {
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-8;
+      }
+    }
+    &.q-btn.disabled{
+      color: $blue-gray-7;
+      background-color: $blue-gray-2;
+      &.btn-prepend-icon{
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+      &.btn-append-icon{
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+      &.btn-only-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+    }
+  }
+  &.btn-ghost{
+    color: $blue-gray-10;
+    background-color: transparent;
+    &:not(.disabled):hover{
+      background-color: $blue-gray-2;
+    }
+    &:not(.disabled):active{
+      background-color: transparent;
+    }
+    &.btn-prepend-icon{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-7;
+      }
+    }
+    &.btn-append-icon{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-7;
+      }
+    }
+    &.btn-only-icon {
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-7;
+      }
+    }
+    &.q-btn.disabled {
+      background-color: transparent;
+      color: $blue-gray-7;
+      &.btn-prepend-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+
+      &.btn-append-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+
+      &.btn-only-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-5;
+        }
+      }
+    }
+  }
+  &.btn-ghost-black{
+    background-color: transparent;
+    &.btn-only-icon {
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-9;
+      }
+    }
+    &:not(.disabled):hover{
+      background-color: $blue-gray-2;
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-11;
+      }
+    }
+    &:not(.disabled):active{
+      background-color: transparent;
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-9;
+      }
+    }
+    &.q-btn.disabled {
+      background-color: transparent;
+      color: $blue-gray-7;
+      &.btn-prepend-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+
+      &.btn-append-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+
+      &.btn-only-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-5;
+        }
+      }
+    }
+  }
+  &.btn-ghost-dark-gray{
+    background-color: transparent;
+    &.btn-only-icon {
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-8;
+      }
+    }
+    &:not(.disabled):hover{
+      background-color: $blue-gray-3;
+    }
+    &:not(.disabled):active{
+      background-color: transparent;
+    }
+    &.q-btn.disabled {
+      background-color: transparent;
+      &.btn-only-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-6;
+        }
+      }
+    }
+  }
+  &.btn-primary-border{
+    color: $primary;
+    background-color: $white;
+    border: 1px solid $primary;
+    &.btn-round-border{
+      border-radius: 50%;
+    }
+    &:not(.disabled):hover{
+      background-color: $primary-op-6;
+    }
+    &:not(.disabled):active{
+      background-color: $white;
+    }
+    &.q-btn.disabled{
+      color: $blue-gray-7;
+      background-color: $blue-gray-2;
+      border: 1px solid $blue-gray-2;
+      &.btn-prepend-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+
+      &.btn-append-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+
+      &.btn-only-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+    }
+  }
+  &.btn-gray-border{
+    color: $blue-gray-10;
+    background-color: $white;
+    border: 1px solid $blue-gray-4;
+    &:not(.disabled):hover{
+      background-color: $blue-gray-2;
+    }
+    &:not(.disabled):active{
+      background-color: $white;
+    }
+    &.btn-prepend-icon{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-7;
+      }
+    }
+    &.btn-append-icon{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-7;
+      }
+    }
+    &.btn-only-icon {
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-7;
+      }
+    }
+    &.q-btn.disabled{
+      color: $blue-gray-7;
+      background-color: $blue-gray-2;
+      border: 1px solid $blue-gray-2;
+      &.btn-prepend-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+
+      &.btn-append-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+
+      &.btn-only-icon {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-7;
+        }
+      }
+    }
+  }
+
+  &.btn-medium{
+    height: $medium;
+    padding: 0 18px;
+  }
+  &.btn-small{
+    height: $small;
+    padding: 0 16px;
+    font-size: $font-02;
+    line-height: $font-06;
+  }
+  &.btn-xx-small{
+    height: $xx-small;
+    padding: 0 8px;
+    font-size: $font-02;
+    line-height: $font-06;
+    &.btn-prepend-icon{
+      color: $blue-gray-7;
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-7;
+      }
+    }
+    &.btn-only-icon {
+      &.q-btn.disabled {
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-5;
+        }
+      }
+    }
+  }
+  &.btn-prepend-icon{
+    [class^="icon-"], [class*=" icon-"] {
+      font-size: $font-06;
+      margin-right: 4px;
+    }
+  }
+  &.btn-prepend-icon.btn-round{
+    border-radius: 999px;
+  }
+  &.btn-append-icon{
+    [class^="icon-"], [class*=" icon-"] {
+      font-size: $font-06;
+      margin-left: 4px;
+    }
+  }
+
+  &.btn-only-icon{
+    padding: 0 8px;
+    [class^="icon-"], [class*=" icon-"] {
+      font-size: $font-24;
+    }
+    &.btn-medium{
+      height: $medium;;
+      padding: 0 8px;
+      [class^="icon-"], [class*=" icon-"] {
+        font-size: $font-08;
+      }
+    }
+    &.btn-small{
+      height: $small;
+      padding: 0 8px;
+      [class^="icon-"], [class*=" icon-"] {
+        font-size: $font-06;
+      }
+    }
+    &.btn-x-small{
+      height: $x-small;
+      padding: 0 5px;
+      [class^="icon-"], [class*=" icon-"] {
+        font-size: $font-08;
+      }
+    }
+    &.btn-xx-small{
+      height: $xx-small;
+      padding: 0 4px;
+      [class^="icon-"], [class*=" icon-"] {
+        font-size: $font-06;
+      }
+      &.btn-ghost{ /* 예외적인 색 */
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-8;
+        }
+      }
+    }
+    &.btn-xxx-small{
+      height: $xxx-small;
+      padding: 0;
+      border-radius: 3px;
+      [class^="icon-"], [class*=" icon-"] {
+        font-size: $font-20;
+      }
+      &.btn-ghost{ /* 예외적인 색 */
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-8;
+        }
+      }
+    }
+  }
+  &.btn-only-icon.btn-round{
+    border-radius: 50%;
+  }
+
+  // 1). checkbox-button
+  &.btn-checkbox{
+    flex-grow: 0;
+    height: 20px;
+    line-height: $font-08;
+    .q-checkbox__inner{
+      flex-grow: 0;
+      width: 20px;
+      font-size: $font-20;
+    }
+    .q-checkbox__label{
+      margin-left: 6px;
+      color: $blue-gray-9;
+    }
+    .q-checkbox__icon{
+      font-size: $font-20;
+    }
+    .q-checkbox__icon-container{
+      width: 20px;
+    }
+
+    .q-checkbox__inner--truthy{
+      color: $primary;
+    }
+    .q-checkbox__inner--truthy + .q-checkbox__label{
+      color: $blue-gray-11;
+    }
+    .q-checkbox__inner--falsy{
+      color: $blue-gray-6;
+    }
+
+    &:hover{
+      .q-checkbox__label{
+        color: $blue-gray-11;
+      }
+      .q-checkbox__inner--falsy{
+        color: $blue-gray-8;
+      }
+    }
+
+    &.disabled{
+      opacity: 1 !important;
+      .q-checkbox__icon{
+        color: $blue-gray-3;
+      }
+      .q-checkbox__label{
+        color: $blue-gray-5;
+      }
+      &.read-only {
+        .q-checkbox__label {
+          color: $blue-gray-9;
+        }
+
+        .q-checkbox__inner--truthy ~ div.q-checkbox__label {
+          color: $blue-gray-11;
+        }
+      }
+    }
+  }
+
+  // 2). radio-button
+  &.btn-radio{
+    line-height: $font-08;
+    .q-radio__inner{
+      font-size: $font-20;
+    }
+    .q-radio__icon-container{
+      width: 20px;
+    }
+    .q-radio__icon{
+      font-size: $font-20;
+      &.icon-radio-button-unchecked{
+        color: $blue-gray-6;
+        &:hover{
+          color: $blue-gray-8;
+        }
+      }
+      &.icon-radio-button-checked{
+        color: $primary;
+      }
+    }
+    .q-radio__label{
+      margin-left: 6px;
+    }
+    &[aria-checked = "false"]{
+      .q-radio__label {
+        color: $blue-gray-9;
+        &:hover{
+          color: $blue-gray-11;
+        }
+      }
+    }
+    &[aria-checked = "true"]{
+      .q-radio__label {
+        color: $blue-gray-11;
+      }
+    }
+    //disabled
+    &.disabled{
+      opacity: 1 !important;
+      .q-radio__icon.icon-radio-button-unchecked{
+        color: $blue-gray-3;
+      }
+      .q-radio__icon.icon-radio-button-checked{
+        color: $primary-disable-active;
+      }
+      &[aria-checked = "false"], &[aria-checked = "true"]{
+        .q-radio__label {
+          color: $blue-gray-5;
+        }
+      }
+      &.read-only{
+        opacity: 1 !important;
+        &[aria-checked = "false"]{
+          .q-radio__label {
+            color: $blue-gray-9;
+          }
+        }
+        &[aria-checked = "true"]{
+          .q-radio__label {
+            color: $blue-gray-11;
+          }
+        }
+      }
+    }
+  }
+
+  // 3). arrow-button
+  &.btn-down-arrow{
+    [class^="icon-"], [class*=" icon-"] {
+      font-size: $font-08;
+      color: $blue-gray-6;
+    }
+    &:hover{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-8;
+      }
+    }
+    &:active{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-10;
+      }
+    }
+    &.disabled{
+      background-color: transparent;
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-3;
+      }
+      &:hover, &:active{
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-3;
+        }
+      }
+    }
+  }
+  &.btn-up-arrow{
+    [class^="icon-"], [class*=" icon-"] {
+      font-size: $font-08;
+      color: $blue-gray-5;
+    }
+    &:hover{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-8;
+      }
+    }
+    &:active{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-10;
+      }
+    }
+    &.disabled{
+      background-color: transparent;
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-3;
+      }
+      &:hover, &:active{
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-3;
+        }
+      }
+    }
+  }
+
+  // 5). underline-button
+  &.btn-underline{
+    padding: 0 31px;
+    font-size: $font-04;
+    line-height: $font-08;
+    color: $blue-gray-10;
+    text-decoration: underline;
+    text-underline-position: under;
+    .q-btn__content{
+      flex: 0;
+    }
+    &:hover:not(.disabled){
+      color: $blue-gray-11;
+    }
+    &:active:not(.disabled){
+      color: $blue-gray-10;
+    }
+    &.btn-underline-lightgray{
+      color: $blue-gray-8;
+
+      &:hover:not(.disabled){
+        color: $blue-gray-9;
+      }
+      &:active:not(.disabled){
+        color: $blue-gray-8;
+      }
+    }
+    &.btn-underline-error{
+      color: $error-hover;
+      &:hover:not(.disabled){
+        color: $error-deep;
+      }
+      &:active:not(.disabled){
+        color: $error-hover;
+      }
+    }
+    &.disabled{
+      color: $blue-gray-7;
+    }
+  }
+
+  // 6). gradient-button
+  &.btn-gradient{
+    //padding: 0 54px;
+    text-align: center;
+    height: $default;
+    font-size: $font-04;
+    line-height: $font-08;
+    color: $white;
+    background: linear-gradient(90deg, #81C2FF 45.31%, #6E98F8 100%);
+    border-radius: 6px;
+    &:hover{
+      background: linear-gradient(90deg, #81C2FF 0%, #6E98F8 47.4%);
+    }
+    &:active{
+      background: #6E98F8;
+    }
+    &.disabled{
+      color: $blue-gray-7;
+      background: $blue-gray-2;
+    }
+  }
+
+  // 7). toggle-switch-button
+  &.btn-toggle-switch{
+    height: $default;
+    padding: 2px;
+    border: 1px solid $blue-gray-4;
+    border-radius: 6px;
+    .q-btn{
+      min-height: auto;
+      padding: 0 12px;
+      font-size: $font-02;
+      line-height: $font-06;
+      font-weight: 600;
+      border-radius: 4px;
+      + .q-btn{
+        margin-left: 2px;
+      }
+      &[aria-pressed="false"]{
+        color: $blue-gray-7;
+        background-color: $blue-gray-2 !important;
+        &:hover{
+          color: $blue-gray-7;
+          background-color: $blue-gray-2 !important;
+        }
+        &.q-btn--active{
+          color: $blue-gray-7;
+          background-color: $blue-gray-2 !important;
+        }
+        &.disabled {
+          color: $blue-gray-7;
+          background: $white !important;
+          opacity: 0.6 !important;
+        }
+      }
+      &[aria-pressed="true"]{
+        background: $primary !important;
+        &:hover {
+          color: $white;
+          background-color: $primary-hover !important;
+        }
+        &.q-btn--active{
+          background: $primary !important;
+        }
+        &.disabled{
+          background: $primary !important;
+          opacity: 0.6 !important;
+        }
+      }
+    }
+  }
+
+  &.btn-small-toggle-switch{
+    height: $default;
+    border-radius: 8px;
+    .q-btn {
+      width: 40px;
+      padding: 0 12px;
+      font-size: $font-04;
+      line-height: $font-08;
+      font-weight: 700;
+      &[aria-pressed="false"]{
+        color: $blue-gray-8;
+        background-color: $blue-gray-2 !important;
+        &:hover{
+          background-color: $blue-gray-4 !important;
+        }
+        &.q-btn--active{
+          background-color: $blue-gray-2 !important;
+        }
+        &.disabled {
+          color: $blue-gray-8;
+          background: $blue-gray-2 !important;
+          opacity: 0.6 !important;
+        }
+      }
+      &[aria-pressed="true"]{
+        background: $primary !important;
+        &:hover {
+          color: $white;
+          background-color: $primary-hover !important;
+        }
+        &.q-btn--active{
+          background: $primary !important;
+        }
+        &.disabled{
+          background: $primary !important;
+          opacity: 0.6 !important;
+        }
+      }
+    }
+    &.readonly{
+      pointer-events: none;
+      .q-btn {
+        &[aria-pressed="false"]{
+          display: none;
+        }
+        &:nth-child(1){
+          &[aria-pressed="true"]{
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+          }
+        }
+        &:nth-child(2){
+          &[aria-pressed="true"]{
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+// 3). arrow-button
+.expand-group{
+  display: inline-flex;
+}
+.btn-expand-section{
+  display: flex;
+  flex-direction: column;
+  width: 16px;
+  height: 32px;
+  .app-btn.btn-expand{
+    [class^="icon-"], [class*=" icon-"] {
+      font-size: $font-06;
+      color: $blue-gray-5;
+    }
+    &:hover{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-8;
+      }
+    }
+    &:active{
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-9;
+      }
+    }
+    &.disabled{
+      background-color: transparent;
+      [class^="icon-"], [class*=" icon-"] {
+        color: $blue-gray-5;
+      }
+      &:hover{
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-5;
+        }
+      }
+      &:active{
+        [class^="icon-"], [class*=" icon-"] {
+          color: $blue-gray-5;
+        }
+      }
+    }
+  }
+}
+
+// 4). toggle-clearable-button
+.btn-toggle-clearable{
+  height: 18px;
+  .q-btn{
+    min-height: auto;
+    padding: 0;
+    .col{
+      flex: 0 0 0;
+    }
+    .q-icon{
+      font-size: $font-08;
+    }
+    &[aria-pressed="false"]{
+      .q-icon{
+        color: $blue-gray-6;
+      }
+    }
+    &[aria-pressed="true"]{
+      .q-icon{
+        color: $primary;
+      }
+    }
+    &:hover{
+      &[aria-pressed="false"]{
+        .q-icon{
+          color: $blue-gray-8;
+        }
+      }
+    }
+    &.disabled{
+      &[aria-pressed="false"]{
+        .q-icon{
+          color: $blue-gray-3;
+        }
+      }
+      &[aria-pressed="true"]{
+        .q-icon{
+          color: $primary-disable-active;
+        }
+      }
+    }
+  }
+  .on-right{
+    margin-left: 0;
+  }
+}
+
+// hover, active 자동 이펙트 제거
+body.desktop .q-focusable:focus .q-focus-helper,
+body.desktop .q-hoverable:hover .q-focus-helper {
+  background: inherit !important;
+  opacity: 0 !important;
+}
+body.ios .q-hoverable:active .q-focus-helper {
+  background: inherit !important;
+  opacity: 0 !important;
+}
+.q-focus-helper {
+  opacity: 0;
+  transition: unset;
+}
+body.desktop {
+  .q-checkbox:not(.disabled) {
+    .q-checkbox__inner:before{
+      display: none;
+    }
+  }
+}
+body.desktop {
+  .q-radio:not(.disabled) {
+    .q-radio__inner:before{
+      display: none;
+    }
+  }
+}
+
+// disable버튼 투명도 강제 적용 제거
+.q-btn.disabled{
+  opacity: 1 !important;
+}

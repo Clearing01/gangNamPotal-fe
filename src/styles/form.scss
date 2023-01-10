@@ -1,0 +1,60 @@
+.app-input-wrapper{
+  /*form에 있는 input의 경우 app-input, app-btn와 같이 공통 클래스에 준 width값 대신
+  .app-input-wrapper에 준 width값을 사용 */
+
+  .label-text{
+    display: flex;
+    font-size: 12px;
+    line-height: 16px;
+    color: $blue-gray-10;
+    .aster{
+      margin-left: 2px;
+      color: #ff6161;
+    }
+  }
+  .guide-text{
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    color: $blue-gray-9;
+  }
+  > button, > label{
+    width: 100%;
+    margin-top: 8px;
+  }
+  .hint-text-wrapper{
+    display: flex;
+    justify-content: space-between;
+    min-height: 16px;
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    .hint-text{
+      width: calc(100% - 100px);
+      //width: calc(100% - 50px);
+      //min-width: 270px;
+      color: $primary-hover;
+    }
+    .num-text{
+      width: 50px;
+      text-align: right;
+      color: $blue-gray-7;
+    }
+    &.error{
+      .hint-text{
+        color: $error;
+      }
+    }
+  }
+  .q-field__bottom{
+    padding: 4px 0 0;
+    font-size: $font-02;
+    line-height: $font-06;
+    .q-field__messages{
+      color: $primary-hover;
+    }
+    .q-field__counter{
+      color: $blue-gray-7;
+    }
+  }
+}
