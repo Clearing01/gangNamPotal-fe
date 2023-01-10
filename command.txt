@@ -1,0 +1,30 @@
+// vue-moment 라이브러리 설치
+yarn add vue-moment
+
+//moment 라이브러리 설치
+yarn add moment
+
+//vue-jwt-decode
+yarn add vue-jwt-decode
+
+//fullcalendar
+yarn add --save @fullcalendar/vue3 @fullcalendar/core @fullcalendar/daygrid @fullcalendar/interaction @fullcalendar/moment
+
+//vue3-smooth-dnd
+yarn add vue3-smooth-dnd
+
+//엑셀 다운로드 라이브러리
+yarn add vue3-json-excel
+
+//캘린더 재설치 - 08.25 (대시보드에 캘린더 나오지 않으면 Node 재설치 필요)
+yarn add @fullcalendar/vue3 @fullcalendar/core
+
+////재설치 가이드
+1. 최상단 node_modules, yarn.lock 삭제
+2. yarn install
+
+// 터치 이벤트
+yarn add vue3-touch-events
+
+//go js
+yarn add gojs
