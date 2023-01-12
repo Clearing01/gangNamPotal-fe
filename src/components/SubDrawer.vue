@@ -15,28 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import router from '@/router';
 
-const currentMenuList = ref([]);
-
-const props = defineProps({ parentMenu: Object, showValue: Boolean });
+const props = defineProps({ parentMenu: Object, isShow: Boolean });
 const parentMenu = computed(() => props.parentMenu?.children);
-const propShowValue = computed(() => props.showValue);
-
-const isShow = ref(propShowValue.value);
-
-const mouseOver = (value: boolean) => {
-	// console.log(inputSubMenu)
-	// console.log(1,inputSubMenu.meta.isActive)
-	// inputSubMenu.meta.isActive = true;
-	// console.log(2,inputSubMenu.meta.isActive)
-	isShow.value = value;
-};
-
-const mouseLeave = (value: boolean) => {
-	isShow.value = value;
-};
+const isShow = computed(() => props.isShow);
 
 const handlePageMove = (currentMenu: any) => {
 	router.push(currentMenu.path);
