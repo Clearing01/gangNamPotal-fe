@@ -4,13 +4,19 @@
 		<q-separator class="app-divider" />
 		<BaseDrawer />
 		<q-separator class="app-divider" />
-		<div class="menu-alarm-wrapper flex justify-between items-center mt-16"
-			@click="handleLogout()"
-		>
+		<div class="menu-alarm-wrapper flex justify-between items-center mt-16" @click="handleLogout()">
 			<!-- @click="handleLogout()" -->
-			<div class="menu-title">
+			<div class="menu-title logout">
 				<q-icon name="icon-login" class="mr-8" />
 				로그아웃
+			</div>
+		</div>
+		<div>
+			<div class="button-wrapper start">
+				<q-btn class="app-btn btn-basic btn-primary" flat @click="startShowValue(true)">출근</q-btn>
+			</div>
+			<div class="button-wrapper end">
+				<q-btn class="app-btn btn-basic btn-primary" flat @click="endShowValue(true)">퇴근</q-btn>
 			</div>
 		</div>
 	</q-drawer>
@@ -19,16 +25,67 @@
 <script setup lang="ts">
 import ProfileBox from '@/components/ProfileBox.vue';
 import BaseDrawer from '@/components/BaseDrawer.vue';
-import router from '@/router'
+import router from '@/router';
+import { ref } from 'vue';
+import { useUiStore } from '@/store/ui';
+
+const uiStore = useUiStore();
+
+const startShowValue = (flag: boolean) => {
+	uiStore.start = flag;
+	currentDate();
+};
+
+const endShowValue = (flag: boolean) => {
+	uiStore.end = flag;
+	currentDate();
+};
+
+const currentDate = () => {
+	var today = new Date();
+
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+	var hours = ('0' + today.getHours()).slice(-2);
+	var minutes = ('0' + today.getMinutes()).slice(-2);
+	var seconds = ('0' + today.getSeconds()).slice(-2);
+
+	var dateString = year + '-' + month + '-' + day;
+	var timeString = hours + ':' + minutes + ':' + seconds;
+
+	uiStore.currentDate = dateString + ' ' + timeString;
+};
 
 const handleLogout = () => {
-//   store.dispatch("authority/logout");
-//   window.localStorage.removeItem('profile');
-  router.push('/login');
-}
+	//   store.dispatch("authority/logout");
+	//   window.localStorage.removeItem('profile');
+	router.push('/login');
+};
 </script>
 
 <style scoped lang="scss">
+.logout {
+	margin-bottom: 30px;
+}
+
+.start {
+	.app-btn {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+}
+
+.end {
+	.app-btn {
+		width: 100%;
+		background: rgb(236, 7, 7);
+		&:hover {
+			background: rgb(194, 45, 45);
+		}
+	}
+}
+
 .menu-alarm-wrapper {
 	width: 100%;
 	height: 40px;
