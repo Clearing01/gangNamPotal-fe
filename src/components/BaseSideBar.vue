@@ -4,9 +4,7 @@
 		<q-separator class="app-divider" />
 		<BaseDrawer />
 		<q-separator class="app-divider" />
-		<div class="menu-alarm-wrapper flex justify-between items-center mt-16"
-			@click="handleLogout()"
-		>
+		<div class="menu-alarm-wrapper flex justify-between items-center mt-16" @click="handleLogout()">
 			<!-- @click="handleLogout()" -->
 			<div class="menu-title">
 				<q-icon name="icon-login" class="mr-8" />
@@ -19,13 +17,13 @@
 <script setup lang="ts">
 import ProfileBox from '@/components/ProfileBox.vue';
 import BaseDrawer from '@/components/BaseDrawer.vue';
-import router from '@/router'
+import router from '@/router';
 
 const handleLogout = () => {
-//   store.dispatch("authority/logout");
-//   window.localStorage.removeItem('profile');
-  router.push('/login');
-}
+	//   store.dispatch("authority/logout");
+	//   window.localStorage.removeItem('profile');
+	router.push('/login');
+};
 </script>
 
 <style scoped lang="scss">
