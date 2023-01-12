@@ -13,7 +13,7 @@ import BaseHeader from '../components/BaseHeader.vue';
 import BaseDrawer from '../components/BaseDrawer.vue';
 import BaseSideBar from '../components/BaseSideBar.vue';
 
-import ProfileBox from "@/components/ProfileBox.vue";
+import ProfileBox from '@/components/ProfileBox.vue';
 </script>
 
 <style scoped></style>

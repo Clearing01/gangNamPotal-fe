@@ -7,7 +7,7 @@
 		</template>
 		<template v-else>
 			<!-- <img :src="require(`@/assets/images/티모.png`)" alt="" /> -->
-			<img src="../assets/images/teemo.png" alt="" @click="employeeDetailMove" style="cursor:pointer;"/>
+			<img src="../assets/images/teemo.png" alt="" @click="employeeDetailMove" style="cursor: pointer" />
 		</template>
 		<div class="profile-name mt-12 mb-6">
 			박민호
@@ -33,7 +33,6 @@ const employeeDetailMove = () => {
 	router.push('/hr/management/mypage');
 	// router.push(`/hr/management/current/detail/${employeeId}`)
 };
-
 </script>
 
 <style scoped lang="scss">
