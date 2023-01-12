@@ -15,9 +15,6 @@
 						{{ currentMenu.meta.title }}
 					</q-item-label>
 				</q-item-section>
-				<div v-if="currentMenu.children">
-					{{ currentMenu.showSubMenu }}
-				</div>
 				<SubDrawer
 					v-if="currentMenu.showSubMenu"
 					@mouseenter="showSubMenu(currentMenu, true)"
