@@ -46,9 +46,21 @@
 						<div>
 							<q-btn class="app-input-picker input-picker-medium" flat>
 								<em class="icon-calendar-today"></em>
-								<span class="picker-text"> "기간을 선택하세요" </span>
+								<span class="picker-text">
+									{{
+										input.duration.from && input.duration.to
+											? getDateView(input.duration.from, input.duration.to)
+											: '기간을 선택하세요'
+									}}
+								</span>
 								<q-popup-proxy transition-show="scale" transition-hide="scale">
-									<q-date range minimal mask="YYYY-MM-DD">
+									<q-date
+										range
+										minimal
+										v-model="input.inputDuration"
+										mask="YYYY-MM-DD"
+										@update:model-value="updateDurationPicker"
+									>
 										<div class="row items-center justify-end">
 											<q-btn v-close-popup label="닫기" flat />
 										</div>
@@ -81,9 +93,43 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import { Moment } from '@/composables/util';
 
 const props = defineProps({ filterData: Object });
 const propDataSet = computed(() => props.filterData);
+
+const input = ref({
+	string: '',
+	selectList: [],
+	inputDuration: '',
+	duration: {
+		from: '',
+		to: '',
+	},
+});
+
+const getDateView = (startDt, endDt) => {
+	let result;
+	if (Moment.diffDay(startDt, endDt) === 0) {
+		result = Moment.getYYYYMMDD(startDt);
+	} else {
+		result = `${Moment.getYYYYMMDD(startDt)} ~ ${Moment.getYYYYMMDD(endDt)}`;
+	}
+	return result;
+};
+
+const updateDurationPicker = (val) => {
+	if (val) {
+		if (val.from) {
+			input.value.duration.from = Moment.getYYYY_MM_DD(val.from);
+			input.value.duration.to = Moment.getYYYY_MM_DD(val.to);
+		} else {
+			input.value.duration.from = Moment.getYYYY_MM_DD(val);
+			input.value.duration.to = Moment.getYYYY_MM_DD(val);
+		}
+	}
+	console.log(input);
+};
 
 const isManagement = ref(propDataSet.value.isManagement);
 

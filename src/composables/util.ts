@@ -4,19 +4,25 @@ export const Moment = {
 	now: moment(),
 	defaultMonth: moment().subtract(3, 'months').startOf('months'),
 	nowYYYYMMDD: moment().format('YYYY-MM-DD'),
-	getYYYY_MM_DD(date: Date) {
+	getYYYY_MM_DD(date: any) {
 		return moment(date).locale('ko').format('YYYY-MM-DD');
 	},
-	diffDay(to: Date, from: Date) {
+	getYYYYMMDD(date: any) {
+		return moment(date).locale('ko').format('YYYY.MM.DD');
+	},
+	getYYYYMM(date: any) {
+		return moment(date).locale('ko').format('YYYY.MM');
+	},
+	diffDay(to: any, from: any) {
 		return moment(from).diff(moment(to), 'days');
 	},
-	getDay(date: Date) {
+	getDay(date: any) {
 		return moment(date).day();
 	},
-	getWeekday(date: Date) {
+	getWeekday(date: any) {
 		return moment(date).weekday();
 	},
-	add(date: Date, num: any) {
+	add(date: any, num: any) {
 		return moment(date).add(num, 'days').format();
 	},
 };
