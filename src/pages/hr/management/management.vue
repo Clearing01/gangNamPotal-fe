@@ -1,23 +1,18 @@
 <template>
-	<Table :tableData="tableDataSet" />
-	<!-- <div class="filter-table-wrapper">
-		<q-table
-		flat
-		bordered
-		:rows="tableDataSet.list"
-		:columns="tableDataSet.columnList"
-		row-key="rowNum"
-	    :table-class="'common-table'"
-		:no-data-label="'데이터를 찾을 수 없습니다'"
-		> 	
-		</q-table>
-	</div> -->
+	<div class="app-pageheader">
+		<span class="main-title">인력</span>
+	</div>
+	<div class="filter-table-wrapper">
+		<Filter :filterData="filterDataSet" />
+		<Table :tableData="tableDataSet" />
+	</div>
 </template>
 
 <script setup>
 import router from '@/router';
 import { computed, onMounted, ref } from 'vue';
 import Table from '@/components/Table.vue';
+import Filter from '@/components/Filter.vue';
 
 const tableDataSet = ref({
 	list: [
@@ -39,6 +34,7 @@ const tableDataSet = ref({
 		},
 	], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
 	total: 0,
+	isAttendance: false,
 	isLoading: true,
 	columnList: [
 		// 테이블 컬럼정보 정의 및 커스텀
@@ -55,6 +51,34 @@ const tableDataSet = ref({
 		joinDt: 'joinDt',
 		stat: 'stat',
 	},
+});
+
+const filterDataSet = ref({
+	isManagement: true,
+	isAttendance: false,
+
+	titleList: [
+		{
+			name: 'nameKr',
+			label: '이름',
+		},
+		{
+			name: 'rank',
+			label: '직급',
+		},
+		{
+			name: 'dept',
+			label: '소속',
+		},
+		{
+			name: 'email',
+			label: '이메일',
+		},
+		{
+			name: 'stat',
+			label: '상태',
+		},
+	],
 });
 </script>
 
