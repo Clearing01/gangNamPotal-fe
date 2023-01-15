@@ -35,10 +35,10 @@
 				</h1>
 				<h2 class="page-title">Twolinecode Portal</h2>
 				<div class="img-wrapper">
-					<img src="../assets/images/google.png" alt="googleLogin" />
+					<img src="../assets/images/google.png" alt="googleLogin" style="cursor: pointer" />
 				</div>
 				<div class="img-wrapper">
-					<img src="../assets/images/kakao.png" alt="googleLogin" />
+					<img src="../assets/images/kakao.png" alt="googleLogin" style="cursor: pointer" />
 				</div>
 
 				<!-- 로컬 테스트용 bypass 추가 - 09.01 임우송 -->
@@ -57,9 +57,6 @@ const bypass = () => {
 </script>
 
 <style lang="scss" scoped>
-.img :hover {
-	cursor: pointer;
-}
 .login-page-container {
 	height: 100vh;
 	padding-top: 108px;

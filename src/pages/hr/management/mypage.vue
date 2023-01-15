@@ -8,7 +8,7 @@
 		</div>
 		<div v-else>
 			<div class="button-wrapper">
-				<q-btn class="app-btn btn-basic btn-primary" flat @click="showButton(true)">취소</q-btn>
+				<q-btn class="app-btn btn-basic btn-primary btn-cancle" flat @click="showButton(true)">취소</q-btn>
 				<q-btn class="app-btn btn-basic btn-primary" flat @click="employeeUpdate()">저장</q-btn>
 			</div>
 		</div>
@@ -373,6 +373,9 @@ console.log(sampleData.value.passwordRepeat);
 </script>
 
 <style scoped lang="scss">
+.btn-cancle {
+	background: gray;
+}
 .employee-info-container {
 	min-height: calc(100% - 72px);
 	padding: 28px;
