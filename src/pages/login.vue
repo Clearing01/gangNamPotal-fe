@@ -34,69 +34,18 @@
 					</svg>
 				</h1>
 				<h2 class="page-title">Twolinecode Portal</h2>
-				<div class="app-input-wrapper email-wrapper">
-					<div class="label-text">이메일</div>
-					<div class="guide-text"></div>
-					<q-input class="app-input" outlined placeholder="입력하세요" @keyup.enter="login" />
-					<div class="hint-text-wrapper">
-						<div class="hint-text"></div>
-						<div class="num-text"></div>
-					</div>
+				<div class="img-wrapper">
+					<img src="../assets/images/google.png" alt="googleLogin" />
 				</div>
-				<div class="app-input-wrapper password-wrapper">
-					<div class="label-text">비밀번호</div>
-					<div class="guide-text"></div>
-					<q-input
-						class="app-input input-password"
-						outlined
-						placeholder="입력하세요"
-						ref="detectCapsLock"
-						@keypress="detectCapsLockFunc"
-						@keyup.enter="login"
-					>
-						<template v-slot:append>
-							<q-icon class="cursor-pointer" />
-						</template>
-					</q-input>
-					<div class="hint-text-wrapper">
-						<div class="hint-text">에러메세지</div>
-						<div class="num-text"></div>
-					</div>
+				<div class="img-wrapper">
+					<img src="../assets/images/kakao.png" alt="googleLogin" />
 				</div>
-				<q-btn class="app-btn btn-basic btn-primary btn-login" @click="login" flat> 로그인 </q-btn>
-				<q-btn class="app-btn btn-underline btn-reset-pw" @click="openResetPwDialog" flat>
-					비밀번호 재설정
-					<!--참고: 이후에 byPass 대신 resetPwDialog = true로 이벤트 교체해주세요-->
-				</q-btn>
+
 				<!-- 로컬 테스트용 bypass 추가 - 09.01 임우송 -->
 				<q-btn class="app-btn btn-underline btn-reset-pw" flat @click="bypass()"> bypass </q-btn>
 			</div>
 		</div>
 	</div>
-
-	<q-dialog persistent class="app-dialog dialog-input">
-		<q-card>
-			<q-card-section class="row items-center title-container">
-				<div class="dialog-title">비밀번호 재설정</div>
-				<q-space />
-				<q-btn class="btn-close" icon="close" flat v-close-popup />
-			</q-card-section>
-			<q-card-section class="content-container">
-				<div class="dialog-description">투라인코드 이메일을 입력하세요</div>
-				<div class="app-input-wrapper">
-					<div class="label-text">이메일</div>
-					<q-input class="app-input" outlined placeholder="이메일을 입력하세요" />
-					<div class="hint-text-wrapper">
-						<div class="hint-text">이메일 제출 에러메세지</div>
-					</div>
-				</div>
-			</q-card-section>
-			<q-card-actions align="right" class="action-container">
-				<q-btn class="app-btn btn-basic btn-gray-border" flat v-close-popup>취소</q-btn>
-				<q-btn class="app-btn btn-basic btn-primary" flat @click="sendTemporarilyPw">확인</q-btn>
-			</q-card-actions>
-		</q-card>
-	</q-dialog>
 </template>
 
 <script setup>
@@ -108,10 +57,14 @@ const bypass = () => {
 </script>
 
 <style lang="scss" scoped>
+.img :hover {
+	cursor: pointer;
+}
 .login-page-container {
 	height: 100vh;
 	padding-top: 108px;
 	background: #82a4ef;
+
 	.login-content-wrapper {
 		position: relative;
 		margin: 0 auto;
