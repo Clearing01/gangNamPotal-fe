@@ -1,10 +1,16 @@
 <template>
 	<div class="app-pageheader">
 		<q-btn class="app-btn btn-basic btn-ghost-black btn-only-icon btn-prev" flat></q-btn>
-		<span class="main-title">{{ sampleData.nameKr }}</span>
+		<span class="main-title">마이 페이지</span>
 		<q-space />
-		<div class="button-wrapper">
-			<q-btn class="app-btn btn-basic btn-primary" flat @click="employeeUpdate()">수정</q-btn>
+		<div class="button-wrapper" v-if="buttonValue">
+			<q-btn class="app-btn btn-basic btn-primary" flat @click="showButton(false)">수정</q-btn>
+		</div>
+		<div v-else>
+			<div class="button-wrapper">
+				<q-btn class="app-btn btn-basic btn-primary btn-cancle" flat @click="showButton(true)">취소</q-btn>
+				<q-btn class="app-btn btn-basic btn-primary" flat @click="employeeUpdate()">저장</q-btn>
+			</div>
 		</div>
 	</div>
 	<div class="employee-info-container">
@@ -42,7 +48,7 @@
 							<div class="row-info">
 								<div class="info-title">영어 이름<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.nameEn" readonly />
+									<q-input class="app-input" outlined v-model="sampleData.nameEn" />
 									<div class="hint-text-wrapper">
 										<div class="hint-text">
 											<!-- checkErrorNameEn -->
@@ -174,16 +180,6 @@
 										:options="selectOption.affi"
 										readonly
 									>
-										<!-- <template>
-                      <template v-if="selectData.dept.label">
-                        {{ selectData.dept.label }}
-                      </template>
-                      <template v-else-if="isRegister">
-                        선택하세요
-                      </template>
-                      <template v-else>
-                      </template>
-                    </template> -->
 									</q-select>
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
@@ -200,16 +196,6 @@
 										:options="selectOption.affi[0].dept"
 										readonly
 									>
-										<!-- <template v-slot:selected>
-                      <template v-if="selectData.team.label">
-                        {{ selectData.team.label }}
-                      </template>
-                      <template v-else-if="isRegister">
-                        선택하세요
-                      </template>
-                      <template v-else>
-                      </template>
-                    </template> -->
 									</q-select>
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
@@ -226,16 +212,6 @@
 										:options="selectOption.rank"
 										readonly
 									>
-										<!-- <template v-slot:selected>
-                      <template v-if="selectData.rank.label">
-                        {{ selectData.rank.label }}
-                      </template>
-                      <template v-else-if="isRegister">
-                        선택하세요
-                      </template>
-                      <template v-else>
-                      </template>
-                    </template> -->
 									</q-select>
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
@@ -256,80 +232,10 @@
 								<div class="app-input-wrapper">
 									<q-input class="app-input" outlined v-model="sampleData.email" readonly autocomplete="off" />
 									<div class="hint-text-wrapper">
-										<div class="hint-text">
-											<!-- <template v-if="isCheckDuplicate">
-                        이미 사용 중인 이메일입니다
-                      </template>
-                      <template v-else-if="isCheckDuplicate === false">
-                        사용 가능한 이메일입니다
-                      </template> -->
-										</div>
+										<div class="hint-text"></div>
 									</div>
 								</div>
 								<div class="append-address">@twolinecode.com</div>
-								<!-- <q-btn class="app-btn btn-basic btn-primary-border btn-duplication-check" flat
-                      >중복확인</q-btn> -->
-							</div>
-
-							<!-- <template v-if="isRegister && (isModify === false)"> -->
-
-							<div class="row-info info-email">
-								<div class="info-title">비밀번호<span class="aster">*</span></div>
-								<div class="app-input-wrapper" style="width: 400px">
-									<q-input
-										class="app-input input-password"
-										outlined
-										autocomplete="new-password"
-										:type="hidePassword ? 'password' : 'text'"
-										placeholder="비밀번호는 6자리 이상 가능합니다"
-										v-model="sampleData.password"
-										maxlength="15"
-									>
-										<template v-slot:append>
-											<q-icon
-												:name="hidePassword ? 'icon-visibility-off' : 'icon-visibility'"
-												class="cursor-pointer"
-												@click="hidePassword = !hidePassword"
-											/>
-										</template>
-									</q-input>
-									<div class="hint-text-wrapper">
-										<div class="hint-text" v-if="1 !== 1">
-											{{ checkErrorPassword }}
-										</div>
-										<div class="num-text"></div>
-									</div>
-								</div>
-							</div>
-							<div class="row-info info-email">
-								<div class="info-title">비밀번호 &nbsp;&nbsp;&nbsp;&nbsp; 확인<span class="aster">*</span></div>
-								<div class="app-input-wrapper" style="width: 400px">
-									<q-input
-										class="app-input input-password"
-										:type="hidePassword2 ? 'password' : 'text'"
-										outlined
-										placeholder="비밀번호를 한번 더 입력해주세요"
-										v-model="sampleData.passwordRepeat"
-										:error="checkErrorPasswordRefeat !== false"
-										maxlength="15"
-									>
-										<template v-slot:append>
-											<q-icon
-												:name="hidePassword2 ? 'icon-visibility-off' : 'icon-visibility'"
-												class="cursor-pointer"
-												@click="hidePassword2 = !hidePassword2"
-											/>
-										</template>
-									</q-input>
-									<!-- <q-btn class="app-btn btn-basic btn-primary-border btn-duplication-check" flat
-                      >중복확인</q-btn> -->
-									<div class="hint-text-wrapper" :class="{ error: checkErrorPasswordRefeat }">
-										<div class="hint-text" v-if="checkErrorPasswordRefeat !== false">
-											{{ checkErrorPasswordRefeat }}
-										</div>
-										<div class="num-text"></div>
-									</div>
-								</div>
 							</div>
 						</div>
 					</div>
@@ -342,6 +248,12 @@
 <script setup>
 import router from '@/router';
 import { ref, computed } from 'vue';
+
+const buttonValue = ref(true);
+
+const showButton = (flag) => {
+	buttonValue.value = flag;
+};
 
 const employeeData = ref({
 	nameKr: '',
@@ -443,7 +355,7 @@ const employeeUpdate = () => {
 	if (passwordRepeat !== true) {
 		return;
 	}
-	router.push('/login');
+	router.push('/hr/management/mypage');
 };
 
 const checkErrorPasswordRefeat = computed(() => {
@@ -461,6 +373,9 @@ console.log(sampleData.value.passwordRepeat);
 </script>
 
 <style scoped lang="scss">
+.btn-cancle {
+	background: gray;
+}
 .employee-info-container {
 	min-height: calc(100% - 72px);
 	padding: 28px;

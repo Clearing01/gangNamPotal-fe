@@ -55,7 +55,7 @@ const calendarOptions = ref({
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 $fc-magin-top: 16px;
 
 .more-link {
@@ -308,8 +308,8 @@ tbody {
 	height: 700px;
 }
 
-.fc-daygrid-day-top ::after {
-	margin-left: 35px;
-	content: '출근 \00a0\00a0\00a0\00a0\00a0 퇴근';
-}
+// .fc-daygrid-day-top ::after {
+// 	margin-left: 35px;
+// 	content: '출근 \00a0\00a0\00a0\00a0\00a0 퇴근';
+// }
 </style>
