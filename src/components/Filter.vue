@@ -8,7 +8,7 @@
 						<div>
 							<q-select
 								:options="titleList"
-								v-model="titleList.index"
+								v-model="filterValue.selectValue"
 								class="app-input input-medium input-select"
 								outlined
 								dropdown-icon="icon-keyboard-arrow-down"
@@ -25,7 +25,7 @@
 				<div class="filter-container">
 					<div class="flex items-center">
 						<div>
-							<q-input class="app-input input-medium" outlined placeholder="입력하세요" />
+							<q-input class="app-input input-medium" v-model="filterValue.searchText" outlined placeholder="입력하세요" />
 							<!-- v-model="input.string"
 					:disable="selectedFilter?.isDisable"
 					@keydown="keyupEnter($event)" -->
@@ -34,7 +34,7 @@
 				</div>
 
 				<div class="filter-container">
-					<q-btn class="app-btn btn-basic btn-primary" flat @click="employeeUpdate()">입력</q-btn>
+					<q-btn class="app-btn btn-basic btn-primary" flat @click="clickFilter()">입력</q-btn>
 				</div>
 			</div>
 		</template>
@@ -91,12 +91,21 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 import { Moment } from '@/composables/util';
+import { useUiStore } from '@/store/ui';
 
 const props = defineProps({ filterData: Object });
+const emit = defineEmits(['emitFiltered']);
 const propDataSet = computed(() => props.filterData);
+
+const uiStore = useUiStore();
+
+const filterValue = ref({
+	selectValue: '',
+	searchText: '',
+});
 
 const input = ref({
 	string: '',
@@ -108,7 +117,7 @@ const input = ref({
 	},
 });
 
-const getDateView = (startDt, endDt) => {
+const getDateView = (startDt: string, endDt: string) => {
 	let result;
 	if (Moment.diffDay(startDt, endDt) === 0) {
 		result = Moment.getYYYYMMDD(startDt);
@@ -118,7 +127,7 @@ const getDateView = (startDt, endDt) => {
 	return result;
 };
 
-const updateDurationPicker = (val) => {
+const updateDurationPicker = (val: any) => {
 	if (val) {
 		if (val.from) {
 			input.value.duration.from = Moment.getYYYY_MM_DD(val.from);
@@ -131,15 +140,22 @@ const updateDurationPicker = (val) => {
 	console.log(input);
 };
 
-const isManagement = ref(propDataSet.value.isManagement);
+const isManagement = ref(propDataSet.value?.isManagement);
 
 const titleList = ref(
-	propDataSet.value.titleList.map((title) => {
+	propDataSet.value?.titleList.map((title: any) => {
 		return title.label;
 	})
 );
 
-console.log(propDataSet.value.isManagement);
+const clickFilter = (selectValue: string, searchText: string) => {
+	emit('emitFiltered', {
+		selectValue: selectValue,
+		searchText: searchText,
+	});
+};
+
+console.log(propDataSet.value?.isManagement);
 </script>
 
 <style scoped lang="scss">

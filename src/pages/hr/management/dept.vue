@@ -9,7 +9,15 @@
 					<div class="tree-title">소속/부서</div>
 				</div>
 				<div class="tree-menu-section">
-					<q-tree :nodes="deptList.list" node-key="label" no-connectors default-expand-all icon="icon-arrow-right">
+					<q-tree
+						:nodes="deptList.list"
+						node-key="label"
+						no-connectors
+						default-expand-all
+						icon="icon-arrow-right"
+						v-model:selected="selectedMenu"
+						@click="clickFilter()"
+					>
 						<template v-slot:default-header="prop">
 							<div class="title-wrapper">
 								{{ prop.node.label }}
@@ -22,27 +30,48 @@
 		</div>
 		<div class="page-right-wrapper">
 			<div class="page-content-header flex justify-between items-center no-wrap">
-				<div class="page-content-title">구성원<span>(사람 수)</span></div>
-				<q-input class="app-input input-medium input-append-search-icon" outlined no-error-icon placeholder="이름을 검색하세요" />
-				<q-btn class="app-btn btn-basic btn-primary" flat @click="employeeUpdate()">입력</q-btn>
+				<div class="page-content-title">
+					구성원<span>({{ tableDataSet.total }})</span>
+				</div>
+				<q-input
+					class="app-input input-medium input-append-search-icon"
+					outlined
+					no-error-icon
+					placeholder="이름을 검색하세요"
+					v-model="filterParams.searchText"
+				/>
+				<q-btn class="app-btn btn-basic btn-primary" flat @click="clickFilter()">입력</q-btn>
 			</div>
 			<Table :tableData="tableDataSet" />
 		</div>
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import router from '@/router';
 import { computed, onMounted, ref } from 'vue';
 import Table from '@/components/Table.vue';
+import { useUiStore } from '@/store/ui';
+import hrService from '@/service/hrService';
+
+const uiStore = useUiStore();
+
+const selectedMenu = ref('');
+
+const handleSelected = () => {};
+
+const filterParams = ref({
+	selectValue: '',
+	searchText: '',
+});
 
 const tableDataSet = ref({
 	list: [
 		{
 			nameKr: '박민호',
 			rank: '선임',
-			affi: '개발',
-			dept: '개발',
+			affiliation: '개발',
+			department: '개발',
 			email: 'minho.park@twolinecode.com',
 			phone: '010-5188-2240',
 		},
@@ -55,7 +84,7 @@ const tableDataSet = ref({
 			phone: '',
 		},
 	], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
-	total: 0,
+	total: 2,
 	isLoading: true,
 	isAttendance: false,
 
@@ -63,8 +92,8 @@ const tableDataSet = ref({
 		// 테이블 컬럼정보 정의 및 커스텀
 		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', sortable: true },
 		{ name: 'rank', align: 'center', label: '직급', field: 'rank', sortable: true },
-		{ name: 'affi', align: 'center', label: '소속', field: 'affi' },
-		{ name: 'dept', align: 'center', label: '부서', field: 'dept' },
+		{ name: 'affiliation', align: 'center', label: '소속', field: 'affiliation' },
+		{ name: 'department', align: 'center', label: '부서', field: 'department' },
 	],
 	sortKey: {
 		nameKr: 'nameKr',
@@ -78,9 +107,11 @@ const deptList = ref({
 	list: [
 		{
 			label: '구성원',
+			childNum: 0,
 			children: [
 				{
 					label: '개발 ',
+					childNum: 2,
 					children: [{ label: '개발' }, { label: '퍼블리셔' }],
 				},
 				{
@@ -103,9 +134,42 @@ const deptList = ref({
 		},
 	],
 });
+
+const clickFilter = () => {
+	if (selectedMenu.value === '개발 ' || selectedMenu.value === 'QA ') {
+		filterParams.value.selectValue = 'affiliation';
+	} else {
+		if (selectedMenu.value !== null) {
+			filterParams.value.selectValue = 'department';
+		}
+	}
+	onRequest();
+};
+
+const onRequest = async () => {
+	const list = await getDeptList(filterParams.value.selectValue, filterParams.value.searchText);
+	tableDataSet.value.list = list;
+	console.log(tableDataSet.value.list);
+};
+
+const getDeptList = async (selectValue: string, searchText: string) => {
+	await uiStore.showLoading();
+	try {
+		const response = await hrService.getDeptList(selectValue, searchText);
+		const result = response.data.items.content;
+
+		return result;
+	} catch (error: any) {
+		uiStore.hideLoading();
+	}
+};
 </script>
 
 <style scoped lang="scss">
+.btn-basic {
+	background: gray;
+}
+
 .app-page {
 	min-height: calc(100% - 72px);
 }
