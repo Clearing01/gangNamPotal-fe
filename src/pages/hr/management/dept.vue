@@ -149,6 +149,7 @@ const clickFilter = () => {
 const onRequest = async () => {
 	const list = await getDeptList(filterParams.value.selectValue, filterParams.value.searchText);
 	tableDataSet.value.list = list;
+	tableDataSet.value.total = list.size;
 	console.log(tableDataSet.value.list);
 };
 

@@ -96,6 +96,7 @@ const getDataByFilter = (emitData: any) => {
 const onRequest = async () => {
 	const list = await getManageMentList(filterParams.value.selectValue, filterParams.value.searchText);
 	tableDataSet.value.list = list;
+	tableDataSet.value.total = list.size;
 };
 
 const getManageMentList = async (selectValue: string, searchText: string) => {
