@@ -36,17 +36,33 @@
 					<q-input v-model="employeeData.nameKr" class="app-input input-medium" outlined readonly />
 				</q-card-section>
 				<q-card-section>
-					날짜 <q-input v-model="employeeData.date" class="app-input input-medium" outlined readonly />
+					날짜 <q-input v-model="employeeData.registerDate" class="app-input input-medium" outlined readonly />
 				</q-card-section>
 				<q-card-section>
-					출근시간 <q-input v-model="employeeData.startDt" class="app-input input-medium" outlined placeholder="입력하세요" />
+					출근시간
+					<q-input
+						v-model="employeeData.startDate"
+						mask="time"
+						:rules="['time']"
+						class="app-input input-medium"
+						outlined
+						placeholder="입력하세요"
+					/>
 				</q-card-section>
 				<q-card-section>
-					퇴근시간 <q-input v-model="employeeData.endDt" class="app-input input-medium" outlined placeholder="입력하세요" />
+					퇴근시간
+					<q-input
+						v-model="employeeData.endDate"
+						mask="time"
+						:rules="['time']"
+						class="app-input input-medium"
+						outlined
+						placeholder="입력하세요"
+					/>
 				</q-card-section>
 
 				<q-card-actions align="right">
-					<q-btn flat label="등록" color="primary" />
+					<q-btn flat label="등록" color="primary" @click="updateAdminCommute" />
 					<q-btn flat label="취소" color="primary" v-close-popup />
 				</q-card-actions>
 			</q-card>
@@ -155,16 +171,21 @@
 	</template>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import router from '@/router';
 import { computed, onMounted, ref } from 'vue';
+import { useUiStore } from '@/store/ui';
+import attendanceService from '@/service/attendanceService';
+
+const uiStore = useUiStore();
 
 const props = defineProps({ tableData: Object });
 const propDataSet = computed(() => props.tableData);
-const columns = propDataSet.value.columnList;
-const rows = propDataSet.value.list;
+const columns = propDataSet.value?.columnList;
+const rows = propDataSet.value?.list;
+const emit = defineEmits(['emitPageData']);
 
-const lastPage = computed(() => Math.ceil(propDataSet.value.total / pagination.value.rowsPerPage));
+const lastPage = computed(() => Math.ceil(propDataSet.value?.total / pagination.value.rowsPerPage));
 const rowStart = computed(() => (pagination.value.page - 1) * pagination.value.rowsPerPage); //현재페이지-1 * 페이지당rows
 const rowEnd = computed(() => pagination.value.page * pagination.value.rowsPerPage); //현재페이지 * 페이지당rows
 const isFirstPage = computed(() => pagination.value.page * pagination.value.rowsPerPage);
@@ -174,9 +195,9 @@ const commuteUpdateModal = ref(false);
 const employeeData = ref({
 	id: '',
 	nameKr: '',
-	date: '',
-	startDt: '',
-	endDt: '',
+	registerDate: '',
+	startDate: '',
+	endDate: '',
 });
 
 const pagination = ref({
@@ -185,7 +206,7 @@ const pagination = ref({
 	page: 1,
 	rowsPerPage: 10,
 	option: [10, 20, 50, 100],
-	rowsNumber: propDataSet.value.total,
+	rowsNumber: propDataSet.value?.total,
 	state: {
 		error: {
 			on: true,
@@ -203,13 +224,13 @@ const pagination = ref({
 });
 
 const countRows = () => {
-	if (rowEnd.value - (pagination.value.rowsPerPage - 10) > propDataSet.value.total) {
-		return `${rowStart.value + 1} ~ ${propDataSet.value.total}`;
+	if (rowEnd.value - (pagination.value.rowsPerPage - 10) > propDataSet.value?.total) {
+		return `${rowStart.value + 1} ~ ${propDataSet.value?.total}`;
 	}
 	return `${rowStart.value + 1} ~ ${rowEnd.value}`;
 };
 
-const emitPageData = (page) => {
+const emitPageData = (page: any) => {
 	emit('emitPageData', {
 		parameters: {
 			offset: (page - 1) * pagination.value.rowsPerPage, //page
@@ -219,12 +240,13 @@ const emitPageData = (page) => {
 	});
 };
 
-const updateModal = (flag, value) => {
+const updateModal = (flag: any, value: any) => {
 	commuteUpdateModal.value = flag;
+	employeeData.value.id = value.row.id;
 	employeeData.value.nameKr = value.row.nameKr;
-	employeeData.value.date = value.row.date;
-	employeeData.value.startDt = value.row.startDt;
-	employeeData.value.endDt = value.row.endDt;
+	employeeData.value.registerDate = value.row.registerDate;
+	employeeData.value.startDate = value.row.startDate;
+	employeeData.value.endDate = value.row.endDate;
 
 	console.log(value);
 };
@@ -248,6 +270,26 @@ const table = ref({
 	noData: '데이터를 찾을 수 없습니다',
 	hidePagination: false,
 });
+
+const updateAdminCommute = async () => {
+	await uiStore.showLoading();
+	try {
+		const commuteRegisterDTO = {
+			commuteId: '',
+			endDate: '',
+			startDate: '',
+		};
+		commuteRegisterDTO.commuteId = employeeData.value.id;
+		commuteRegisterDTO.endDate = employeeData.value.endDate;
+		commuteRegisterDTO.startDate = employeeData.value.startDate;
+		const response = await attendanceService.insertAdminCommute(commuteRegisterDTO);
+		router.push('/attendance');
+	} catch (error: any) {
+		uiStore.hideLoading();
+		commuteUpdateModal.value = false;
+		router.push('/attendance');
+	}
+};
 </script>
 
 <style scoped lang="scss">
