@@ -1,18 +1,9 @@
 <template>
 	<div class="dashboard-calendar-section">
-		<div class="app-pageheader">
-			<span class="main-title">대시보드</span>
-			<div class="filter-container">
-				<q-select :options="filter" v-model="selctFilter.param" />
-			</div>
-			<div class="btn-wrapper">
-				<q-btn class="app-btn btn-basic btn-primary" flat @click="onRequest(selctFilter.value)">입력</q-btn>
-			</div>
-		</div>
 		<!-- <div class="app-pageheader">
 			<span class="main-title">대쉬보드</span>
 		</div> -->
-		<Calendar />
+		<Calendar @emitCalendar="getDataByCalendar" />
 	</div>
 </template>
 
@@ -32,11 +23,12 @@ interface CommuteVO {
 }
 
 const uiStore = useUiStore();
-// const commuteList:any[] = [];
 const commuteList = ref<CommuteVO[]>([]);
-const filter = ref(['전체', '본인']);
-const selctFilter = ref({
-	param: '',
+
+const emitData = ref({
+	selctFilter: '',
+	year: '',
+	month: '',
 });
 
 const commuteVO = ref({
@@ -57,9 +49,18 @@ const commuteVO = ref({
 // 	name: '09:23',
 // 	eventContent: '',
 // },
+const getDataByCalendar = (emit: any) => {
+	emitData.value.selctFilter = emit.selctFilter;
+	emitData.value.year = emit.year;
+	emitData.value.month = emit.month;
 
-const onRequest = async (selctFilter: any) => {
-	const list = await getCommuteList(selctFilter);
+	onRequest();
+
+	console.log(emitData.value);
+};
+
+const onRequest = async () => {
+	const list = await getCommuteList(emitData.value.selctFilter, emitData.value.year, emitData.value.month);
 
 	commuteList.value = list.map((v: any) => {
 		return {
@@ -73,21 +74,24 @@ const onRequest = async (selctFilter: any) => {
 	});
 };
 
-const getCommuteList = async (selctFilter: any) => {
+const getCommuteList = async (filter: any, year: any, month: any) => {
 	await uiStore.showLoading();
 	try {
-		if (selctFilter === '전체') {
-			const response = await dashBoardService.getAllCommuteList();
+		if (filter === '전체') {
+			const response = await dashBoardService.getAllCommuteList(year, month);
 			const result = response.data.items.content;
 
 			return result;
 		} else {
+			// filter가 본인일 경우 year, month, token 전달
 			const response = await dashBoardService.getMyCommuteList();
 			const result = response.data.items.content;
 
 			return result;
 		}
-	} catch (error: any) {}
+	} catch (error: any) {
+		uiStore.hideLoading();
+	}
 };
 </script>
 

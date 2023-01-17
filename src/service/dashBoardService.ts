@@ -2,11 +2,11 @@ import api from '@/modules/axios';
 
 class dashBoardService {
 	static async getMyCommuteList() {
-		return api.get('/');
+		return api.get('/commute/board');
 	}
 
-	static async getAllCommuteList() {
-		return api.get('/all');
+	static async getAllCommuteList(year: string, month: string) {
+		return api.get('/commute/board/all', { params: { year: year, month: month } });
 	}
 }
 

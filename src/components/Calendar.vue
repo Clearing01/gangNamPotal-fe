@@ -1,4 +1,13 @@
 <template>
+	<div class="app-pageheader">
+		<span class="main-title">대시보드</span>
+		<div class="filter-container">
+			<q-select :options="filter" v-model="selectFilter.param" />
+		</div>
+		<div class="btn-wrapper">
+			<q-btn class="app-btn btn-basic btn-primary" flat @click="calendarFilter">입력</q-btn>
+		</div>
+	</div>
 	<FullCalendar ref="calendarRef" :options="calendarOptions">
 		<template v-slot:eventContent="arg">
 			<div class="event-content">
@@ -16,6 +25,13 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import momentPlugin from '@fullcalendar/moment';
 import { ref } from '@vue/reactivity';
+
+const emit = defineEmits(['emitCalendar']);
+
+const filter = ref(['전체', '본인']);
+const selectFilter = ref({
+	param: '',
+});
 
 const calendarOptions = ref({
 	plugins: [
@@ -51,8 +67,23 @@ const calendarOptions = ref({
 			name: '09:12',
 		},
 	],
-	eventContent: '출근',
+	eventContent: '',
 });
+
+const calendarFilter = () => {
+	const date = document.getElementById('fc-dom-1').textContent;
+	const year = date.substring(0, 4);
+	const month = date.substring(6, date.length).split('월', 1);
+
+	emit('emitCalendar', {
+		selctFilter: selectFilter.value.param,
+		year: year,
+		month: month[0],
+	});
+
+	// console.log(selectFilter.value.param);
+	// console.log(document.getElementById('fc-dom-1').textContent);
+};
 </script>
 
 <style scoped lang="scss">
