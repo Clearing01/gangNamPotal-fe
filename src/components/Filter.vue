@@ -8,7 +8,7 @@
 						<div>
 							<q-select
 								:options="titleList"
-								v-model="filterValue.selectValue"
+								v-model="manageMentFilterValue.selectValue"
 								class="app-input input-medium input-select"
 								outlined
 								dropdown-icon="icon-keyboard-arrow-down"
@@ -25,7 +25,12 @@
 				<div class="filter-container">
 					<div class="flex items-center">
 						<div>
-							<q-input class="app-input input-medium" v-model="filterValue.searchText" outlined placeholder="입력하세요" />
+							<q-input
+								class="app-input input-medium"
+								v-model="manageMentFilterValue.searchText"
+								outlined
+								placeholder="입력하세요"
+							/>
 							<!-- v-model="input.string"
 					:disable="selectedFilter?.isDisable"
 					@keydown="keyupEnter($event)" -->
@@ -34,7 +39,7 @@
 				</div>
 
 				<div class="filter-container">
-					<q-btn class="app-btn btn-basic btn-primary" flat @click="clickFilter()">입력</q-btn>
+					<q-btn class="app-btn btn-basic btn-primary" flat @click="manageMentFilter()">입력</q-btn>
 				</div>
 			</div>
 		</template>
@@ -75,8 +80,8 @@
 					<div class="flex items-center">
 						<div class="filter-title mr-10">이름</div>
 						<div>
-							<q-input class="app-input input-medium" outlined placeholder="입력하세요" />
-							<!-- v-model="input.string"
+							<q-input class="app-input input-medium" outlined placeholder="입력하세요" v-model="input.string" />
+							<!-- 
 					:disable="selectedFilter?.isDisable"
 					@keydown="keyupEnter($event)" -->
 						</div>
@@ -84,7 +89,7 @@
 				</div>
 
 				<div class="filter-container">
-					<q-btn class="app-btn btn-basic btn-primary" flat @click="employeeUpdate()">입력</q-btn>
+					<q-btn class="app-btn btn-basic btn-primary" flat @click="attendanceFilter()">입력</q-btn>
 				</div>
 			</div>
 		</template>
@@ -102,7 +107,7 @@ const propDataSet = computed(() => props.filterData);
 
 const uiStore = useUiStore();
 
-const filterValue = ref({
+const manageMentFilterValue = ref({
 	selectValue: '',
 	searchText: '',
 });
@@ -137,7 +142,6 @@ const updateDurationPicker = (val: any) => {
 			input.value.duration.to = Moment.getYYYY_MM_DD(val);
 		}
 	}
-	console.log(input);
 };
 
 const isManagement = ref(propDataSet.value?.isManagement);
@@ -148,14 +152,20 @@ const titleList = ref(
 	})
 );
 
-const clickFilter = (selectValue: string, searchText: string) => {
+const manageMentFilter = () => {
 	emit('emitFiltered', {
-		selectValue: selectValue,
-		searchText: searchText,
+		selectValue: manageMentFilterValue.value.selectValue,
+		searchText: manageMentFilterValue.value.searchText,
 	});
 };
 
-console.log(propDataSet.value?.isManagement);
+const attendanceFilter = () => {
+	emit('emitFiltered', {
+		startDate: input.value.duration.from,
+		endDate: input.value.duration.to,
+		name: input.value.string,
+	});
+};
 </script>
 
 <style scoped lang="scss">
