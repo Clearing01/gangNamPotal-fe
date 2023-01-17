@@ -12,6 +12,22 @@ class hrService {
 	static async getDeptList(department: string, name: string) {
 		return api.get('/hr/dept', { params: { department: department, name: name } });
 	}
+
+	static async getInfo() {
+		return api.get('/hr/info');
+	}
+
+	static async updateInfo(nameEn: string, phone: string, address: string) {
+		return api.put('/hr/info', { params: { nameEn: nameEn, phone: phone, address: address } });
+	}
+
+	static async insertStartCommute(date: any) {
+		return api.post('/commute/start', { params: { commuteStartEndDTO: date } });
+	}
+
+	static async insertEndCommute(date: any) {
+		return api.post('/commute/end', { params: { commuteStartEndDTO: date } });
+	}
 }
 
 export default hrService;

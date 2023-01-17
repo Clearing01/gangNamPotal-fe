@@ -55,6 +55,8 @@ const currentDate = () => {
 	var timeString = hours + ':' + minutes + ':' + seconds;
 
 	uiStore.currentDate = dateString + ' ' + timeString;
+	uiStore.dateString = dateString;
+	uiStore.timeString = timeString;
 };
 
 const handleLogout = () => {

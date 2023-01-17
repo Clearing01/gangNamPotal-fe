@@ -7,6 +7,8 @@ export const useUiStore = defineStore('ui', {
 		start: false,
 		end: false,
 		currentDate: '',
+		dateString: '',
+		timeString: '',
 	}),
 	getters: {
 		getDrawer: (state) => state.drawer,

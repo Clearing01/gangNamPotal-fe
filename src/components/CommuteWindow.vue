@@ -16,7 +16,7 @@
 			</q-card-section>
 
 			<q-card-actions align="right">
-				<q-btn flat label="등록" color="primary" />
+				<q-btn flat label="등록" color="primary" @click="insertStartCommute" v-close-popup />
 				<q-btn flat label="취소" color="primary" v-close-popup />
 			</q-card-actions>
 		</q-card>
@@ -39,7 +39,7 @@
 			</q-card-section>
 
 			<q-card-actions align="right">
-				<q-btn flat label="등록" color="primary" />
+				<q-btn flat label="등록" color="primary" @click="insertEndCommute" v-close-popup />
 				<q-btn flat label="취소" color="primary" v-close-popup />
 			</q-card-actions>
 		</q-card>
@@ -49,20 +49,44 @@
 <script setup lang="ts">
 import { useUiStore } from '@/store/ui';
 import { log } from 'console';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+import hrService from '@/service/hrService';
 
 const props = defineProps({ currentDate: Object });
 const currentDate = computed(() => props.currentDate);
 const uiStore = useUiStore();
 
-const startShowValue = (flag: boolean) => {
-	uiStore.start = flag;
+const date = ref({
+	date: '',
+});
+
+const startShowValue = () => {
 	console.log(uiStore.start + ': start');
+	console.log(date.value);
 };
 
-const endShowValue = (flag: boolean) => {
-	uiStore.end = flag;
+const endShowValue = () => {
 	console.log(uiStore.end + ': end');
+};
+
+const insertStartCommute = async () => {
+	await uiStore.showLoading();
+	try {
+		date.value.date = uiStore.currentDate;
+		const response = await hrService.insertStartCommute(date.value);
+	} catch (error: any) {
+		uiStore.hideLoading();
+	}
+};
+
+const insertEndCommute = async () => {
+	await uiStore.showLoading();
+	try {
+		date.value.date = uiStore.currentDate;
+		const response = await hrService.insertStartCommute(date.value);
+	} catch (error: any) {
+		uiStore.hideLoading();
+	}
 };
 </script>
 

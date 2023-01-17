@@ -4,7 +4,7 @@
 		<BaseSideBar />
 		<q-page-container class="app-container">
 			<router-view />
-			<CommuteButton />
+			<CommuteWindow />
 		</q-page-container>
 	</q-layout>
 </template>
@@ -14,7 +14,7 @@ import BaseHeader from '../components/BaseHeader.vue';
 import BaseDrawer from '../components/BaseDrawer.vue';
 import BaseSideBar from '../components/BaseSideBar.vue';
 import ProfileBox from '@/components/ProfileBox.vue';
-import CommuteButton from '@/components/CommuteButton.vue';
+import CommuteWindow from '@/components/CommuteWindow.vue';
 </script>
 
 <style scoped lang="scss"></style>
