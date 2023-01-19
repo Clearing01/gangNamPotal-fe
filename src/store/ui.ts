@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { Loading } from 'quasar';
 
 export const useUiStore = defineStore('ui', {
 	state: () => ({
@@ -6,6 +7,8 @@ export const useUiStore = defineStore('ui', {
 		start: false,
 		end: false,
 		currentDate: '',
+		dateString: '',
+		timeString: '',
 	}),
 	getters: {
 		getDrawer: (state) => state.drawer,
@@ -13,6 +16,12 @@ export const useUiStore = defineStore('ui', {
 	actions: {
 		updateDrawer(payload: boolean) {
 			this.drawer = payload;
+		},
+		showLoading() {
+			Loading.show();
+		},
+		hideLoading() {
+			Loading.hide();
 		},
 	},
 });

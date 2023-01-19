@@ -8,7 +8,7 @@
 						<div>
 							<q-select
 								:options="titleList"
-								v-model="titleList.index"
+								v-model="manageMentFilterValue.selectValue"
 								class="app-input input-medium input-select"
 								outlined
 								dropdown-icon="icon-keyboard-arrow-down"
@@ -25,7 +25,12 @@
 				<div class="filter-container">
 					<div class="flex items-center">
 						<div>
-							<q-input class="app-input input-medium" outlined placeholder="입력하세요" />
+							<q-input
+								class="app-input input-medium"
+								v-model="manageMentFilterValue.searchText"
+								outlined
+								placeholder="입력하세요"
+							/>
 							<!-- v-model="input.string"
 					:disable="selectedFilter?.isDisable"
 					@keydown="keyupEnter($event)" -->
@@ -34,7 +39,7 @@
 				</div>
 
 				<div class="filter-container">
-					<q-btn class="app-btn btn-basic btn-primary" flat @click="employeeUpdate()">입력</q-btn>
+					<q-btn class="app-btn btn-basic btn-primary" flat @click="manageMentFilter()">입력</q-btn>
 				</div>
 			</div>
 		</template>
@@ -75,8 +80,8 @@
 					<div class="flex items-center">
 						<div class="filter-title mr-10">이름</div>
 						<div>
-							<q-input class="app-input input-medium" outlined placeholder="입력하세요" />
-							<!-- v-model="input.string"
+							<q-input class="app-input input-medium" outlined placeholder="입력하세요" v-model="input.string" />
+							<!-- 
 					:disable="selectedFilter?.isDisable"
 					@keydown="keyupEnter($event)" -->
 						</div>
@@ -84,19 +89,28 @@
 				</div>
 
 				<div class="filter-container">
-					<q-btn class="app-btn btn-basic btn-primary" flat @click="employeeUpdate()">입력</q-btn>
+					<q-btn class="app-btn btn-basic btn-primary" flat @click="attendanceFilter()">입력</q-btn>
 				</div>
 			</div>
 		</template>
 	</div>
 </template>
 
-<script setup>
-import { computed, ref } from 'vue';
+<script setup lang="ts">
+import { onMounted, computed, ref } from 'vue';
 import { Moment } from '@/composables/util';
+import { useUiStore } from '@/store/ui';
 
 const props = defineProps({ filterData: Object });
+const emit = defineEmits(['emitManageMent', 'emitAttendance']);
 const propDataSet = computed(() => props.filterData);
+
+const uiStore = useUiStore();
+
+const manageMentFilterValue = ref({
+	selectValue: '이름',
+	searchText: '',
+});
 
 const input = ref({
 	string: '',
@@ -108,7 +122,7 @@ const input = ref({
 	},
 });
 
-const getDateView = (startDt, endDt) => {
+const getDateView = (startDt: string, endDt: string) => {
 	let result;
 	if (Moment.diffDay(startDt, endDt) === 0) {
 		result = Moment.getYYYYMMDD(startDt);
@@ -118,7 +132,7 @@ const getDateView = (startDt, endDt) => {
 	return result;
 };
 
-const updateDurationPicker = (val) => {
+const updateDurationPicker = (val: any) => {
 	if (val) {
 		if (val.from) {
 			input.value.duration.from = Moment.getYYYY_MM_DD(val.from);
@@ -128,18 +142,55 @@ const updateDurationPicker = (val) => {
 			input.value.duration.to = Moment.getYYYY_MM_DD(val);
 		}
 	}
-	console.log(input);
 };
 
-const isManagement = ref(propDataSet.value.isManagement);
+const isManagement = ref(propDataSet.value?.isManagement);
 
 const titleList = ref(
-	propDataSet.value.titleList.map((title) => {
+	propDataSet.value?.titleList.map((title: any) => {
 		return title.label;
 	})
 );
 
-console.log(propDataSet.value.isManagement);
+const manageMentFilter = () => {
+	propDataSet.value?.titleList.forEach((title: any) => {
+		if (title.label === manageMentFilterValue.value.selectValue) {
+			emit('emitManageMent', {
+				selectValue: title.name,
+				searchText: manageMentFilterValue.value.searchText,
+			});
+		}
+	});
+	// console.log(manageMentFilterValue.value);
+};
+
+const attendanceFilter = () => {
+	today();
+	emit('emitAttendance', {
+		startDate: input.value.duration.from,
+		endDate: input.value.duration.to,
+		name: input.value.string,
+	});
+	// console.log(input.value);
+};
+
+const today = () => {
+	var today = new Date();
+
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+
+	var dateString = year + '-' + month + '-' + day;
+
+	input.value.duration.from = dateString;
+	input.value.duration.to = dateString;
+};
+
+onMounted(() => {
+	manageMentFilter();
+	attendanceFilter();
+});
 </script>
 
 <style scoped lang="scss">
