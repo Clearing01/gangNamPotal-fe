@@ -1,4 +1,13 @@
 <template>
+	<div class="app-pageheader">
+		<span class="main-title">대시보드</span>
+		<div class="filter-container">
+			<q-select :options="filter" v-model="selectFilter.param" />
+		</div>
+		<!-- <div class="btn-wrapper">
+			<q-btn class="app-btn btn-basic btn-primary" flat @click="calendarFilter">입력</q-btn>
+		</div> -->
+	</div>
 	<FullCalendar ref="calendarRef" :options="calendarOptions">
 		<template v-slot:eventContent="arg">
 			<div class="event-content">
@@ -15,7 +24,19 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import momentPlugin from '@fullcalendar/moment';
-import { ref } from '@vue/reactivity';
+import { computed, onMounted, ref } from 'vue';
+
+const props = defineProps({ commuteList: Array });
+const propDataSet = computed(() => props.commuteList);
+
+const emit = defineEmits(['emitCalendar']);
+
+const filter = ref(['전체', '본인']);
+const selectFilter = ref({
+	param: '전체',
+});
+
+const calendarRef = ref(null);
 
 const calendarOptions = ref({
 	plugins: [
@@ -32,30 +53,44 @@ const calendarOptions = ref({
 		right: 'prev,next',
 	},
 	dayMaxEventRows: 4,
-	events: [
-		{
-			title: '박민호',
-			color: 'blue',
-			start: '2023-01-05',
-			end: '2023-01-07',
-			display: 'list-item',
-			name: '09:23',
-			eventContent: '',
+	events: propDataSet,
+	eventContent: '',
+	customButtons: {
+		prev: {
+			click: async (e) => {
+				calendarRef.value.getApi().prev();
+				calendarFilter();
+			},
 		},
-		{
-			title: '정연호',
-			color: 'blue',
-			start: '2023-01-06',
-			end: '2023-01-07',
-			display: 'list-item',
-			name: '09:12',
+		next: {
+			click: async (e) => {
+				calendarRef.value.getApi().next();
+				calendarFilter();
+			},
 		},
-	],
-	eventContent: '출근',
+	},
+});
+
+const calendarFilter = () => {
+	const date = document.getElementById('fc-dom-1').textContent;
+	const year = date.substring(0, 4);
+	const month = date.substring(6, date.length).split('월', 1);
+
+	emit('emitCalendar', {
+		selctFilter: selectFilter.value.param,
+		year: year,
+		month: month[0],
+	});
+};
+onMounted(() => {
+	calendarFilter();
 });
 </script>
 
 <style scoped lang="scss">
+// .fc-daygrid-day-frame {
+// 	max-height: 50px;
+// }
 $fc-magin-top: 16px;
 
 .more-link {

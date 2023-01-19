@@ -1,4 +1,6 @@
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { useAuthStore } from '@/store/auth';
+import { useUiStore } from '@/store/ui';
 
 export interface HttpResponse<T = unknown> {
 	data: T;
@@ -10,7 +12,9 @@ export interface HttpResponse<T = unknown> {
 const TIMEOUT = 30000;
 
 const api: AxiosInstance = Axios.create({
-	baseURL: import.meta.env.BASE_URL + '/api',
+	// baseURL: import.meta.env.BASE_URL + '/api',
+	// baseURL: import.meta.env.BASE_URL,
+	baseURL: 'http://10.220.230.129:8080',
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 	},
@@ -36,7 +40,8 @@ api.interceptors.request.use((req: AxiosRequestConfig) => {
 	return req;
 });
 const authHeader = (req: AxiosRequestConfig) => {
-	const token = null;
+	const authStore = useAuthStore();
+	const token = authStore.getAuthorization;
 	if (token) {
 		req.headers!.Authorization = token;
 	}
