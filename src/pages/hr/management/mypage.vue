@@ -9,7 +9,7 @@
 		<div v-else>
 			<div class="button-wrapper">
 				<q-btn class="app-btn btn-basic btn-primary btn-cancle" flat @click="showButton(true)">취소</q-btn>
-				<q-btn class="app-btn btn-basic btn-primary" flat @click="employeeUpdate()">저장</q-btn>
+				<q-btn class="app-btn btn-basic btn-primary" flat @click="onRequest()">저장</q-btn>
 			</div>
 		</div>
 	</div>
@@ -60,7 +60,7 @@
 							<div class="row-info info-birth">
 								<div class="info-title">생년월일<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.birth" readonly />
+									<q-input class="app-input" outlined v-model="sampleData.birthday" readonly />
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
 										<div class="num-text"></div>
@@ -128,7 +128,7 @@
 							<div class="row-info info-order">
 								<div class="info-title">입사일<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.joinDt" readonly />
+									<q-input class="app-input" outlined v-model="sampleData.joinDate" readonly />
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
 										<div class="num-text"></div>
@@ -245,53 +245,47 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import router from '@/router';
 import { ref, computed } from 'vue';
+import { useUiStore } from '@/store/ui';
+import hrService from '@/service/hrService';
 
+const uiStore = useUiStore();
 const buttonValue = ref(true);
 
-const showButton = (flag) => {
+const showButton = (flag: boolean) => {
 	buttonValue.value = flag;
 };
 
 const employeeData = ref({
-	nameKr: '',
-	nameEn: '',
-	birth: '',
-	gender: '',
-	phone: '',
 	address: '',
-	stat: '',
-	joinDt: '',
-	employeeNo: '',
-	permission: {
-		permissionId: '',
-	},
-	dept: {
-		deptId: '',
-		affi: {
-			affiId: '',
-		},
-	},
-	rank: {
-		rankId: '',
-	},
+	affiliation: '',
+	birthday: '',
+	department: '',
 	email: '',
-	password: '',
-	passwordRepeat: '',
-	photoPath: '',
+	employeeId: 0,
+	employeeNo: 0,
+	gen: 0,
+	gender: '',
+	joinDate: '',
+	nameEn: '',
+	nameKr: '',
+	phone: '',
+	profileImg: '',
+	rank: '',
+	role: '',
 });
 
 const sampleData = ref({
 	nameKr: '박민호',
 	nameEn: 'Park minho',
-	birth: '1993.11.06',
+	birthday: '1993.11.06',
 	gender: 'male',
 	phone: '01051882240',
 	address: '서울시 서대문구 연희로 41나길 38',
 	stat: '재직',
-	joinDt: '2022.11.16',
+	joinDate: '2022.11.16',
 	employeeNo: '153',
 	permission: {
 		permissionId: '1',
@@ -314,6 +308,41 @@ const sampleData = ref({
 	passwordRepeat: 'tlc123',
 	photoPath: '@/assets/images/teemo.png',
 });
+
+//  "address": "string", 1
+//     "affiliation": "QA",
+//     "birthday": "string", 1
+//     "department": "BX",
+//     "email": "string",
+//     "employeeId": 0,
+//     "employeeNo": 0,
+//     "gen": 0,
+//     "gender": "string", 1
+//     "joinDate": "string",
+//     "nameEn": "string", 1
+//     "nameKr": "string", 1
+//     "phone": "string", 1
+//     "profileImg": "string",
+//     "rank": "과장",
+//     "role": "string"
+
+const onMypage = async () => {
+	const info = await getInfo();
+	employeeData.value = info.value;
+};
+
+const getInfo = async () => {
+	await uiStore.showLoading();
+	try {
+		// 토큰 전달
+		const response = await hrService.getInfo();
+		const result = response.data.items.content;
+
+		return result;
+	} catch (error: any) {
+		uiStore.hideLoading();
+	}
+};
 
 const selectOption = ref({
 	stat: [
@@ -345,31 +374,23 @@ const sampleSelectData = ref({
 	rank: '선임',
 });
 
-const hidePassword = ref(true);
-const hidePassword2 = ref(true);
-
-let passwordRepeat = true;
-
-const employeeUpdate = () => {
-	// 사용자정보 업데이트, 세션내의 로그인 정보 삭제 후 로그인 화면으로
-	if (passwordRepeat !== true) {
-		return;
-	}
-	router.push('/hr/management/mypage');
+const onRequest = async () => {
+	const info = await updateInfo(employeeData.value.nameEn, employeeData.value.phone, employeeData.value.address);
 };
 
-const checkErrorPasswordRefeat = computed(() => {
-	if (sampleData.value?.passwordRepeat?.length > 0) {
-		if (sampleData.value.password !== sampleData.value.passwordRepeat) {
-			passwordRepeat = false;
-			return '비밀번호가 일치하지 않습니다';
-		}
-	}
-	passwordRepeat = true;
-	return false;
-});
+const updateInfo = async (nameEn: string, phone: string, address: string) => {
+	await uiStore.showLoading();
+	try {
+		const response = await hrService.updateInfo(nameEn, phone, address);
+		const result = response.data.items.content;
 
-console.log(sampleData.value.passwordRepeat);
+		return result;
+	} catch (error: any) {
+		uiStore.hideLoading();
+	}
+
+	//수정하면 리프레쉬
+};
 </script>
 
 <style scoped lang="scss">
