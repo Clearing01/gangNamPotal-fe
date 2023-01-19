@@ -15,6 +15,36 @@ const authService = {
 		}
 		return response || false;
 	},
+	async googleLogin() {
+		let response;
+
+		try {
+			response = await api.get('/auth/google/login');
+		} catch (e) {
+			return e;
+		}
+		return response || false;
+	},
+	async kakaoLogin() {
+		let response;
+
+		try {
+			response = await api.get('/auth/kakao/login');
+		} catch (e) {
+			return e;
+		}
+		return response;
+	},
+	async getRefreshToken(refreshtoken: any) {
+		let response;
+
+		try {
+			response = await api.get('/auth/reissue', { params: { refreshtoken: refreshtoken } });
+		} catch (e) {
+			return e;
+		}
+		return response;
+	},
 };
 
 export default authService;

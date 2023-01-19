@@ -4,7 +4,7 @@
 		<q-separator class="app-divider" />
 		<BaseDrawer />
 		<q-separator class="app-divider" />
-		<div class="menu-alarm-wrapper flex justify-between items-center mt-16" @click="handleLogout()">
+		<div class="menu-alarm-wrapper flex justify-between items-center mt-16" @click="logout()">
 			<!-- @click="handleLogout()" -->
 			<div class="menu-title logout">
 				<q-icon name="icon-login" class="mr-8" />
@@ -25,11 +25,18 @@
 <script setup lang="ts">
 import ProfileBox from '@/components/ProfileBox.vue';
 import BaseDrawer from '@/components/BaseDrawer.vue';
+import { debounce } from 'lodash-es';
 import router from '@/router';
 import { ref } from 'vue';
 import { useUiStore } from '@/store/ui';
+import { useAuthStore } from '@/store/auth';
 
+const authStore = useAuthStore();
 const uiStore = useUiStore();
+
+const logout = debounce(async () => {
+	await authStore.logout();
+}, 300);
 
 const startShowValue = (flag: boolean) => {
 	uiStore.start = flag;
@@ -55,12 +62,8 @@ const currentDate = () => {
 	var timeString = hours + ':' + minutes + ':' + seconds;
 
 	uiStore.currentDate = dateString + ' ' + timeString;
-};
-
-const handleLogout = () => {
-	//   store.dispatch("authority/logout");
-	//   window.localStorage.removeItem('profile');
-	router.push('/login');
+	uiStore.dateString = dateString;
+	uiStore.timeString = timeString;
 };
 </script>
 

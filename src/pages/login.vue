@@ -35,10 +35,10 @@
 				</h1>
 				<h2 class="page-title">Twolinecode Portal</h2>
 				<div class="img-wrapper">
-					<img src="../assets/images/google.png" alt="googleLogin" style="cursor: pointer" />
+					<img src="../assets/images/google.png" alt="googleLogin" style="cursor: pointer" @click="googleLogin()" />
 				</div>
 				<div class="img-wrapper">
-					<img src="../assets/images/kakao.png" alt="googleLogin" style="cursor: pointer" />
+					<img src="../assets/images/kakao.png" alt="googleLogin" style="cursor: pointer" @click="kakaoLogin()" />
 				</div>
 
 				<!-- 로컬 테스트용 bypass 추가 - 09.01 임우송 -->
@@ -50,6 +50,34 @@
 
 <script setup>
 import router from '@/router';
+import { useAuthStore } from '@/store/auth';
+import { useUiStore } from '@/store/ui';
+import authService from '@/service/authService';
+
+const uiStore = useUiStore();
+const authStore = useAuthStore();
+
+const googleLogin = async () => {
+	await uiStore.showLoading();
+	try {
+		const response = await authService.googleLogin();
+		const uriPath = response.data.data.uriPath;
+		window.location.replace(uriPath);
+	} catch {
+		await uiStore.hideLoading();
+	}
+};
+
+const kakaoLogin = async () => {
+	await uiStore.showLoading();
+	try {
+		const response = await authService.kakaoLogin();
+		const uriPath = response.data.data.uriPath;
+		window.location.replace(uriPath);
+	} catch {
+		await uiStore.hideLoading();
+	}
+};
 
 const bypass = () => {
 	router.push('/index');

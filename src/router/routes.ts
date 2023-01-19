@@ -1,11 +1,22 @@
 import { RouteRecordRaw } from 'vue-router';
+import router from '@/router';
 import main from './main';
 import mypage from './mypage';
+
+// const loginState = async () => {
+// 	console.log(router);
+// };
 
 export const routes: RouteRecordRaw[] = [
 	{
 		path: '/',
-		redirect: '/index',
+		redirect: '/login',
+	},
+	{
+		path: '/beforeEnter',
+		name: 'beforeEnter',
+		component: () => import('../pages/beforeEnter/index.vue'),
+		// beforeEnter: [loginState],
 	},
 	{
 		path: '/index',
