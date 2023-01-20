@@ -7,17 +7,17 @@
 		</template>
 		<template v-else>
 			<!-- <img :src="require(`@/assets/images/티모.png`)" alt="" /> -->
-			<img src="../assets/images/teemo.png" alt="" @click="employeeDetailMove" style="cursor: pointer" />
+			<img :src="uiStore.img" alt="" @click="employeeDetailMove" style="cursor: pointer" />
 		</template>
 		<div class="profile-name mt-12 mb-6">
-			박민호
+			{{ uiStore.name }}
 			<!-- {{profile.name}} -->
 		</div>
 		<div class="profile-info flex justify-center items-center">
-			개발
+			{{ uiStore.department }}
 			<!-- {{profile.dept}} -->
 			<q-separator class="app-divider" vertical />
-			선임
+			{{ uiStore.rank }}
 			<!-- {{profile.position}} -->
 		</div>
 	</div>
@@ -26,8 +26,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useUiStore } from '@/store/ui';
 
 const router = useRouter();
+const uiStore = useUiStore();
 
 const employeeDetailMove = () => {
 	router.push('/hr/management/mypage');
