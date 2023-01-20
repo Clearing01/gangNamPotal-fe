@@ -26,7 +26,7 @@ class hrService {
 	}
 
 	static async updateInfo(nameEn: string, phone: string, address: string) {
-		return api.put('/hr/info', { params: { nameEn: nameEn, phone: phone, address: address } });
+		return api.put('/hr/info', { nameEn: nameEn, phone: phone, address: address });
 	}
 
 	static async insertStartCommute(date: any) {

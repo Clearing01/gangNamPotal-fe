@@ -25,7 +25,7 @@
 						<div class="info-profile-wrapper">
 							<div class="info-profile-section">
 								<template v-if="1 !== 1">
-									<img :src="sampleData.photoPath" alt="" />
+									<img :src="employeeData.profileImg" alt="" />
 								</template>
 								<template v-else>
 									<img src="@/assets/images/teemo.png" />
@@ -36,7 +36,7 @@
 							<div class="row-info">
 								<div class="info-title">이름<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.nameKr" readonly />
+									<q-input class="app-input" outlined v-model="employeeData.nameKr" readonly />
 									<div class="hint-text-wrapper">
 										<div class="hint-text">
 											<!-- checkErrorNameKr -->
@@ -48,7 +48,7 @@
 							<div class="row-info">
 								<div class="info-title">영어 이름<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.nameEn" />
+									<q-input class="app-input" outlined v-model="employeeData.nameEn" />
 									<div class="hint-text-wrapper">
 										<div class="hint-text">
 											<!-- checkErrorNameEn -->
@@ -60,27 +60,27 @@
 							<div class="row-info info-birth">
 								<div class="info-title">생년월일<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.birthday" readonly />
+									<q-input class="app-input" outlined v-model="employeeData.birthday" readonly />
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
 										<div class="num-text"></div>
 									</div>
 								</div>
 								<q-btn-toggle
-									v-model="sampleData.gender"
+									v-model="employeeData.gender"
 									class="app-btn btn-small-toggle-switch"
 									no-caps
 									unelevated
 									:options="[
-										{ label: '남', value: 'male' },
-										{ label: '여', value: 'female' },
+										{ label: '남', value: '남자' },
+										{ label: '여', value: '여자' },
 									]"
 								/>
 							</div>
 							<div class="row-info">
 								<div class="info-title">연락처<span class="aster">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.phone" mask="###-####-####" />
+									<q-input class="app-input" outlined v-model="employeeData.phone" mask="###-####-####" />
 									<div class="hint-text-wrapper">
 										<div class="hint-text">
 											<!-- checkErrorPhone -->
@@ -92,7 +92,7 @@
 							<div class="row-info address-info">
 								<div class="info-title">주소<span class="aster">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input input-textarea" type="textarea" outlined v-model="sampleData.address" />
+									<q-input class="app-input input-textarea" type="textarea" outlined v-model="employeeData.address" />
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
 										<div class="num-text"></div>
@@ -128,7 +128,7 @@
 							<div class="row-info info-order">
 								<div class="info-title">입사일<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.joinDate" readonly />
+									<q-input class="app-input" outlined v-model="employeeData.joinDate" readonly />
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
 										<div class="num-text"></div>
@@ -137,7 +137,7 @@
 
 								<div class="info-title">사번<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.employeeNo" readonly />
+									<q-input class="app-input" outlined v-model="employeeData.employeeNo" readonly />
 									<div>
 										<div class="hint-text">
 											<!-- checkErrorEmployeeNo -->
@@ -161,9 +161,9 @@
 								<template v-for="(permission, index) of selectOption.permission" :key="index">
 									<q-radio
 										class="app-btn btn-radio read-only"
-										v-model="sampleSelectData.permission"
+										v-model="permission.id"
 										:label="permission.label"
-										:val="permission.label"
+										:val="employeeData.role"
 										disable
 									/>
 								</template>
@@ -176,7 +176,7 @@
 										class="app-input input-select"
 										popup-content-class="select-popup"
 										outlined
-										v-model="sampleSelectData.affi"
+										v-model="employeeData.affiliation"
 										:options="selectOption.affi"
 										readonly
 									>
@@ -192,7 +192,7 @@
 										class="app-input input-select"
 										popup-content-class="select-popup"
 										outlined
-										v-model="sampleSelectData.dept"
+										v-model="employeeData.department"
 										:options="selectOption.affi[0].dept"
 										readonly
 									>
@@ -208,7 +208,7 @@
 										class="app-input input-select"
 										popup-content-class="select-popup"
 										outlined
-										v-model="sampleSelectData.rank"
+										v-model="employeeData.rank"
 										:options="selectOption.rank"
 										readonly
 									>
@@ -230,7 +230,7 @@
 							<div class="row-info info-email">
 								<div class="info-title">이메일<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="sampleData.email" readonly autocomplete="off" />
+									<q-input class="app-input" outlined v-model="employeeData.email" readonly autocomplete="off" />
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
 									</div>
@@ -247,7 +247,7 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useUiStore } from '@/store/ui';
 import hrService from '@/service/hrService';
 
@@ -328,7 +328,8 @@ const sampleData = ref({
 
 const onMypage = async () => {
 	const info = await getInfo();
-	employeeData.value = info.value;
+	employeeData.value = info;
+	console.log(info);
 };
 
 const getInfo = async () => {
@@ -336,10 +337,11 @@ const getInfo = async () => {
 	try {
 		// 토큰 전달
 		const response = await hrService.getInfo();
-		const result = response.data.items.content;
+		const result = response.data.data;
 
 		return result;
 	} catch (error: any) {
+	} finally {
 		uiStore.hideLoading();
 	}
 };
@@ -350,8 +352,8 @@ const selectOption = ref({
 		{ label: '퇴직', id: 2 },
 	],
 	permission: [
-		{ label: '일반사용자', id: 1 },
-		{ label: '관리자', id: 2 },
+		{ label: '일반사용자', id: 'USER' },
+		{ label: '관리자', id: 'ADMIN' },
 	],
 	affi: [
 		{ label: '개발', id: 1, dept: ['개발', '퍼블리셔'] },
@@ -382,15 +384,20 @@ const updateInfo = async (nameEn: string, phone: string, address: string) => {
 	await uiStore.showLoading();
 	try {
 		const response = await hrService.updateInfo(nameEn, phone, address);
-		const result = response.data.items.content;
+		const result = response.status;
 
 		return result;
 	} catch (error: any) {
+	} finally {
 		uiStore.hideLoading();
 	}
 
 	//수정하면 리프레쉬
 };
+
+onMounted(() => {
+	onMypage();
+});
 </script>
 
 <style scoped lang="scss">
