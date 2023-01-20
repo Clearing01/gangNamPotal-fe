@@ -161,17 +161,14 @@ const manageMentFilter = () => {
 			});
 		}
 	});
-	// console.log(manageMentFilterValue.value);
 };
 
 const attendanceFilter = () => {
-	today();
 	emit('emitAttendance', {
 		startDate: input.value.duration.from,
 		endDate: input.value.duration.to,
 		name: input.value.string,
 	});
-	// console.log(input.value);
 };
 
 const today = () => {
@@ -188,6 +185,7 @@ const today = () => {
 };
 
 onMounted(() => {
+	today();
 	manageMentFilter();
 	attendanceFilter();
 });
