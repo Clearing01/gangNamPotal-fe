@@ -44,7 +44,7 @@
 					<q-input v-model="employeeData.nameKr" class="app-input input-medium" outlined readonly />
 				</q-card-section>
 				<q-card-section>
-					날짜 <q-input v-model="employeeData.registerDate" class="app-input input-medium" outlined readonly />
+					출근일 <q-input v-model="employeeData.registerDate" class="app-input input-medium" outlined readonly />
 				</q-card-section>
 				<q-card-section>
 					출근시간
@@ -56,6 +56,22 @@
 						outlined
 						placeholder="입력하세요"
 					/>
+				</q-card-section>
+				<q-card-section>
+					퇴근일
+					<q-btn class="app-input-picker input-picker-medium" flat>
+						<em class="icon-calendar-today"></em>
+						<span class="picker-text">
+							{{ input.duration.to ? getEndDateView(input.duration.to) : '기간을 선택하세요' }}
+						</span>
+						<q-popup-proxy transition-show="scale" transition-hide="scale">
+							<q-date minimal v-model="input.duration.to" mask="YYYY-MM-DD" @update:model-value="endDurationPicker">
+								<div class="row items-center justify-end">
+									<q-btn v-close-popup label="닫기" flat />
+								</div>
+							</q-date>
+						</q-popup-proxy>
+					</q-btn>
 				</q-card-section>
 				<q-card-section>
 					퇴근시간
@@ -191,8 +207,7 @@ const authStore = useAuthStore();
 
 const props = defineProps({ tableData: Object });
 const propDataSet = computed(() => props.tableData);
-// const columns = propDataSet.columnList;
-// const rows = propDataSet.list;
+import { Moment } from '@/composables/util';
 const emit = defineEmits(['emitPageData']);
 
 const lastPage = computed(() => Math.ceil(propDataSet.value?.total / pagination.value.rowsPerPage));
@@ -233,6 +248,32 @@ const pagination = ref({
 	},
 });
 
+const input = ref({
+	string: '',
+	selectList: [],
+	inputDuration: '',
+	duration: {
+		from: '',
+		to: '',
+	},
+});
+
+const getEndDateView = (startDt: string, endDt: string) => {
+	let result;
+	if (Moment.diffDay(startDt, endDt) === 0) {
+		result = Moment.getYYYYMMDD(startDt);
+	} else {
+		result = `${Moment.getYYYYMMDD(startDt)}`;
+	}
+	// console.log(input.value.inputDuration);
+
+	return result;
+};
+
+const endDurationPicker = (val: any) => {
+	input.value.duration.to = Moment.getYYYY_MM_DD(val);
+};
+
 const countRows = () => {
 	if (rowEnd.value - (pagination.value.rowsPerPage - 10) > propDataSet.value?.total) {
 		return `${rowStart.value + 1} ~ ${propDataSet.value?.total}`;
@@ -252,13 +293,11 @@ const emitPageData = (page: any) => {
 
 const updateModal = (flag: any, value: any) => {
 	commuteUpdateModal.value = flag;
-	employeeData.value.id = value.row.id;
+	employeeData.value.id = value.row.commuteId;
 	employeeData.value.nameKr = value.row.nameKr;
 	employeeData.value.registerDate = value.row.registerDate;
 	employeeData.value.startDate = value.row.startDate;
 	employeeData.value.endDate = value.row.endDate;
-
-	console.log(value);
 };
 
 // 적용될 컬럼
@@ -285,19 +324,22 @@ const updateAdminCommute = async () => {
 	await uiStore.showLoading();
 	try {
 		const commuteRegisterDTO = {
-			commuteId: '',
-			endDate: '',
+			commuteId: 0,
 			startDate: '',
+			endDate: '',
 		};
-		commuteRegisterDTO.commuteId = employeeData.value.id;
-		commuteRegisterDTO.endDate = employeeData.value.endDate;
-		commuteRegisterDTO.startDate = employeeData.value.startDate;
-		const response = await attendanceService.insertAdminCommute(commuteRegisterDTO);
+		commuteRegisterDTO.commuteId = Number(employeeData.value.id);
+		commuteRegisterDTO.startDate = `${employeeData.value.registerDate} ${employeeData.value.startDate}:00`;
+		commuteRegisterDTO.endDate = `${input.value.duration.to} ${employeeData.value.endDate}:00`;
+		console.log(commuteRegisterDTO);
+
+		const response = await attendanceService.updateAdminCommute(commuteRegisterDTO);
 		router.push('/attendance');
 	} catch (error: any) {
+	} finally {
 		uiStore.hideLoading();
 		commuteUpdateModal.value = false;
-		router.push('/attendance');
+		router.go(0);
 	}
 };
 </script>

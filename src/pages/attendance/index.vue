@@ -25,12 +25,7 @@
 						{{ input.duration.from ? getStartDateView(input.duration.from) : '기간을 선택하세요' }}
 					</span>
 					<q-popup-proxy transition-show="scale" transition-hide="scale">
-						<q-date
-							minimal
-							v-model="commuteRegisterDTO.registerDate"
-							mask="YYYY-MM-DD"
-							@update:model-value="updateDurationPicker"
-						>
+						<q-date minimal v-model="input.duration.from" mask="YYYY-MM-DD" @update:model-value="startDurationPicker">
 							<div class="row items-center justify-end">
 								<q-btn v-close-popup label="닫기" flat />
 							</div>
@@ -57,12 +52,7 @@
 						{{ input.duration.to ? getEndDateView(input.duration.to) : '기간을 선택하세요' }}
 					</span>
 					<q-popup-proxy transition-show="scale" transition-hide="scale">
-						<q-date
-							minimal
-							v-model="commuteRegisterDTO.registerDate"
-							mask="YYYY-MM-DD"
-							@update:model-value="updateDurationPicker"
-						>
+						<q-date minimal v-model="input.duration.to" mask="YYYY-MM-DD" @update:model-value="endDurationPicker">
 							<div class="row items-center justify-end">
 								<q-btn v-close-popup label="닫기" flat />
 							</div>
@@ -146,16 +136,12 @@ const getEndDateView = (startDt: string, endDt: string) => {
 	return result;
 };
 
-const updateDurationPicker = (val: any) => {
-	if (val) {
-		if (val.from) {
-			input.value.duration.from = Moment.getYYYY_MM_DD(val.from);
-			input.value.duration.to = Moment.getYYYY_MM_DD(val.to);
-		} else {
-			input.value.duration.from = Moment.getYYYY_MM_DD(val);
-			input.value.duration.to = Moment.getYYYY_MM_DD(val);
-		}
-	}
+const startDurationPicker = (val: any) => {
+	input.value.duration.from = Moment.getYYYY_MM_DD(val);
+};
+
+const endDurationPicker = (val: any) => {
+	input.value.duration.to = Moment.getYYYY_MM_DD(val);
 };
 
 const insertModal = (flag: any) => {
@@ -230,8 +216,10 @@ const getDataByFilter = (emitData: any) => {
 
 const onRequest = async () => {
 	const list = await getCommuteList(filterParams.value.startDate, filterParams.value.endDate, filterParams.value.name);
-	// console.log(1, list);
-
+	list.foreach((v: any) => {
+		v.startDate = v.startDate.substring(11, 16);
+		v.endDate = v.endDate.substring(11, 16);
+	});
 	tableDataSet.value.list = list;
 	tableDataSet.value.total = list.size;
 };
@@ -252,14 +240,25 @@ const getCommuteList = async (startDate: string, endDate: string, name: string) 
 const insertAdminCommute = async () => {
 	await uiStore.showLoading();
 	try {
-		console.log(commuteRegisterDTO);
+		const data = {
+			employeeId: 0,
+			registerDate: '',
+			startDate: '',
+			endDate: '',
+		};
+		data.employeeId = Number(commuteRegisterDTO.value.employeeId);
+		data.registerDate = input.value.duration.from;
+		data.startDate = `${input.value.duration.from} ${commuteRegisterDTO.value.startDate}:00`;
+		data.endDate = `${input.value.duration.to} ${commuteRegisterDTO.value.endDate}:00`;
 
-		const response = await attendanceService.insertAdminCommute(commuteRegisterDTO);
+		console.log(data);
+		const response = await attendanceService.insertAdminCommute(data);
 		router.push('/attendance');
 	} catch (error: any) {
+	} finally {
 		uiStore.hideLoading();
 		commuteInsertModal.value = false;
-		router.push('/attendance');
+		router.go(0);
 	}
 };
 </script>
