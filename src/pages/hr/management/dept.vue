@@ -141,35 +141,42 @@ const deptList = ref({
 });
 
 const clickFilter = () => {
-	if (selectedMenu.value === '개발 ' || selectedMenu.value === 'QA ') {
-		filterParams.value.affiliation = 'affiliation';
+	let list = deptList.value.list[0].children.map((v: any) => {
+		return v.label;
 
-		if (selectedMenu.value === '개발 ') {
-			filterParams.value.department = '개발';
+		// v.children.forEach((c: any) => {
+		// 	console.log(c.label);
+		// });
+	});
+	const selectValue = list.filter((v: any) => v === selectedMenu.value);
+
+	if (selectedMenu.value !== null) {
+		if (selectValue.length !== 0) {
+			filterParams.value.department = selectedMenu.value;
+			filterParams.value.affiliation = 'affiliation';
+			if (selectedMenu.value === '개발 ') {
+				filterParams.value.department = '개발';
+			} else if (selectedMenu.value === 'QA ') {
+				filterParams.value.department = 'QA';
+			}
 		} else {
-			filterParams.value.department = 'QA';
-		}
-	} else {
-		if (selectedMenu.value !== null) {
+			filterParams.value.affiliation = 'department';
+			filterParams.value.department = selectedMenu.value;
 			if (selectedMenu.value === '구성원') {
 				filterParams.value.department = '';
 			} else {
-				filterParams.value.affiliation = 'department';
-				filterParams.value.department = selectedMenu.value;
 			}
 		}
 	}
+	console.log(filterParams.value);
 	onRequest();
-	console.log(111, filterParams.value);
 };
 
 const onRequest = async () => {
 	const list = await getDeptList(filterParams.value.affiliation, filterParams.value.department, filterParams.value.name);
-	console.log(list);
 
 	tableDataSet.value.list = list;
 	tableDataSet.value.total = list.size;
-	// console.log(tableDataSet.value.list);
 };
 
 const getDeptList = async (affiliation: string, department: string, name: string) => {
@@ -180,37 +187,50 @@ const getDeptList = async (affiliation: string, department: string, name: string
 
 		return result;
 	} catch (error: any) {
-		uiStore.hideLoading();
 	} finally {
 		uiStore.hideLoading();
 	}
 };
 
-// const getAllDeptList = async () => {
-// 	await uiStore.showLoading();
-// 	try {
-// 		const response = await hrService.getAllDeptList();
-// 		const result = response.data.data.hrDepartmentInfoDataList;
+const setDeptList = async () => {
+	const data = await getTeamList();
+	let dataChildren = [];
+	deptList.value.list[0].children = data.map((v: any) => {
+		if (v.affiliationName === '개발') {
+			v.affiliationName = '개발 ';
+		}
+		if (v.affiliationName === 'QA') {
+			v.affiliationName = 'QA ';
+		}
+		dataChildren = v.departmentNameDTOList.map((c: any) => {
+			return {
+				label: c.departmentName,
+			};
+		});
+		return {
+			label: v.affiliationName,
+			childNum: 0,
+			children: dataChildren,
+		};
+	});
+};
 
-// 		return result;
-// 	} catch (error: any) {
-// 		uiStore.hideLoading();
-// 	} finally {
-// 		uiStore.hideLoading();
-// 	}
-// };
+const getTeamList = async () => {
+	await uiStore.showLoading();
+	try {
+		const response = await hrService.getTeamList();
+		const result = response.data.data;
 
-// const example = async () => {
-// 	const list = await getAllDeptList();
-// 	console.log(list);
-
-// 	tableDataSet.value.list = list;
-// 	tableDataSet.value.total = list.size;
-// };
+		return result;
+	} catch (error: any) {
+	} finally {
+		uiStore.hideLoading();
+	}
+};
 
 onMounted(() => {
 	onRequest();
-	console.log(filterParams.value);
+	setDeptList();
 });
 </script>
 
