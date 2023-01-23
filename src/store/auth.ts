@@ -23,6 +23,7 @@ export const useAuthStore = defineStore('auth', {
 		logout() {
 			this.user.token = null;
 			this.user.refreshToken = null;
+			this.user.permission = null;
 			router.push('/login');
 		},
 	},

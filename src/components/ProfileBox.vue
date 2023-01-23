@@ -1,24 +1,18 @@
 <template>
 	<div class="menu-profile-wrapper">
 		<template v-if="1 !== 1">
-			<!-- "profile.img -->
-			<!-- 수정 필요 : image path 조정 -->
 			<img class="img-cursor" :src="profile.img" alt="" @click="employeeDetailMove" />
 		</template>
 		<template v-else>
-			<!-- <img :src="require(`@/assets/images/티모.png`)" alt="" /> -->
-			<img :src="uiStore.img" alt="" @click="employeeDetailMove" style="cursor: pointer" />
+			<img :src="employeeData.profileImg" alt="" @click="employeeDetailMove" style="cursor: pointer" />
 		</template>
 		<div class="profile-name mt-12 mb-6">
-			{{ uiStore.name }}
-			<!-- {{profile.name}} -->
+			{{ employeeData.nameKr }}
 		</div>
 		<div class="profile-info flex justify-center items-center">
-			{{ uiStore.department }}
-			<!-- {{profile.dept}} -->
+			{{ employeeData.department }}
 			<q-separator class="app-divider" vertical />
-			{{ uiStore.rank }}
-			<!-- {{profile.position}} -->
+			{{ employeeData.rank }}
 		</div>
 	</div>
 </template>
@@ -27,14 +21,55 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUiStore } from '@/store/ui';
+import hrService from '@/service/hrService';
 
 const router = useRouter();
 const uiStore = useUiStore();
 
+const employeeData = ref({
+	address: '',
+	affiliation: '',
+	birthday: '',
+	department: '',
+	email: '',
+	employeeId: 0,
+	employeeNo: 0,
+	gen: 0,
+	gender: '',
+	joinDate: '',
+	nameEn: '',
+	nameKr: '',
+	phone: '',
+	profileImg: '',
+	rank: '',
+	role: '',
+});
+
+const onMypage = async () => {
+	const info = await getInfo();
+	employeeData.value = info;
+};
+
+const getInfo = async () => {
+	await uiStore.showLoading();
+	try {
+		const response = await hrService.getInfo();
+		const result = response.data.data;
+
+		return result;
+	} catch (error) {
+	} finally {
+		uiStore.hideLoading();
+	}
+};
+
 const employeeDetailMove = () => {
 	router.push('/hr/management/mypage');
-	// router.push(`/hr/management/current/detail/${employeeId}`)
 };
+
+onMounted(() => {
+	onMypage();
+});
 </script>
 
 <style scoped lang="scss">
