@@ -2,7 +2,7 @@
 	<div class="app-pageheader">
 		<span class="main-title">대시보드</span>
 		<div class="filter-container">
-			<q-select :options="filter" v-model="selectFilter.param" />
+			<q-select :options="filter" v-model="selectFilter.param" @update:model-value="calendarFilter" />
 		</div>
 		<!-- <div class="btn-wrapper">
 			<q-btn class="app-btn btn-basic btn-primary" flat @click="calendarFilter">입력</q-btn>
@@ -25,6 +25,8 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import momentPlugin from '@fullcalendar/moment';
 import { computed, onMounted, ref } from 'vue';
+import { Moment } from '@/composables/util';
+import moment from 'moment';
 
 const props = defineProps({ commuteList: Array });
 const propDataSet = computed(() => props.commuteList);
@@ -72,14 +74,20 @@ const calendarOptions = ref({
 });
 
 const calendarFilter = () => {
-	const date = document.getElementById('fc-dom-1').textContent;
-	const year = date.substring(0, 4);
-	const month = date.substring(6, date.length).split('월', 1);
+	const date = calendarRef.value.getApi().getDate();
+	const startAt = Moment.add(date, -1 * Moment.getWeekday(date));
+	const endAt = Moment.add(startAt, 41);
+
+	const startOf = moment(date).clone().startOf('month').format('YYYY-MM-DD');
+	const endOf = moment(date).clone().endOf('month').format('YYYY-MM-DD');
+
+	const year = startOf.substring(0, 4);
+	const month = startOf.substring(5, 7);
 
 	emit('emitCalendar', {
 		selctFilter: selectFilter.value.param,
 		year: year,
-		month: month[0],
+		month: month,
 	});
 };
 onMounted(() => {
