@@ -6,7 +6,7 @@
 
 	<div class="filter-table-wrapper">
 		<Filter :filterData="filterDataSet" @emitAttendance="getDataByFilter" />
-		<Table :tableData="tableDataSet" />
+		<Table :tableData="tableDataSet" @emitPageData="getDataByTable" />
 	</div>
 
 	<q-dialog v-model="commuteInsertModal" persistent>
@@ -112,6 +112,16 @@ const input = ref({
 	},
 });
 
+const attendanceVO = ref({
+	startDate: '',
+	endDate: '',
+	name: '',
+	orderBy: '',
+	pageNumber: '',
+	pageSize: '10',
+	sort: '',
+});
+
 const getStartDateView = (startDt: string, endDt: string) => {
 	let result;
 	if (Moment.diffDay(startDt, endDt) === 0) {
@@ -164,6 +174,7 @@ const tableDataSet = ref({
 		},
 	], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
 	total: 0,
+	pageSize: '',
 	isAttendance: true,
 	isLoading: true,
 	columnList: [
@@ -201,27 +212,28 @@ const filterDataSet = ref({
 	],
 });
 
-const filterParams = ref({
-	startDate: '',
-	endDate: '',
-	name: '',
-});
-
 const getDataByFilter = (emitData: any) => {
-	filterParams.value.startDate = emitData.startDate;
-	filterParams.value.endDate = emitData.endDate;
-	filterParams.value.name = emitData.name;
+	attendanceVO.value.startDate = emitData.startDate;
+	attendanceVO.value.endDate = emitData.endDate;
+	attendanceVO.value.name = emitData.name;
+	onRequest();
+};
+
+const getDataByTable = (emitData: any) => {
+	attendanceVO.value.orderBy = emitData.orderBy;
+	attendanceVO.value.pageNumber = emitData.pageNumber;
+	attendanceVO.value.pageSize = emitData.pageSize;
+	attendanceVO.value.sort = emitData.sort;
+	tableDataSet.value.pageSize = emitData.pageSize;
+
 	onRequest();
 };
 
 const onRequest = async () => {
-	const list = await getCommuteList(filterParams.value.startDate, filterParams.value.endDate, filterParams.value.name);
-	list.foreach((v: any) => {
-		v.startDate = v.startDate.substring(11, 16);
-		v.endDate = v.endDate.substring(11, 16);
-	});
-	tableDataSet.value.list = list;
-	tableDataSet.value.total = list.size;
+	const list = await getCommuteList2(attendanceVO);
+
+	tableDataSet.value.list = list.commuteStateData;
+	tableDataSet.value.total = list.totalPages * Number(attendanceVO.value.pageSize);
 };
 
 const getCommuteList = async (startDate: string, endDate: string, name: string) => {
@@ -229,6 +241,19 @@ const getCommuteList = async (startDate: string, endDate: string, name: string) 
 	try {
 		const response = await attendanceService.getCommuteList(startDate, endDate, name);
 		const result = response.data.data.commuteStateData;
+
+		return result;
+	} catch (error: any) {
+	} finally {
+		uiStore.hideLoading();
+	}
+};
+
+const getCommuteList2 = async (attendanceVO: any) => {
+	await uiStore.showLoading();
+	try {
+		const response = await attendanceService.getCommuteList2(attendanceVO);
+		const result = response.data.data;
 
 		return result;
 	} catch (error: any) {

@@ -4,7 +4,7 @@
 	</div>
 	<div class="filter-table-wrapper">
 		<Filter :filterData="filterDataSet" @emitManageMent="getDataByFilter" />
-		<Table :tableData="tableDataSet" />
+		<Table :tableData="tableDataSet" @emitPageData="getDataByTable" />
 	</div>
 </template>
 
@@ -16,30 +16,23 @@ import Filter from '@/components/Filter.vue';
 import { useUiStore } from '@/store/ui';
 import hrService from '@/service/hrService';
 
+const manageMentVO = ref({
+	orderBy: '',
+	pageNumber: '',
+	pageSize: '10',
+	searchText: '',
+	selectValue: '',
+	sort: '',
+});
+
 const uiStore = useUiStore();
 
 const tableDataSet = ref({
-	list: [
-		{
-			nameKr: '박민호',
-			rank: '선임',
-			affiliation: '개발',
-			department: '개발',
-			email: 'minho.park@twolinecode.com',
-			phone: '010-5188-2240',
-		},
-		{
-			nameKr: '정연호',
-			rank: '선임',
-			affiliation: '개발',
-			department: '개발',
-			email: '',
-			phone: '',
-		},
-	], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
+	list: [], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
 	total: 2,
 	isAttendance: false,
 	isLoading: true,
+	pageSize: '',
 	columnList: [
 		// 테이블 컬럼정보 정의 및 커스텀
 		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', sortable: true },
@@ -77,30 +70,37 @@ const filterDataSet = ref({
 	],
 });
 
-const filterParams = ref({
-	selectValue: '',
-	searchText: '',
-});
-
 const getDataByFilter = (emitData: any) => {
-	filterParams.value.selectValue = emitData.selectValue;
-	filterParams.value.searchText = emitData.searchText;
+	manageMentVO.value.selectValue = emitData.selectValue;
+	manageMentVO.value.searchText = emitData.searchText;
+
 	onRequest();
-	// console.log(filterParams.value);
+};
+
+const getDataByTable = (emitData: any) => {
+	manageMentVO.value.orderBy = emitData.orderBy;
+	manageMentVO.value.pageNumber = emitData.pageNumber;
+	manageMentVO.value.pageSize = emitData.pageSize;
+	manageMentVO.value.sort = emitData.sort;
+	tableDataSet.value.pageSize = emitData.pageSize;
+
+	onRequest();
+
+	// onRequest2();
 };
 
 const onRequest = async () => {
-	const list = await getManageMentList(filterParams.value.selectValue, filterParams.value.searchText);
-	tableDataSet.value.list = list;
-	tableDataSet.value.total = list.size;
-	// console.log(1, tableDataSet.value.list);
+	const list = await getManageMentList(manageMentVO);
+
+	tableDataSet.value.list = list.hrInfoData;
+	tableDataSet.value.total = list.totalPage * Number(manageMentVO.value.pageSize);
 };
 
-const getManageMentList = async (selectValue: string, searchText: string) => {
+const getManageMentList = async (manageMentVO: any) => {
 	await uiStore.showLoading();
 	try {
-		const response = await hrService.getManageMentList(selectValue, searchText);
-		const result = response.data.data.hrInfoData;
+		const response = await hrService.getManageMentList(manageMentVO);
+		const result = response.data.data;
 
 		return result;
 	} catch (error: any) {

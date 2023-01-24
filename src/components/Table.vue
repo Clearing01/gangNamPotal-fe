@@ -5,6 +5,8 @@
 			bordered
 			:rows="propDataSet.list"
 			:columns="propDataSet.columnList"
+			v-model:pagination="pagination"
+			hide-pagination
 			row-key="rowNum"
 			:table-class="'common-table'"
 			:no-data-label="'데이터를 찾을 수 없습니다'"
@@ -33,6 +35,75 @@
 				</q-tr>
 			</template>
 		</q-table>
+		<div class="app-pagination-wrapper flex items-center justify-between">
+			<div class="page-info">{{ countRows(scope) }} / {{ propDataSet.total }} Total Row</div>
+			<div class="page-number flex items-center">
+				<q-btn
+					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
+					flat
+					:disable="pagination.page === 1"
+					@click="emitPageData(1)"
+				>
+					<em class="icon-first-page"></em>
+				</q-btn>
+				<q-btn
+					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
+					flat
+					:disable="pagination.page === 1"
+					@click="emitPageData(pagination.page - 1)"
+				>
+					<em class="icon-chevron-left"></em>
+				</q-btn>
+
+				<q-pagination
+					class="pagination-num ml-8 mr-8"
+					v-model="pagination.page"
+					:max="lastPage"
+					:max-pages="9"
+					:ellipses="true"
+					@click="emitPageData(pagination.page)"
+				/>
+				<q-btn
+					class="app-btn btn-basic btn-ghost-black btn-small btn-only-icon"
+					flat
+					:disable="pagination.page === lastPage"
+					@click="emitPageData(pagination.page + 1)"
+				>
+					<em class="icon-chevron-right"></em>
+				</q-btn>
+
+				<q-btn
+					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
+					flat
+					:disable="pagination.page === lastPage"
+					@click="emitPageData(lastPage)"
+				>
+					<em class="icon-last-page"></em>
+				</q-btn>
+			</div>
+			<div class="page-option flex items-center">
+				<q-select
+					class="app-input input-select input-small"
+					:error="pagination.state.error.off"
+					:disable="pagination.state.disable.off"
+					:readonly="pagination.state.readonly.off"
+					outlined
+					dropdown-icon="icon-keyboard-arrow-down"
+					v-model="pagination.rowsPerPage"
+					:options="pagination.option"
+					popup-content-class="select-popup small-select-popup"
+					@update:model-value="updatePage"
+				>
+					<template v-slot:selected>
+						<template v-if="pagination.rowsPerPage">
+							{{ pagination.rowsPerPage }}
+						</template>
+						<template v-else> 선택하세요 </template>
+					</template>
+				</q-select>
+				Page
+			</div>
+		</div>
 
 		<q-dialog v-model="commuteUpdateModal" persistent>
 			<q-card>
@@ -99,6 +170,8 @@
 			bordered
 			:rows="propDataSet.list"
 			:columns="propDataSet.columnList"
+			v-model:pagination="pagination"
+			hide-pagination
 			row-key="rowNum"
 			:table-class="'common-table'"
 			:no-data-label="'데이터를 찾을 수 없습니다'"
@@ -118,80 +191,76 @@
 					</q-td>
 				</q-tr>
 			</template>
-
-			<!-- 
-			<template v-slot:bottom="scope">
-				<div class="app-pagination-wrapper flex items-center justify-between">
-					<div class="page-info">{{ countRows(scope) }} / {{ propDataSet.total }} Total Row</div>
-					<div class="page-number flex items-center">
-						<q-btn
-							class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
-							flat
-							:disable="scope.isFirstPage"
-							@click="emitPageData(1)"
-						>
-							<em class="icon-first-page"></em>
-						</q-btn>
-						<q-btn
-							class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
-							flat
-							:disable="scope.isFirstPage"
-							@click="emitPageData(pagination.page - 1)"
-						>
-							<em class="icon-chevron-left"></em>
-						</q-btn>
-
-						<q-pagination
-							class="pagination-num ml-8 mr-8"
-							v-model="pagination.page"
-							:max="lastPage"
-							:max-pages="9"
-							:ellipses="true"
-							@click="emitPageData(pagination.page)"
-						/>
-						<q-btn
-							class="app-btn btn-basic btn-ghost-black btn-small btn-only-icon"
-							flat
-							:disable="pagination.page === lastPage"
-							@click="emitPageData(pagination.page + 1)"
-						>
-							<em class="icon-chevron-right"></em>
-						</q-btn>
-
-						<q-btn
-							class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
-							flat
-							:disable="pagination.page === lastPage"
-							@click="emitPageData(lastPage)"
-						>
-							<em class="icon-last-page"></em>
-						</q-btn>
-					</div>
-					<div class="page-option flex items-center">
-						<q-select
-							class="app-input input-select input-small"
-							:error="pagination.state.error.off"
-							:disable="pagination.state.disable.off"
-							:readonly="pagination.state.readonly.off"
-							outlined
-							dropdown-icon="icon-keyboard-arrow-down"
-							v-model="pagination.rowsPerPage"
-							:options="pagination.option"
-							popup-content-class="select-popup small-select-popup"
-							@update:model-value="pagination.rowsPerPage"
-						>
-							<template v-slot:selected>
-								<template v-if="pagination.rowsPerPage">
-									{{ pagination.rowsPerPage }}
-								</template>
-								<template v-else> 선택하세요 </template>
-							</template>
-						</q-select>
-						Page
-					</div>
-				</div>
-			</template> -->
 		</q-table>
+		<div class="app-pagination-wrapper flex items-center justify-between">
+			<div class="page-info">{{ countRows(scope) }} / {{ propDataSet.total }} Total Row</div>
+			<div class="page-number flex items-center">
+				<q-btn
+					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
+					flat
+					:disable="pagination.page === 1"
+					@click="emitPageData(1)"
+				>
+					<em class="icon-first-page"></em>
+				</q-btn>
+				<q-btn
+					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
+					flat
+					:disable="pagination.page === 1"
+					@click="emitPageData(pagination.page - 1)"
+				>
+					<em class="icon-chevron-left"></em>
+				</q-btn>
+
+				<q-pagination
+					class="pagination-num ml-8 mr-8"
+					v-model="pagination.page"
+					:max="lastPage"
+					:max-pages="9"
+					:ellipses="true"
+					@click="emitPageData(pagination.page)"
+				/>
+				<q-btn
+					class="app-btn btn-basic btn-ghost-black btn-small btn-only-icon"
+					flat
+					:disable="pagination.page === lastPage"
+					@click="emitPageData(pagination.page + 1)"
+				>
+					<em class="icon-chevron-right"></em>
+				</q-btn>
+
+				<q-btn
+					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
+					flat
+					:disable="pagination.page === lastPage"
+					@click="emitPageData(lastPage)"
+				>
+					<em class="icon-last-page"></em>
+				</q-btn>
+			</div>
+			<div class="page-option flex items-center">
+				<q-select
+					class="app-input input-select input-small"
+					:error="pagination.state.error.off"
+					:disable="pagination.state.disable.off"
+					:readonly="pagination.state.readonly.off"
+					outlined
+					dropdown-icon="icon-keyboard-arrow-down"
+					v-model="pagination.rowsPerPage"
+					:options="pagination.option"
+					popup-content-class="select-popup small-select-popup"
+					@update:model-value="updatePage"
+				>
+					<template v-slot:selected>
+						<template v-if="pagination.rowsPerPage">
+							{{ pagination.rowsPerPage }}
+						</template>
+						<template v-else> 선택하세요 </template>
+					</template>
+				</q-select>
+				Page
+			</div>
+		</div>
 	</template>
 </template>
 
@@ -213,8 +282,7 @@ const emit = defineEmits(['emitPageData']);
 const lastPage = computed(() => Math.ceil(propDataSet.value?.total / pagination.value.rowsPerPage));
 const rowStart = computed(() => (pagination.value.page - 1) * pagination.value.rowsPerPage); //현재페이지-1 * 페이지당rows
 const rowEnd = computed(() => pagination.value.page * pagination.value.rowsPerPage); //현재페이지 * 페이지당rows
-const isFirstPage = computed(() => pagination.value.page * pagination.value.rowsPerPage);
-const isLastPage = computed(() => pagination.value.page * pagination.value.rowsPerPage);
+const firstPage = computed(() => pagination.value.page * pagination.value.rowsPerPage);
 
 const commuteUpdateModal = ref(false);
 const employeeData = ref({
@@ -230,8 +298,8 @@ const pagination = ref({
 	descending: false,
 	page: 1,
 	rowsPerPage: 10,
-	option: [10, 20, 50, 100],
-	rowsNumber: propDataSet.value?.total,
+	option: [1, 2, 3, 5, 10, 20, 50],
+	rowsNumber: propDataSet.value?.pageSize,
 	state: {
 		error: {
 			on: true,
@@ -282,12 +350,22 @@ const countRows = () => {
 };
 
 const emitPageData = (page: any) => {
+	pagination.value.page = page;
+
 	emit('emitPageData', {
-		parameters: {
-			offset: (page - 1) * pagination.value.rowsPerPage, //page
-			limit: pagination.value.rowsPerPage,
-		},
-		pageNow: page,
+		pageNumber: page, //page
+		pageSize: pagination.value.rowsPerPage,
+		orderBy: '',
+		sort: '',
+	});
+};
+
+const updatePage = () => {
+	emit('emitPageData', {
+		pageNumber: '', //page
+		pageSize: pagination.value.rowsPerPage,
+		orderBy: '',
+		sort: '',
 	});
 };
 

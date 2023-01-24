@@ -1,20 +1,16 @@
 import api from '@/modules/axios';
 
 class hrService {
-	static async getManageMentList(selectValue: string, searchText: string) {
-		return api.get('/hr/management', { params: { selectValue: selectValue, searchText: searchText } });
+	static async getManageMentList(manageMentVO: any) {
+		return api.get('/hr/management', { params: manageMentVO.value });
 	}
 
 	static async getTeamList() {
 		return api.get('/hr/teamList');
 	}
 
-	static async getDeptList(affiliation: string, department: string, name: string) {
-		if (affiliation === 'affiliation') {
-			return api.get('/hr/dept', { params: { affiliation: department, name: name } });
-		} else {
-			return api.get('/hr/dept', { params: { department: department, name: name } });
-		}
+	static async getDeptList(departmentVO: any) {
+		return api.get('/hr/dept', { params: departmentVO.value });
 	}
 
 	static async getAllDeptList() {

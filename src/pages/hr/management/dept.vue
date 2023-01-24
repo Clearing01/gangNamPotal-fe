@@ -38,11 +38,11 @@
 					outlined
 					no-error-icon
 					placeholder="이름을 검색하세요"
-					v-model="filterParams.name"
+					v-model="departmentVO.name"
 				/>
 				<q-btn class="app-btn btn-basic btn-primary" flat @click="clickFilter()">입력</q-btn>
 			</div>
-			<Table :tableData="tableDataSet" />
+			<Table :tableData="tableDataSet" @emitPageData="getDataByTable" />
 		</div>
 	</div>
 </template>
@@ -55,9 +55,7 @@ import { useUiStore } from '@/store/ui';
 import hrService from '@/service/hrService';
 
 const uiStore = useUiStore();
-
 const selectedMenu = ref('');
-
 const handleSelected = () => {};
 
 const filterParams = ref({
@@ -66,26 +64,20 @@ const filterParams = ref({
 	name: '',
 });
 
+const departmentVO = ref({
+	affiliation: '',
+	department: '',
+	name: '',
+	orderBy: '',
+	pageNumber: '',
+	pageSize: '10',
+	sort: '',
+});
+
 const tableDataSet = ref({
-	list: [
-		{
-			nameKr: '박민호',
-			rank: '선임',
-			affiliation: '개발',
-			department: '개발',
-			email: 'minho.park@twolinecode.com',
-			phone: '010-5188-2240',
-		},
-		{
-			nameKr: '정연호',
-			rank: '선임',
-			affi: '개발',
-			dept: '개발',
-			email: '',
-			phone: '',
-		},
-	], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
-	total: 2,
+	list: [], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
+	total: 0,
+	pageSize: '',
 	isLoading: true,
 	isAttendance: false,
 
@@ -140,50 +132,55 @@ const deptList = ref({
 	],
 });
 
+const getDataByTable = (emitData: any) => {
+	departmentVO.value.orderBy = emitData.orderBy;
+	departmentVO.value.pageNumber = emitData.pageNumber;
+	departmentVO.value.pageSize = emitData.pageSize;
+	departmentVO.value.sort = emitData.sort;
+	tableDataSet.value.pageSize = emitData.pageSize;
+
+	onRequest();
+};
+
 const clickFilter = () => {
 	let list = deptList.value.list[0].children.map((v: any) => {
 		return v.label;
-
-		// v.children.forEach((c: any) => {
-		// 	console.log(c.label);
-		// });
 	});
 	const selectValue = list.filter((v: any) => v === selectedMenu.value);
 
 	if (selectedMenu.value !== null) {
 		if (selectValue.length !== 0) {
-			filterParams.value.department = selectedMenu.value;
-			filterParams.value.affiliation = 'affiliation';
+			departmentVO.value.department = '';
+			departmentVO.value.affiliation = selectedMenu.value;
 			if (selectedMenu.value === '개발 ') {
-				filterParams.value.department = '개발';
+				departmentVO.value.affiliation = '개발';
 			} else if (selectedMenu.value === 'QA ') {
-				filterParams.value.department = 'QA';
+				departmentVO.value.affiliation = 'QA';
 			}
 		} else {
-			filterParams.value.affiliation = 'department';
-			filterParams.value.department = selectedMenu.value;
+			departmentVO.value.affiliation = '';
+			departmentVO.value.department = selectedMenu.value;
 			if (selectedMenu.value === '구성원') {
-				filterParams.value.department = '';
-			} else {
+				departmentVO.value.department = '';
 			}
 		}
 	}
-	console.log(filterParams.value);
 	onRequest();
 };
 
 const onRequest = async () => {
-	const list = await getDeptList(filterParams.value.affiliation, filterParams.value.department, filterParams.value.name);
+	// const list = await getDeptList(departmentVO.value.affiliation, departmentVO.value.department, departmentVO.value.name);
+	const list = await getDeptList(departmentVO);
 
-	tableDataSet.value.list = list;
-	tableDataSet.value.total = list.size;
+	tableDataSet.value.list = list.hrDepartmentInfoDataList;
+	tableDataSet.value.total = list.totalPage * Number(departmentVO.value.pageSize);
 };
 
-const getDeptList = async (affiliation: string, department: string, name: string) => {
+const getDeptList = async (departmentVO: any) => {
 	await uiStore.showLoading();
 	try {
-		const response = await hrService.getDeptList(affiliation, department, name);
-		const result = response.data.data.hrDepartmentInfoDataList;
+		const response = await hrService.getDeptList(departmentVO);
+		const result = response.data.data;
 
 		return result;
 	} catch (error: any) {

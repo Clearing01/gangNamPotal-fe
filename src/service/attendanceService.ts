@@ -5,6 +5,10 @@ class attendanceService {
 		return api.get('/commute', { params: { startDate: startDate, endDate: endDate, name: name } });
 	}
 
+	static async getCommuteList2(attendanceVO: any) {
+		return api.get('/commute', { params: attendanceVO.value });
+	}
+
 	static async insertAdminCommute(commuteRegisterDTO: any) {
 		return api.post('/commute/admin', commuteRegisterDTO);
 	}
