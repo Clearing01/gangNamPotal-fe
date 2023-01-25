@@ -45,16 +45,6 @@ const commuteVO = ref({
 	name: '',
 });
 
-// {
-// 	title: '박민호',
-// 	color: 'blue',
-// 	start: '2023-01-05',
-// 	end: '2023-01-07',
-// 	display: 'list-item',
-// 	name: '09:23',
-// 	eventContent: '',
-// },
-
 const getDataByCalendar = (emit: any) => {
 	emitData.value.selctFilter = emit.selctFilter;
 	emitData.value.year = emit.year;
@@ -70,7 +60,6 @@ const onRequest = async () => {
 
 	commuteList.value = list.map((v: any) => {
 		const startDate = v.startDate.substring(11, 16);
-		const endDate = v.endDate.substring(11, 16);
 		return {
 			title: v.nameKr,
 			color: 'blue',
@@ -84,15 +73,16 @@ const onRequest = async () => {
 
 const getCommuteList = async (filter: any, year: any, month: any) => {
 	await uiStore.showLoading();
+	let range = '';
 	try {
 		if (filter === '전체') {
-			const response = await dashBoardService.getAllCommuteList(year, month);
+			const response = await dashBoardService.getCommuteList(year, month, range);
 			const result = response.data.data;
 
 			return result;
 		} else {
-			// filter가 본인일 경우 year, month, token 전달
-			const response = await dashBoardService.getMyCommuteList(year, month);
+			range = 'my';
+			const response = await dashBoardService.getCommuteList(year, month, range);
 			const result = response.data.data;
 
 			return result;
