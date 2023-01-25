@@ -1,5 +1,9 @@
 <template>
 	<template v-if="propDataSet.isAttendance">
+		<div class="table-header" :loading="loading">
+			<q-space></q-space>
+			<q-btn class="app-btn" color="grey" outline @click="excelDown"> Excel로 추출 </q-btn>
+		</div>
 		<q-table
 			flat
 			bordered
@@ -36,7 +40,7 @@
 			</template>
 		</q-table>
 		<div class="app-pagination-wrapper flex items-center justify-between">
-			<div class="page-info">{{ countRows(scope) }} / {{ propDataSet.total }} Total Row</div>
+			<div class="page-info">Total {{ propDataSet.total }}</div>
 			<div class="page-number flex items-center">
 				<q-btn
 					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
@@ -193,7 +197,7 @@
 			</template>
 		</q-table>
 		<div class="app-pagination-wrapper flex items-center justify-between">
-			<div class="page-info">{{ countRows(scope) }} / {{ propDataSet.total }} Total Row</div>
+			<div class="page-info">Total {{ propDataSet.total }}</div>
 			<div class="page-number flex items-center">
 				<q-btn
 					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
@@ -270,9 +274,12 @@ import { computed, onMounted, ref } from 'vue';
 import { useUiStore } from '@/store/ui';
 import attendanceService from '@/service/attendanceService';
 import { useAuthStore } from '@/store/auth';
+import { utils, writeFile } from 'xlsx';
 
 const uiStore = useUiStore();
 const authStore = useAuthStore();
+
+const excelVO = ref([]);
 
 const props = defineProps({ tableData: Object });
 const propDataSet = computed(() => props.tableData);
@@ -298,7 +305,7 @@ const pagination = ref({
 	descending: false,
 	page: 1,
 	rowsPerPage: 10,
-	option: [1, 2, 3, 5, 10, 20, 50],
+	option: [10, 20, 50],
 	rowsNumber: propDataSet.value?.pageSize,
 	state: {
 		error: {
@@ -342,12 +349,13 @@ const endDurationPicker = (val: any) => {
 	input.value.duration.to = Moment.getYYYY_MM_DD(val);
 };
 
-const countRows = () => {
-	if (rowEnd.value - (pagination.value.rowsPerPage - 10) > propDataSet.value?.total) {
-		return `${rowStart.value + 1} ~ ${propDataSet.value?.total}`;
-	}
-	return `${rowStart.value + 1} ~ ${rowEnd.value}`;
-};
+// const countRows = () => {
+
+// 	if (rowEnd.value - (pagination.value.rowsPerPage - 10) > propDataSet.value?.total) {
+// 		return `${rowStart.value + 1} ~ ${propDataSet.value?.total}`;
+// 	}
+// 	return `${rowStart.value + 1} ~ ${rowEnd.value}`;
+// };
 
 const emitPageData = (page: any) => {
 	pagination.value.page = page;
@@ -409,7 +417,6 @@ const updateAdminCommute = async () => {
 		commuteRegisterDTO.commuteId = Number(employeeData.value.id);
 		commuteRegisterDTO.startDate = `${employeeData.value.registerDate} ${employeeData.value.startDate}:00`;
 		commuteRegisterDTO.endDate = `${input.value.duration.to} ${employeeData.value.endDate}:00`;
-		console.log(commuteRegisterDTO);
 
 		const response = await attendanceService.updateAdminCommute(commuteRegisterDTO);
 		router.push('/attendance');
@@ -420,9 +427,51 @@ const updateAdminCommute = async () => {
 		router.go(0);
 	}
 };
+
+const excelDown = async () => {
+	await uiStore.showLoading();
+	try {
+		const response = await attendanceService.exportExcelCommute(
+			propDataSet.value?.startDate,
+			propDataSet.value?.endDate,
+			propDataSet.value?.name
+		);
+		const list = response.data.data.map((v: any) => {
+			return {
+				사번: v.employeeNo,
+				이름: v.nameKr,
+				날짜: v.registerDate,
+				요일: v.dayOfTheWeek,
+				출근시간: v.startDate,
+				퇴근시간: v.endDate,
+			};
+		});
+		console.log(list);
+
+		const data = list;
+		const excelData = utils.json_to_sheet(data);
+
+		const workBook = utils.book_new();
+		utils.book_append_sheet(workBook, excelData, `출퇴근현황(${propDataSet.value?.startDate} ~ ${propDataSet.value?.endDate})`);
+		writeFile(workBook, `출퇴근현황(${propDataSet.value?.startDate} ~ ${propDataSet.value?.endDate}).xlsx`);
+	} catch (error: any) {
+	} finally {
+		uiStore.hideLoading();
+	}
+};
 </script>
 
 <style scoped lang="scss">
+.table-header {
+	display: flex;
+	height: 45px;
+
+	.app-btn {
+		width: 100px;
+		margin-right: 8px;
+		margin-bottom: 0.7%;
+	}
+}
 .btn-toggle-clearable {
 	.q-btn {
 		min-height: auto;

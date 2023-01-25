@@ -129,7 +129,6 @@ const getStartDateView = (startDt: string, endDt: string) => {
 	} else {
 		result = `${Moment.getYYYYMMDD(startDt)}`;
 	}
-	// console.log(input.value.inputDuration);
 
 	return result;
 };
@@ -141,7 +140,6 @@ const getEndDateView = (startDt: string, endDt: string) => {
 	} else {
 		result = `${Moment.getYYYYMMDD(startDt)}`;
 	}
-	// console.log(input.value.inputDuration);
 
 	return result;
 };
@@ -159,24 +157,14 @@ const insertModal = (flag: any) => {
 };
 
 const tableDataSet = ref({
-	list: [
-		{
-			registerDate: '2023.01.04 (수)',
-			nameKr: '박민호',
-			startDate: '09:58',
-			endDate: '19:36',
-		},
-		{
-			registerDate: '2023.01.04 (수)',
-			nameKr: '정연호',
-			startDate: '08:33',
-			endDate: '18:48',
-		},
-	], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
+	list: [], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
 	total: 0,
 	pageSize: '',
 	isAttendance: true,
 	isLoading: true,
+	startDate: '',
+	endDate: '',
+	name: '',
 	columnList: [
 		// 테이블 컬럼정보 정의 및 커스텀
 		{
@@ -187,9 +175,8 @@ const tableDataSet = ref({
 			headerStyle: '',
 			style: '',
 			classes: 'app-fw-6',
-			sortable: true,
 		},
-		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', sortable: true },
+		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr' },
 		{ name: 'startDate', align: 'center', label: '출근시간', field: 'startDate', headerStyle: '', style: '', classes: '' },
 		{ name: 'endDate', align: 'center', label: '퇴근시간', field: 'endDate', headerStyle: '', style: '', classes: '' },
 	],
@@ -216,6 +203,10 @@ const getDataByFilter = (emitData: any) => {
 	attendanceVO.value.startDate = emitData.startDate;
 	attendanceVO.value.endDate = emitData.endDate;
 	attendanceVO.value.name = emitData.name;
+	tableDataSet.value.startDate = emitData.startDate;
+	tableDataSet.value.endDate = emitData.endDate;
+	tableDataSet.value.name = emitData.name;
+
 	onRequest();
 };
 
@@ -230,29 +221,16 @@ const getDataByTable = (emitData: any) => {
 };
 
 const onRequest = async () => {
-	const list = await getCommuteList2(attendanceVO);
+	const list = await getCommuteList(attendanceVO);
 
-	tableDataSet.value.list = list.commuteStateData;
-	tableDataSet.value.total = list.totalPages * Number(attendanceVO.value.pageSize);
+	tableDataSet.value.list = list.commuteStateDataList;
+	tableDataSet.value.total = list.totalCount;
 };
 
-const getCommuteList = async (startDate: string, endDate: string, name: string) => {
+const getCommuteList = async (attendanceVO: any) => {
 	await uiStore.showLoading();
 	try {
-		const response = await attendanceService.getCommuteList(startDate, endDate, name);
-		const result = response.data.data.commuteStateData;
-
-		return result;
-	} catch (error: any) {
-	} finally {
-		uiStore.hideLoading();
-	}
-};
-
-const getCommuteList2 = async (attendanceVO: any) => {
-	await uiStore.showLoading();
-	try {
-		const response = await attendanceService.getCommuteList2(attendanceVO);
+		const response = await attendanceService.getCommuteList(attendanceVO);
 		const result = response.data.data;
 
 		return result;

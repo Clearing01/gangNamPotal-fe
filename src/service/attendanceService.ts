@@ -1,11 +1,7 @@
 import api from '@/modules/axios';
 
 class attendanceService {
-	static async getCommuteList(startDate: string, endDate: string, name: string) {
-		return api.get('/commute', { params: { startDate: startDate, endDate: endDate, name: name } });
-	}
-
-	static async getCommuteList2(attendanceVO: any) {
+	static async getCommuteList(attendanceVO: any) {
 		return api.get('/commute', { params: attendanceVO.value });
 	}
 
@@ -15,6 +11,10 @@ class attendanceService {
 
 	static async updateAdminCommute(commuteRegisterDTO: any) {
 		return api.put('/commute/admin', commuteRegisterDTO);
+	}
+
+	static async exportExcelCommute(startDate: string, endDate: string, name: string) {
+		return api.get('/commute/excel', { params: { startDate: startDate, endDate: endDate, name: name } });
 	}
 }
 

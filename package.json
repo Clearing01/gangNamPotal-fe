@@ -36,7 +36,8 @@
 		"vue-moment": "^4.1.0",
 		"vue-router": "^4.1.2",
 		"vue3-json-excel": "^1.0.10-alpha",
-		"vue3-smooth-dnd": "^0.0.2"
+		"vue3-smooth-dnd": "^0.0.2",
+		"xlsx": "^0.18.5"
 	},
 	"devDependencies": {
 		"@quasar/vite-plugin": "^1.1.1",
