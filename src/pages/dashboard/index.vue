@@ -60,6 +60,7 @@ const onRequest = async () => {
 
 	commuteList.value = list.map((v: any) => {
 		const startDate = v.startDate.substring(11, 16);
+
 		return {
 			title: v.nameKr,
 			color: 'blue',

@@ -1,11 +1,22 @@
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useAuthStore } from '@/store/auth';
 import { useUiStore } from '@/store/ui';
+import { Notify } from 'quasar';
+import router from '@/router';
 
 export interface HttpResponse<T = unknown> {
 	data: T;
 	code: string;
 	status: string;
+	message?: string;
+}
+
+interface Notification {
+	caption: string;
+	type: string;
+	icon: string;
+	classes: string;
+	timeout: number;
 	message?: string;
 }
 
@@ -31,7 +42,11 @@ api.interceptors.response.use(
 	},
 	async (error) => {
 		const response = error.response;
-		errorStatus(response);
+
+		response?.data?.code === '401' || response?.data?.code === '403' ? errorDialog(response) : errorStatus(response);
+
+		// router.push('/login');
+
 		return Promise.reject(response);
 	}
 );
@@ -48,22 +63,40 @@ const authHeader = (req: AxiosRequestConfig) => {
 	return req.headers;
 };
 const errorStatus = (response: AxiosResponse) => {
+	let notify: Notification = {
+		caption: response?.data?.message,
+		type: 'negative',
+		icon: 'warning',
+		classes: 'app-notify',
+		timeout: 3,
+	};
+
+	console.log(response.data.message);
+
 	switch (response?.status) {
 		case 400:
+			notify = { ...notify };
 			break;
-		case 401:
-			break;
-		case 403:
-			break;
+		// case 401:
+		// 	notify = { ...notify };
+		// 	break;
+		// case 403:
+		// 	notify = { ...notify, message: '잘못된 요청' };
+		// 	break;
 		case 404:
+			notify = { ...notify };
 			break;
 		case 405:
+			notify = { ...notify };
 			break;
 		case 406:
+			notify = { ...notify };
 			break;
 		case 408:
+			notify = { ...notify };
 			break;
 		case 409:
+			notify = { ...notify };
 			break;
 		case 500:
 			break;
@@ -76,6 +109,12 @@ const errorStatus = (response: AxiosResponse) => {
 		default: {
 		}
 	}
+	Notify.create(notify);
+};
+
+const errorDialog = (res: AxiosResponse) => {
+	const uiStore = useUiStore();
+	uiStore.showDialog(res.data);
 };
 
 export default api;

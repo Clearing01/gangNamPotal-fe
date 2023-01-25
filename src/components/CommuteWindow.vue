@@ -51,10 +51,20 @@ import { useUiStore } from '@/store/ui';
 import { log } from 'console';
 import { computed, ref } from 'vue';
 import hrService from '@/service/hrService';
+import { Notify } from 'quasar';
 
 const props = defineProps({ currentDate: Object });
 const currentDate = computed(() => props.currentDate);
 const uiStore = useUiStore();
+
+interface Notification {
+	caption: string;
+	type: string;
+	icon: string;
+	classes: string;
+	timeout: number;
+	message?: string;
+}
 
 const date = ref({
 	date: '',
@@ -75,6 +85,8 @@ const insertStartCommute = async () => {
 		date.value.date = uiStore.currentDate;
 		console.log(date.value);
 		const response = await hrService.insertStartCommute(date.value);
+
+		successNotify(response.data.message);
 	} catch (error: any) {
 		uiStore.hideLoading();
 	} finally {
@@ -87,11 +99,25 @@ const insertEndCommute = async () => {
 	try {
 		date.value.date = uiStore.currentDate;
 		const response = await hrService.insertEndCommute(date.value);
+
+		successNotify(response.data.message);
 	} catch (error: any) {
 		uiStore.hideLoading();
 	} finally {
 		uiStore.hideLoading();
 	}
+};
+
+const successNotify = (message: string) => {
+	let notify: Notification = {
+		caption: message,
+		type: 'positive',
+		icon: 'info',
+		classes: 'app-notify',
+		timeout: 3,
+	};
+
+	Notify.create(notify);
 };
 </script>
 
