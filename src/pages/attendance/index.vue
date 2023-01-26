@@ -256,7 +256,18 @@ const insertAdminCommute = async () => {
 
 		console.log(data);
 		const response = await attendanceService.insertAdminCommute(data);
+
 		router.push('/attendance');
+
+		let notify = {
+			caption: response.data.message,
+			type: 'positive',
+			icon: 'info',
+			classes: 'app-notify',
+			timeout: 3,
+		};
+
+		uiStore.showNotification(notify);
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();

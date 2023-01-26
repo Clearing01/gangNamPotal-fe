@@ -51,20 +51,10 @@ import { useUiStore } from '@/store/ui';
 import { log } from 'console';
 import { computed, ref } from 'vue';
 import hrService from '@/service/hrService';
-import { Notify } from 'quasar';
 
 const props = defineProps({ currentDate: Object });
 const currentDate = computed(() => props.currentDate);
 const uiStore = useUiStore();
-
-interface Notification {
-	caption: string;
-	type: string;
-	icon: string;
-	classes: string;
-	timeout: number;
-	message?: string;
-}
 
 const date = ref({
 	date: '',
@@ -109,7 +99,7 @@ const insertEndCommute = async () => {
 };
 
 const successNotify = (message: string) => {
-	let notify: Notification = {
+	let notify = {
 		caption: message,
 		type: 'positive',
 		icon: 'info',
@@ -117,7 +107,7 @@ const successNotify = (message: string) => {
 		timeout: 3,
 	};
 
-	Notify.create(notify);
+	uiStore.showNotification(notify);
 };
 </script>
 

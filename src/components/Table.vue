@@ -275,6 +275,7 @@ import { useUiStore } from '@/store/ui';
 import attendanceService from '@/service/attendanceService';
 import { useAuthStore } from '@/store/auth';
 import { utils, writeFile } from 'xlsx';
+import { Moment } from '@/composables/util';
 
 const uiStore = useUiStore();
 const authStore = useAuthStore();
@@ -283,7 +284,7 @@ const excelVO = ref([]);
 
 const props = defineProps({ tableData: Object });
 const propDataSet = computed(() => props.tableData);
-import { Moment } from '@/composables/util';
+
 const emit = defineEmits(['emitPageData']);
 
 const lastPage = computed(() => Math.ceil(propDataSet.value?.total / pagination.value.rowsPerPage));
@@ -420,6 +421,16 @@ const updateAdminCommute = async () => {
 
 		const response = await attendanceService.updateAdminCommute(commuteRegisterDTO);
 		router.push('/attendance');
+
+		let notify = {
+			caption: response.data.message,
+			type: 'positive',
+			icon: 'info',
+			classes: 'app-notify',
+			timeout: 3,
+		};
+
+		uiStore.showNotification(notify);
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();

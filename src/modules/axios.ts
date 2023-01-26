@@ -45,8 +45,6 @@ api.interceptors.response.use(
 
 		response?.data?.code === '401' || response?.data?.code === '403' ? errorDialog(response) : errorStatus(response);
 
-		// router.push('/login');
-
 		return Promise.reject(response);
 	}
 );
@@ -70,8 +68,6 @@ const errorStatus = (response: AxiosResponse) => {
 		classes: 'app-notify',
 		timeout: 3,
 	};
-
-	console.log(response.data.message);
 
 	switch (response?.status) {
 		case 400:
