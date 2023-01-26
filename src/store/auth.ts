@@ -13,6 +13,7 @@ export const useAuthStore = defineStore('auth', {
 	getters: {
 		isAuthenticated: (state) => !!state.user.token,
 		getAuthorization: (state) => state.user.token,
+		getRefreshToken: (state) => state.user.refreshToken,
 	},
 	actions: {
 		// login: ({ state, payload }: { state: any; payload: any }) => {
@@ -25,6 +26,11 @@ export const useAuthStore = defineStore('auth', {
 			this.user.refreshToken = null;
 			this.user.permission = null;
 			router.push('/login');
+		},
+		async setUserInfo(userInfo: any) {
+			this.user.token = userInfo.accessToken;
+			this.user.refreshToken = userInfo.refreshToken;
+			this.user.permission = userInfo.role;
 		},
 	},
 });

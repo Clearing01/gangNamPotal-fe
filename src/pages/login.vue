@@ -53,6 +53,7 @@ import router from '@/router';
 import { useAuthStore } from '@/store/auth';
 import { useUiStore } from '@/store/ui';
 import authService from '@/service/authService';
+import { onMounted, ref } from 'vue';
 
 const uiStore = useUiStore();
 const authStore = useAuthStore();
@@ -63,8 +64,9 @@ const googleLogin = async () => {
 		const response = await authService.googleLogin();
 		const uriPath = response.data.data.uriPath;
 		window.location.replace(uriPath);
-	} catch {
-		await uiStore.hideLoading();
+	} catch (error) {
+	} finally {
+		uiStore.hideLoading();
 	}
 };
 
@@ -74,14 +76,19 @@ const kakaoLogin = async () => {
 		const response = await authService.kakaoLogin();
 		const uriPath = response.data.data.uriPath;
 		window.location.replace(uriPath);
-	} catch {
-		await uiStore.hideLoading();
+	} catch (error) {
+	} finally {
+		uiStore.hideLoading();
 	}
 };
 
 const bypass = () => {
 	router.push('/index');
 };
+
+onMounted(() => {
+	authStore.logout();
+});
 </script>
 
 <style lang="scss" scoped>
