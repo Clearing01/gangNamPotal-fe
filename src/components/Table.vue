@@ -18,7 +18,14 @@
 			<template v-slot:header="props">
 				<q-tr :props="props">
 					<q-th v-for="col in props.cols" :key="col.name" :props="props">
-						{{ col.label }}
+						<template v-if="col.label == '날짜' || col.label == '이름'">
+							<div @click="sortTable(col.field)" style="cursor: pointer">
+								{{ col.label }}
+							</div>
+						</template>
+						<template v-else>
+							{{ col.label }}
+						</template>
 					</q-th>
 				</q-tr>
 			</template>
@@ -183,7 +190,11 @@
 			<template v-slot:header="props">
 				<q-tr :props="props">
 					<q-th v-for="col in props.cols" :key="col.name" :props="props">
-						{{ col.label }}
+						<template v-if="col.label == '이름' || col.label == '직급' || col.label == '소속'">
+							<div @click="sortTable(col.field)" style="cursor: pointer">
+								{{ col.label }}
+							</div>
+						</template>
 					</q-th>
 				</q-tr>
 			</template>
@@ -301,11 +312,12 @@ const employeeData = ref({
 });
 
 const pagination = ref({
-	sortBy: 'desc',
+	orderBy: 'desc',
+	sort: '',
 	descending: false,
 	page: 1,
 	rowsPerPage: 10,
-	option: [10, 20, 50],
+	option: [2, 5, 10, 20, 50],
 	rowsNumber: propDataSet.value?.pageSize,
 	state: {
 		error: {
@@ -357,23 +369,43 @@ const endDurationPicker = (val: any) => {
 // 	return `${rowStart.value + 1} ~ ${rowEnd.value}`;
 // };
 
+const sortTable = (field: any) => {
+	if (pagination.value.orderBy == 'desc') {
+		pagination.value.orderBy = 'asc';
+	} else {
+		pagination.value.orderBy = 'desc';
+	}
+	if (field == 'registerDate') {
+		field = 'date';
+	}
+
+	pagination.value.sort = field;
+
+	emit('emitPageData', {
+		pageNumber: pagination.value.page, //page
+		pageSize: pagination.value.rowsPerPage,
+		orderBy: pagination.value.orderBy,
+		sort: pagination.value.sort,
+	});
+};
+
 const emitPageData = (page: any) => {
 	pagination.value.page = page;
 
 	emit('emitPageData', {
 		pageNumber: page, //page
 		pageSize: pagination.value.rowsPerPage,
-		orderBy: '',
-		sort: '',
+		orderBy: pagination.value.orderBy,
+		sort: pagination.value.sort,
 	});
 };
 
 const updatePage = () => {
 	emit('emitPageData', {
-		pageNumber: '', //page
+		pageNumber: pagination.value.page, //page
 		pageSize: pagination.value.rowsPerPage,
-		orderBy: '',
-		sort: '',
+		orderBy: pagination.value.orderBy,
+		sort: pagination.value.sort,
 	});
 };
 
@@ -462,6 +494,9 @@ const excelDown = async () => {
 </script>
 
 <style scoped lang="scss">
+.hover:hover {
+}
+
 .table-header {
 	display: flex;
 	height: 45px;

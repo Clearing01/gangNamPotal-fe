@@ -180,12 +180,6 @@ const tableDataSet = ref({
 		{ name: 'startDate', align: 'center', label: '출근시간', field: 'startDate', headerStyle: '', style: '', classes: '' },
 		{ name: 'endDate', align: 'center', label: '퇴근시간', field: 'endDate', headerStyle: '', style: '', classes: '' },
 	],
-	sortKey: {
-		nameKr: 'nameKr',
-		rank: 'rank',
-		joinDt: 'joinDt',
-		stat: 'stat',
-	},
 });
 
 const filterDataSet = ref({
