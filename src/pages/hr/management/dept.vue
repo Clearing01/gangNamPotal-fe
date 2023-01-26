@@ -83,8 +83,8 @@ const tableDataSet = ref({
 
 	columnList: [
 		// 테이블 컬럼정보 정의 및 커스텀
-		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', sortable: true },
-		{ name: 'rank', align: 'center', label: '직급', field: 'rank', sortable: true },
+		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr' },
+		{ name: 'rank', align: 'center', label: '직급', field: 'rank' },
 		{ name: 'affiliation', align: 'center', label: '소속', field: 'affiliation' },
 		{ name: 'department', align: 'center', label: '부서', field: 'department' },
 	],
@@ -173,7 +173,7 @@ const onRequest = async () => {
 	const list = await getDeptList(departmentVO);
 
 	tableDataSet.value.list = list.hrDepartmentInfoDataList;
-	tableDataSet.value.total = list.totalPage * Number(departmentVO.value.pageSize);
+	tableDataSet.value.total = list.totalCount;
 };
 
 const getDeptList = async (departmentVO: any) => {
