@@ -29,14 +29,14 @@ const uiStore = useUiStore();
 
 const tableDataSet = ref({
 	list: [], // 테이블에 들어갈 데이터 --> 더미 데이터는 여기에
-	total: 2,
+	total: 0,
 	isAttendance: false,
 	isLoading: true,
 	pageSize: '',
 	columnList: [
 		// 테이블 컬럼정보 정의 및 커스텀
-		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', sortable: true },
-		{ name: 'rank', align: 'center', label: '직급', field: 'rank', sortable: true },
+		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr' },
+		{ name: 'rank', align: 'center', label: '직급', field: 'rank' },
 		{ name: 'affiliation', align: 'center', label: '소속', field: 'affiliation' },
 		{ name: 'department', align: 'center', label: '부서', field: 'department' },
 		{ name: 'email', align: 'left', label: '이메일', field: 'email' },
@@ -92,8 +92,10 @@ const getDataByTable = (emitData: any) => {
 const onRequest = async () => {
 	const list = await getManageMentList(manageMentVO);
 
-	tableDataSet.value.list = list.hrInfoData;
-	tableDataSet.value.total = list.totalPage * Number(manageMentVO.value.pageSize);
+	console.log(list);
+
+	tableDataSet.value.list = list.hrInfoDataLists;
+	tableDataSet.value.total = list.totalCount;
 };
 
 const getManageMentList = async (manageMentVO: any) => {

@@ -24,7 +24,7 @@
 					<div class="info-content-wrapper">
 						<div class="info-profile-wrapper">
 							<div class="info-profile-section">
-								<template v-if="1 !== 1">
+								<template v-if="1 == 1">
 									<img :src="employeeData.profileImg" alt="" />
 								</template>
 								<template v-else>
