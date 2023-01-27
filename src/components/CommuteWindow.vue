@@ -75,6 +75,8 @@ const insertStartCommute = async () => {
 		date.value.date = uiStore.currentDate;
 		console.log(date.value);
 		const response = await hrService.insertStartCommute(date.value);
+
+		successNotify(response.data.message);
 	} catch (error: any) {
 		uiStore.hideLoading();
 	} finally {
@@ -87,11 +89,25 @@ const insertEndCommute = async () => {
 	try {
 		date.value.date = uiStore.currentDate;
 		const response = await hrService.insertEndCommute(date.value);
+
+		successNotify(response.data.message);
 	} catch (error: any) {
 		uiStore.hideLoading();
 	} finally {
 		uiStore.hideLoading();
 	}
+};
+
+const successNotify = (message: string) => {
+	let notify = {
+		caption: message,
+		type: 'positive',
+		icon: 'info',
+		classes: 'app-notify',
+		timeout: 3,
+	};
+
+	uiStore.showNotification(notify);
 };
 </script>
 
