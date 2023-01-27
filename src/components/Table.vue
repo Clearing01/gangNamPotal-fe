@@ -168,7 +168,13 @@
 				</q-card-section>
 
 				<q-card-actions align="right">
-					<q-btn flat label="등록" color="primary" @click="updateAdminCommute" />
+					<q-btn
+						flat
+						label="등록"
+						color="primary"
+						@click="updateAdminCommute"
+						:disabled="input.duration.to.length === 0 || employeeData.startDate.length < 5 || employeeData.endDate.length < 5"
+					/>
 					<q-btn flat label="취소" color="primary" v-close-popup />
 				</q-card-actions>
 			</q-card>
@@ -410,12 +416,17 @@ const updatePage = () => {
 };
 
 const updateModal = (flag: any, value: any) => {
+	const startDate = value.row.startDate;
+	const endDate = value.row.endDate;
+
 	commuteUpdateModal.value = flag;
 	employeeData.value.id = value.row.commuteId;
 	employeeData.value.nameKr = value.row.nameKr;
 	employeeData.value.registerDate = value.row.registerDate;
-	employeeData.value.startDate = value.row.startDate;
-	employeeData.value.endDate = value.row.endDate;
+	employeeData.value.startDate = startDate.substring(11, startDate.length);
+	employeeData.value.endDate = endDate.substring(11, endDate.length);
+
+	console.log(employeeData.value);
 };
 
 // 적용될 컬럼

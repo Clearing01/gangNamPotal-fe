@@ -73,7 +73,19 @@
 			</q-card-section>
 
 			<q-card-actions align="right">
-				<q-btn flat label="등록" color="primary" @click="insertAdminCommute" />
+				<q-btn
+					flat
+					label="등록"
+					color="primary"
+					@click="insertAdminCommute"
+					:disabled="
+						input.duration.to.length === 0 ||
+						input.duration.from.length === 0 ||
+						commuteRegisterDTO.employeeId.length === 0 ||
+						commuteRegisterDTO.startDate.length < 5 ||
+						commuteRegisterDTO.endDate.length < 5
+					"
+				/>
 				<q-btn flat label="취소" color="primary" v-close-popup />
 			</q-card-actions>
 		</q-card>
