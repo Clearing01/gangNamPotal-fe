@@ -248,14 +248,28 @@ const insertAdminCommute = async () => {
 		data.startDate = `${input.value.duration.from} ${commuteRegisterDTO.value.startDate}:00`;
 		data.endDate = `${input.value.duration.to} ${commuteRegisterDTO.value.endDate}:00`;
 
-		console.log(data);
 		const response = await attendanceService.insertAdminCommute(data);
-		router.push('/attendance');
+
+		console.log(response.data.status);
+
+		if (response.status === 200) {
+			onRequest();
+			router.push('/attendance');
+		}
+
+		let notify = {
+			caption: response.data.message,
+			type: 'positive',
+			icon: 'info',
+			classes: 'app-notify',
+			timeout: 3,
+		};
+
+		uiStore.showNotification(notify);
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();
 		commuteInsertModal.value = false;
-		router.go(0);
 	}
 };
 </script>

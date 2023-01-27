@@ -8,11 +8,13 @@ import router from '@/router';
 import { useRoute } from 'vue-router';
 import hrService from '@/service/hrService';
 
+import ErrorDialog from '../../layouts/ErrorDialog.vue';
+
 const route = useRoute();
 const authStore = useAuthStore();
 const uiStore = useUiStore();
 
-const getToken = () => {
+const getToken = async () => {
 	if (route.query.status === '200') {
 		authStore.user.token = route.query.accessToken;
 		authStore.user.refreshToken = route.query.refreshToken;
@@ -21,7 +23,16 @@ const getToken = () => {
 		}
 		router.push('/dashboard');
 	} else {
-		router.push('/login');
+		const errorResponse = {
+			code: route.query.code,
+			status: route.query.status,
+			message: route.query.message,
+		};
+
+		console.log(errorResponse);
+		await router.push('/login');
+
+		// uiStore.showDialog(errorResponse);
 	}
 };
 

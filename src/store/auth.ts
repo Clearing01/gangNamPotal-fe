@@ -19,8 +19,8 @@ export const useAuthStore = defineStore('auth', {
 		// login: ({ state, payload }: { state: any; payload: any }) => {
 		// 	state.user = payload;
 		// },
-		googleLogin: () => {},
-		kakaoLogin: () => {},
+		// googleLogin: () => {},
+		// kakaoLogin: () => {},
 		logout() {
 			this.user.token = null;
 			this.user.refreshToken = null;
