@@ -1,6 +1,7 @@
 <template>
 	<div class="app-pageheader">
 		<span class="main-title">출퇴근 현황</span>
+		<q-space />
 		<q-btn class="app-btn btn-basic btn-primary" flat v-if="authStore.user.permission" @click="insertModal(true)">등록</q-btn>
 	</div>
 
@@ -217,6 +218,9 @@ const getDataByFilter = (emitData: any) => {
 };
 
 const getDataByTable = (emitData: any) => {
+	if (emitData.pageNumber > Math.ceil(tableDataSet.value.total / emitData.pageSize)) {
+		emitData.pageNumber = Math.ceil(tableDataSet.value.total / emitData.pageSize);
+	}
 	attendanceVO.value.orderBy = emitData.orderBy;
 	attendanceVO.value.pageNumber = emitData.pageNumber;
 	attendanceVO.value.pageSize = emitData.pageSize;
@@ -287,9 +291,9 @@ const insertAdminCommute = async () => {
 </script>
 
 <style scoped lang="scss">
-.app-pageheader {
-	.q-btn {
-		margin-left: 87%;
-	}
-}
+// .app-pageheader {
+// 	.q-btn {
+// 		margin-left: 87%;
+// 	}
+// }
 </style>

@@ -78,6 +78,9 @@ const getDataByFilter = (emitData: any) => {
 };
 
 const getDataByTable = (emitData: any) => {
+	if (emitData.pageNumber > Math.ceil(tableDataSet.value.total / emitData.pageSize)) {
+		emitData.pageNumber = Math.ceil(tableDataSet.value.total / emitData.pageSize);
+	}
 	manageMentVO.value.orderBy = emitData.orderBy;
 	manageMentVO.value.pageNumber = emitData.pageNumber;
 	manageMentVO.value.pageSize = emitData.pageSize;

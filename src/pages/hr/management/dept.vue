@@ -133,6 +133,9 @@ const deptList = ref({
 });
 
 const getDataByTable = (emitData: any) => {
+	if (emitData.pageNumber > Math.ceil(tableDataSet.value.total / emitData.pageSize)) {
+		emitData.pageNumber = Math.ceil(tableDataSet.value.total / emitData.pageSize);
+	}
 	departmentVO.value.orderBy = emitData.orderBy;
 	departmentVO.value.pageNumber = emitData.pageNumber;
 	departmentVO.value.pageSize = emitData.pageSize;
