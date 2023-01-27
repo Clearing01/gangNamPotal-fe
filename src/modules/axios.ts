@@ -27,8 +27,8 @@ const TIMEOUT = 30000;
 const api: AxiosInstance = Axios.create({
 	// baseURL: import.meta.env.BASE_URL + '/api',
 	// baseURL: import.meta.env.BASE_URL,
-	// baseURL: 'http://localhost:8080',
-	baseURL: 'http://10.220.230.129:8080',
+	baseURL: 'http://localhost:8080',
+	// baseURL: 'http://10.220.230.129:8080',
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 	},
