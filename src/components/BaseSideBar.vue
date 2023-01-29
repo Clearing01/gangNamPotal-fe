@@ -101,6 +101,35 @@
 					</template>
 				</div>
 			</div>
+
+			<div class="addition-info-wrraper">
+				<!-- <div class="addition-wrapper" >
+					<q-icon name="subway" class="addition-icon"/>
+					<span class="addition-content">강남역 지하철</span>
+				</div> -->
+				<div class="addition-wrapper" @click="setFortuneModal(true)">
+					<q-icon name="auto_awesome" class="addition-icon" />
+					<span class="addition-content">오늘의 운세</span>
+				</div>
+			</div>
+
+			<q-dialog v-model="fortuneMessageModal">
+				<div class="fortune-modal-wrapper">
+					<div class="fortune-modal-close" @click="setFortuneModal(false)"><q-icon name="close" /></div>
+					<div class="fortune-header-wrapper">
+						<h4 class="fortune-header">오늘의 운세</h4>
+						<span>믿든지 말든지~</span>
+					</div>
+					<div class="fortune-message-wrapper">
+						<template v-if="fortuneMessage.isOpened">
+							<p>{{ fortuneMessage.message }}</p>
+						</template>
+						<template v-else>
+							<q-btn @click="showMessage"><q-icon name="touch_app" class="fortune-message-open-icon" />클릭해주세요~</q-btn>
+						</template>
+					</div>
+				</div>
+			</q-dialog>
 		</div>
 	</q-drawer>
 </template>
@@ -119,12 +148,19 @@ import etcService from '@/service/etcService';
 const authStore = useAuthStore();
 const uiStore = useUiStore();
 
+const fortuneMessageModal = ref(false);
+
+const fortuneMessage = ref({
+	isOpened: false,
+	message: '메시지가 없습니다',
+});
+
 const weatherInfo = ref({
-	date: '', // 기준 날짜
-	time: '', // 기준 시간
+	date: '0', // 기준 날짜
+	time: '0', // 기준 시간
 	isNight: false,
-	tmp: '', // 기온(도)
-	wsd: '', // 풍속(m/s)
+	tmp: '0', // 기온(도)
+	wsd: '0', // 풍속(m/s)
 	pty: '', // 강수 형태(없음, 비, 비/눈, 눈, 소나기)
 	sky: '', // 하늘 상태(맑음, 구름많음, 흐림)
 	pop: '', // 강수 확률(%)
@@ -190,7 +226,7 @@ const onRequest = async () => {
 const getWeatherInfo = async (locationVO: any) => {
 	await uiStore.showLoading();
 	try {
-		const response = await etcService.getWeatherIfo(locationVO);
+		const response = await etcService.getWeatherInfo(locationVO);
 		const result = response.data.data;
 
 		return result;
@@ -198,6 +234,27 @@ const getWeatherInfo = async (locationVO: any) => {
 	} finally {
 		uiStore.hideLoading();
 	}
+};
+
+const setFortuneModal = (flag: boolean) => {
+	fortuneMessageModal.value = flag;
+
+	if (flag === true) {
+		getFortuneMessage();
+	}
+};
+
+const getFortuneMessage = async () => {
+	try {
+		const response = await etcService.getFortuneInfo();
+		const result = response.data.data;
+
+		fortuneMessage.value = result;
+	} catch (error: any) {}
+};
+
+const showMessage = () => {
+	fortuneMessage.value.isOpened = true;
 };
 
 onMounted(() => {
@@ -238,6 +295,26 @@ onMounted(() => {
 	// background-color: rgb(48,48,48);
 	border-radius: 10px;
 	border: 1px solid rgb(48, 48, 48);
+}
+
+.addition-info-wrraper {
+	margin-top: 20px;
+	border-radius: 10px;
+}
+
+.addition-wrapper {
+	margin: 15px 5px;
+	display: flex;
+	cursor: pointer;
+}
+
+.addition-icon {
+	font-size: 1.8rem;
+	padding-right: 5px;
+}
+
+.addition-content {
+	padding-top: 5px;
 }
 
 .weather-wrapper p {
@@ -289,6 +366,41 @@ onMounted(() => {
 }
 .weather-addition {
 	padding-bottom: 5px;
+}
+
+.fortune-modal-wrapper {
+	width: 400px;
+	// height: 500px;
+	border-radius: 10px;
+	background-color: white;
+	border: 1px solid rgb(48, 48, 48);
+}
+
+.fortune-modal-close {
+	float: right;
+	margin: 5px 5px;
+	font-size: 1.2rem;
+	width: 20px;
+	cursor: pointer;
+}
+
+.fortune-header-wrapper {
+	margin: 20px;
+	margin-bottom: 30px;
+	text-align: center;
+}
+.fortune-header {
+	margin-bottom: 10px;
+}
+.fortune-message-wrapper {
+	margin: 10px 30px;
+	margin-bottom: 30px;
+	font-size: 1.1rem;
+	text-align: center;
+}
+
+.fortune-message-open-icon {
+	margin-right: 10px;
 }
 
 .menu-alarm-wrapper {

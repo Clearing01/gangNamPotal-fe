@@ -124,6 +124,7 @@ const errorStatus = (response: AxiosResponse) => {
 			notify = { ...notify };
 			break;
 		case 500:
+			notify = { ...notify };
 			break;
 		case 501:
 			break;
