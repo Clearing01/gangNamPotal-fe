@@ -14,7 +14,14 @@
 			<div class="event-content">
 				<div class="circle" :style="{ background: arg.event.backgroundColor }"></div>
 				<div class="event-content-title">{{ arg.event.title }}</div>
-				<div class="event-content-name">&nbsp;&nbsp;{{ arg.event.extendedProps.name }}</div>
+				&nbsp;
+				<div class="event-content-name">
+					<q-icon name="icon-notifications-active" class="mr-8" />
+					<span class="startDate">{{ arg.event.extendedProps.startDate }}</span>
+					&nbsp;
+					<q-icon name="icon-notifications-paused" class="mr-8" />
+					<span class="endDate">{{ arg.event.extendedProps.endDate }}</span>
+				</div>
 			</div>
 		</template>
 	</FullCalendar>
@@ -142,6 +149,13 @@ $fc-magin-top: 16px;
 		font-size: 12px;
 		line-height: 16px;
 		color: #374155;
+		// color: #ef7c7c;
+	}
+	.startDate {
+		color: #5060aa;
+	}
+	.endDate {
+		color: #ef7c7c;
 	}
 }
 
