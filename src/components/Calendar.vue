@@ -96,10 +96,14 @@ onMounted(() => {
 });
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 // .fc-daygrid-day-frame {
 // 	max-height: 50px;
 // }
+.main-title {
+	margin-right: 2%;
+}
+
 $fc-magin-top: 16px;
 
 .more-link {
@@ -348,9 +352,9 @@ $fc-magin-top: 16px;
 	}
 }
 
-tbody {
-	height: 700px;
-}
+// tbody {
+// 	height: 700px;
+// }
 
 // .fc-daygrid-day-top ::after {
 // 	margin-left: 35px;

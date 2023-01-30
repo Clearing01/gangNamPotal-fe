@@ -1,6 +1,5 @@
 <template>
 	<div class="app-pageheader">
-		<q-btn class="app-btn btn-basic btn-ghost-black btn-only-icon btn-prev" flat></q-btn>
 		<span class="main-title">마이 페이지</span>
 		<q-space />
 		<div class="button-wrapper" v-if="buttonValue">
@@ -24,7 +23,7 @@
 					<div class="info-content-wrapper">
 						<div class="info-profile-wrapper">
 							<div class="info-profile-section">
-								<template v-if="1 == 1">
+								<template v-if="employeeData.profileImg.length !== 0">
 									<img :src="employeeData.profileImg" alt="" />
 								</template>
 								<template v-else>
@@ -309,23 +308,6 @@ const sampleData = ref({
 	photoPath: '@/assets/images/teemo.png',
 });
 
-//  "address": "string", 1
-//     "affiliation": "QA",
-//     "birthday": "string", 1
-//     "department": "BX",
-//     "email": "string",
-//     "employeeId": 0,
-//     "employeeNo": 0,
-//     "gen": 0,
-//     "gender": "string", 1
-//     "joinDate": "string",
-//     "nameEn": "string", 1
-//     "nameKr": "string", 1
-//     "phone": "string", 1
-//     "profileImg": "string",
-//     "rank": "과장",
-//     "role": "string"
-
 const onMypage = async () => {
 	const info = await getInfo();
 	employeeData.value = info;
@@ -377,7 +359,9 @@ const sampleSelectData = ref({
 });
 
 const onRequest = async () => {
-	const info = await updateInfo(employeeData.value.nameEn, employeeData.value.phone, employeeData.value.address);
+	await updateInfo(employeeData.value.nameEn, employeeData.value.phone, employeeData.value.address);
+	onMypage();
+	showButton(true);
 };
 
 const updateInfo = async (nameEn: string, phone: string, address: string) => {
@@ -386,13 +370,23 @@ const updateInfo = async (nameEn: string, phone: string, address: string) => {
 		const response = await hrService.updateInfo(nameEn, phone, address);
 		const result = response.status;
 
-		return result;
+		successNotify(response.data.message);
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();
 	}
+};
 
-	//수정하면 리프레쉬
+const successNotify = (message: string) => {
+	let notify = {
+		caption: message,
+		type: 'positive',
+		icon: 'info',
+		classes: 'app-notify',
+		timeout: 500,
+	};
+
+	uiStore.showNotification(notify);
 };
 
 onMounted(() => {

@@ -6,7 +6,7 @@ class hrService {
 	}
 
 	static async getTeamList() {
-		return api.get('/hr/teamList');
+		return api.get('/hr/teams');
 	}
 
 	static async getDeptList(departmentVO: any) {

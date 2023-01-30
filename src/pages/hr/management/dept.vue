@@ -31,8 +31,9 @@
 		<div class="page-right-wrapper">
 			<div class="page-content-header flex justify-between items-center no-wrap">
 				<div class="page-content-title">
-					구성원<span>({{ tableDataSet.total }})</span>
+					<span>구성원 ({{ tableDataSet.total }})</span>
 				</div>
+				<q-space />
 				<q-input
 					class="app-input input-medium input-append-search-icon"
 					outlined
@@ -253,12 +254,13 @@ onMounted(() => {
 
 .app-input {
 	width: 220px;
+	margin-right: 20px;
 }
 
 .app-table {
 	margin-bottom: 28px;
 }
-.page-content-title {
-	margin-right: 65%;
-}
+// .page-content-title {
+// 	margin-right: 65%;
+// }
 </style>
