@@ -25,6 +25,10 @@ class hrService {
 		return api.put('/hr/info', { nameEn: nameEn, phone: phone, address: address });
 	}
 
+	static async getNames() {
+		return api.get('/hr/names');
+	}
+
 	static async insertStartCommute(date: any) {
 		return api.post('/commute/start', { date: date.date });
 	}

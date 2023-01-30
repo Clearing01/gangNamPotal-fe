@@ -10,13 +10,14 @@
 		<Table :tableData="tableDataSet" @emitPageData="getDataByTable" />
 	</div>
 
-	<q-dialog v-model="commuteInsertModal" persistent>
+	<q-dialog v-model="commuteInsertModal" persistent class="dialog-wrapper">
 		<q-card>
 			<q-card-section class="row items-center">
 				<p class="q-ml-sm">출퇴근시간 등록</p>
 			</q-card-section>
 			<q-card-section>
-				사번 <q-input class="app-input input-medium" v-model="commuteRegisterDTO.employeeId" outlined placeholder="입력하세요" />
+				이름 <q-select class="selectBox" :options="nameList" v-model="commuteRegisterDTO.name" />
+				<!-- 이름 <q-input class="app-input input-medium" v-model="commuteRegisterDTO.employeeId" outlined placeholder="입력하세요" /> -->
 			</q-card-section>
 			<q-card-section>
 				출근일
@@ -82,7 +83,7 @@
 					:disabled="
 						input.duration.to.length === 0 ||
 						input.duration.from.length === 0 ||
-						commuteRegisterDTO.employeeId.length === 0 ||
+						commuteRegisterDTO.name.length === 0 ||
 						commuteRegisterDTO.startDate.length < 5 ||
 						commuteRegisterDTO.endDate.length < 5
 					"
@@ -101,18 +102,23 @@ import Filter from '@/components/Filter.vue';
 import { useUiStore } from '@/store/ui';
 import { useAuthStore } from '@/store/auth';
 import attendanceService from '@/service/attendanceService';
+import hrService from '@/service/hrService';
+
 import { Moment } from '@/composables/util';
 
 const uiStore = useUiStore();
 const authStore = useAuthStore();
 
 const commuteInsertModal = ref(false);
+const employeeList = ref([]);
+const nameList = ref([]);
 
 const commuteRegisterDTO = ref({
 	employeeId: '',
 	registerDate: '',
 	startDate: '',
 	endDate: '',
+	name: '',
 });
 
 const input = ref({
@@ -167,6 +173,7 @@ const endDurationPicker = (val: any) => {
 
 const insertModal = (flag: any) => {
 	commuteInsertModal.value = flag;
+	setNameList();
 };
 
 const tableDataSet = ref({
@@ -250,6 +257,28 @@ const getCommuteList = async (attendanceVO: any) => {
 	}
 };
 
+const setNameList = async () => {
+	const list = await getNameList();
+
+	employeeList.value = list;
+	nameList.value = list.map((v: any) => {
+		return v.name;
+	});
+};
+
+const getNameList = async () => {
+	await uiStore.showLoading();
+	try {
+		const response = await hrService.getNames();
+		const result = response.data.data;
+
+		return result;
+	} catch (error: any) {
+	} finally {
+		uiStore.hideLoading();
+	}
+};
+
 const insertAdminCommute = async () => {
 	await uiStore.showLoading();
 	try {
@@ -259,14 +288,23 @@ const insertAdminCommute = async () => {
 			startDate: '',
 			endDate: '',
 		};
-		data.employeeId = Number(commuteRegisterDTO.value.employeeId);
+
+		const nameVo = employeeList.value.filter((v: any) => {
+			v.name === commuteRegisterDTO.value.name;
+
+			if (v.name === commuteRegisterDTO.value.name) {
+				console.log(1111111);
+
+				return;
+			}
+		});
+
+		// data.employeeId = nameVo.employeeNo;
 		data.registerDate = input.value.duration.from;
 		data.startDate = `${input.value.duration.from} ${commuteRegisterDTO.value.startDate}:00`;
 		data.endDate = `${input.value.duration.to} ${commuteRegisterDTO.value.endDate}:00`;
 
 		const response = await attendanceService.insertAdminCommute(data);
-
-		console.log(response.data.status);
 
 		if (response.status === 200) {
 			onRequest();
@@ -291,9 +329,10 @@ const insertAdminCommute = async () => {
 </script>
 
 <style scoped lang="scss">
-// .app-pageheader {
-// 	.q-btn {
-// 		margin-left: 87%;
-// 	}
-// }
+.dialog-wrapper {
+	.app-input,
+	.app-input-picker {
+		margin-top: 10px;
+	}
+}
 </style>
