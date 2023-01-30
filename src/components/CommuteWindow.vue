@@ -60,25 +60,15 @@ const date = ref({
 	date: '',
 });
 
-const startShowValue = () => {
-	console.log(uiStore.start + ': start');
-	console.log(date.value);
-};
-
-const endShowValue = () => {
-	console.log(uiStore.end + ': end');
-};
-
 const insertStartCommute = async () => {
 	await uiStore.showLoading();
 	try {
 		date.value.date = uiStore.currentDate;
-		console.log(date.value);
 		const response = await hrService.insertStartCommute(date.value);
 
+		uiStore.emitter.emit('update', true);
 		successNotify(response.data.message);
 	} catch (error: any) {
-		uiStore.hideLoading();
 	} finally {
 		uiStore.hideLoading();
 	}
@@ -90,9 +80,9 @@ const insertEndCommute = async () => {
 		date.value.date = uiStore.currentDate;
 		const response = await hrService.insertEndCommute(date.value);
 
+		uiStore.emitter.emit('update', true);
 		successNotify(response.data.message);
 	} catch (error: any) {
-		uiStore.hideLoading();
 	} finally {
 		uiStore.hideLoading();
 	}
@@ -104,7 +94,7 @@ const successNotify = (message: string) => {
 		type: 'positive',
 		icon: 'info',
 		classes: 'app-notify',
-		timeout: 3,
+		timeout: 500,
 	};
 
 	uiStore.showNotification(notify);

@@ -201,6 +201,9 @@
 								{{ col.label }}
 							</div>
 						</template>
+						<template v-else>
+							{{ col.label }}
+						</template>
 					</q-th>
 				</q-tr>
 			</template>
@@ -469,7 +472,7 @@ const updateAdminCommute = async () => {
 			type: 'positive',
 			icon: 'info',
 			classes: 'app-notify',
-			timeout: 3,
+			timeout: 500,
 		};
 
 		uiStore.showNotification(notify);
@@ -500,7 +503,6 @@ const excelDown = async () => {
 				퇴근시간: v.endDate,
 			};
 		});
-		console.log(list);
 
 		const data = list;
 		const excelData = utils.json_to_sheet(data);
@@ -508,11 +510,27 @@ const excelDown = async () => {
 		const workBook = utils.book_new();
 		utils.book_append_sheet(workBook, excelData, `출퇴근현황(${propDataSet.value?.startDate} ~ ${propDataSet.value?.endDate})`);
 		writeFile(workBook, `출퇴근현황(${propDataSet.value?.startDate} ~ ${propDataSet.value?.endDate}).xlsx`);
+
+		let notify = {
+			caption: response.data.message,
+			type: 'positive',
+			icon: 'info',
+			classes: 'app-notify',
+			timeout: 500,
+		};
+
+		uiStore.showNotification(notify);
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();
 	}
 };
+
+onMounted(() => {
+	uiStore.emitter.on('update', (msg) => {
+		updatePage();
+	});
+});
 </script>
 
 <style scoped lang="scss">
@@ -573,3 +591,5 @@ const excelDown = async () => {
   background: red;
 } */
 </style>
+
+function created() { throw new Error('Function not implemented.'); }
