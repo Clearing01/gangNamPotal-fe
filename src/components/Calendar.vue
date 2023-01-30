@@ -2,7 +2,7 @@
 	<div class="app-pageheader">
 		<span class="main-title">대시보드</span>
 		<div class="filter-container">
-			<q-select :options="filter" v-model="selectFilter.param" @update:model-value="calendarFilter" />
+			<q-select class="selectBox" :options="filter" v-model="selectFilter.param" @update:model-value="calendarFilter" />
 		</div>
 
 		<!-- <div class="btn-wrapper">
@@ -97,9 +97,10 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-// .fc-daygrid-day-frame {
-// 	max-height: 50px;
-// }
+.filter-container {
+	padding-inline: 10px;
+}
+
 .main-title {
 	margin-right: 2%;
 }

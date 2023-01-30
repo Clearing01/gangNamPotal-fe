@@ -116,7 +116,7 @@
 			</div>
 		</div>
 
-		<q-dialog v-model="commuteUpdateModal" persistent>
+		<q-dialog v-model="commuteUpdateModal" persistent class="dialog-wrapper">
 			<q-card>
 				<q-card-section class="row items-center">
 					<p class="q-ml-sm">출퇴근시간 변경</p>
@@ -213,7 +213,7 @@
 					<q-td v-for="col in props.cols" :key="col.name" :props="props">
 						<template v-if="col.label == '이메일'">
 							<template v-if="col.value.length > 1">
-								<p class="email-info-wrapper" @click="">{{ col.value[0] }} ...</p>
+								<p class="email-info-wrapper">{{ col.value[0] }} ...</p>
 								<!-- 이메일 div 표시 -->
 								<p class="email-hidden-info-wrapper">
 									<template v-for="email in col.value" :key="email">
@@ -338,7 +338,7 @@ const employeeData = ref({
 });
 
 const pagination = ref({
-	orderBy: 'desc',
+	orderBy: '',
 	sort: '',
 	descending: false,
 	page: 1,
@@ -560,6 +560,12 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.dialog-wrapper {
+	.app-input,
+	.app-input-picker {
+		margin-top: 10px;
+	}
+}
 .email-info-wrapper {
 	cursor: pointer;
 	margin: 0px;

@@ -41,7 +41,7 @@
 					placeholder="이름을 검색하세요"
 					v-model="departmentVO.name"
 				/>
-				<q-btn class="app-btn btn-basic btn-primary" flat @click="clickFilter()">입력</q-btn>
+				<q-btn class="app-btn btn-basic btn-primary" flat @click="nameFilter()">입력</q-btn>
 			</div>
 			<Table :tableData="tableDataSet" @emitPageData="getDataByTable" />
 		</div>
@@ -147,6 +147,33 @@ const getDataByTable = (emitData: any) => {
 };
 
 const clickFilter = () => {
+	let list = deptList.value.list[0].children.map((v: any) => {
+		return v.label;
+	});
+	const selectValue = list.filter((v: any) => v === selectedMenu.value);
+
+	if (selectedMenu.value !== null) {
+		if (selectValue.length !== 0) {
+			departmentVO.value.department = '';
+			departmentVO.value.affiliation = selectedMenu.value;
+			if (selectedMenu.value === '개발 ') {
+				departmentVO.value.affiliation = '개발';
+			} else if (selectedMenu.value === 'QA ') {
+				departmentVO.value.affiliation = 'QA';
+			}
+		} else {
+			departmentVO.value.affiliation = '';
+			departmentVO.value.department = selectedMenu.value;
+			if (selectedMenu.value === '구성원') {
+				departmentVO.value.department = '';
+			}
+		}
+	}
+	departmentVO.value.name = '';
+	onRequest();
+};
+
+const nameFilter = () => {
 	let list = deptList.value.list[0].children.map((v: any) => {
 		return v.label;
 	});
