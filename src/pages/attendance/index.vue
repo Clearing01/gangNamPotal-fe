@@ -289,17 +289,9 @@ const insertAdminCommute = async () => {
 			endDate: '',
 		};
 
-		const nameVo = employeeList.value.filter((v: any) => {
-			v.name === commuteRegisterDTO.value.name;
+		const nameVo: any = employeeList.value.filter((v: any) => v.name === commuteRegisterDTO.value.name);
 
-			if (v.name === commuteRegisterDTO.value.name) {
-				console.log(1111111);
-
-				return;
-			}
-		});
-
-		// data.employeeId = nameVo.employeeNo;
+		data.employeeId = nameVo[0].employeeId;
 		data.registerDate = input.value.duration.from;
 		data.startDate = `${input.value.duration.from} ${commuteRegisterDTO.value.startDate}:00`;
 		data.endDate = `${input.value.duration.to} ${commuteRegisterDTO.value.endDate}:00`;
@@ -330,7 +322,10 @@ const insertAdminCommute = async () => {
 
 <style scoped lang="scss">
 .dialog-wrapper {
-	.app-input,
+	.app-input {
+		margin-top: 10px;
+	}
+
 	.app-input-picker {
 		margin-top: 10px;
 	}
