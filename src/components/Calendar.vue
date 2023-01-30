@@ -2,7 +2,15 @@
 	<div class="app-pageheader">
 		<span class="main-title">대시보드</span>
 		<div class="filter-container">
-			<q-select class="selectBox" :options="filter" v-model="selectFilter.param" @update:model-value="calendarFilter" />
+			<q-select
+				outlined
+				dense
+				:options="filter"
+				v-model="selectFilter.param"
+				@update:model-value="calendarFilter"
+				popup-content-class="app-dropbox"
+				class="app-input"
+			/>
 		</div>
 
 		<!-- <div class="btn-wrapper">
@@ -105,7 +113,8 @@ onMounted(() => {
 
 <style lang="scss">
 .filter-container {
-	padding-inline: 10px;
+	// padding-inline: 10px;
+	width: 150px;
 }
 
 .main-title {
@@ -150,12 +159,6 @@ $fc-magin-top: 16px;
 		line-height: 16px;
 		color: #374155;
 		// color: #ef7c7c;
-	}
-	.startDate {
-		color: #5060aa;
-	}
-	.endDate {
-		color: #ef7c7c;
 	}
 }
 
