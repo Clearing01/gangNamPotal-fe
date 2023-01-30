@@ -29,10 +29,7 @@ const getToken = async () => {
 			message: route.query.message,
 		};
 
-		console.log(errorResponse);
-		await router.push('/login');
-
-		// uiStore.showDialog(errorResponse);
+		router.push('/login');
 	}
 };
 

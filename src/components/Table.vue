@@ -332,7 +332,7 @@ const employeeData = ref({
 });
 
 const pagination = ref({
-	orderBy: 'desc',
+	orderBy: '',
 	sort: '',
 	descending: false,
 	page: 1,

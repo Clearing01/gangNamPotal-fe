@@ -53,7 +53,7 @@ import router from '@/router';
 import { useAuthStore } from '@/store/auth';
 import { useUiStore } from '@/store/ui';
 import authService from '@/service/authService';
-import { onMounted, ref } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 
 const uiStore = useUiStore();
 const authStore = useAuthStore();
