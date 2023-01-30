@@ -70,6 +70,7 @@
 									class="app-btn btn-small-toggle-switch"
 									no-caps
 									unelevated
+									readonly
 									:options="[
 										{ label: '남', value: '남자' },
 										{ label: '여', value: '여자' },

@@ -2,7 +2,7 @@
 	<template v-if="propDataSet?.isAttendance">
 		<div class="table-header" :loading="loading">
 			<q-space></q-space>
-			<q-btn class="app-btn" color="grey" outline @click="excelDown"> Excel로 추출 </q-btn>
+			<q-btn class="app-btn" color="grey" outline @click="excelDown" :disable="lastPage === 0"> Excel로 추출 </q-btn>
 		</div>
 		<q-table
 			flat
@@ -77,7 +77,7 @@
 				<q-btn
 					class="app-btn btn-basic btn-ghost-black btn-small btn-only-icon"
 					flat
-					:disable="pagination.page === lastPage"
+					:disable="pagination.page === lastPage || lastPage === 0"
 					@click="emitPageData(pagination.page + 1)"
 				>
 					<em class="icon-chevron-right"></em>
@@ -86,7 +86,7 @@
 				<q-btn
 					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
 					flat
-					:disable="pagination.page === lastPage"
+					:disable="pagination.page === lastPage || lastPage === 0"
 					@click="emitPageData(lastPage)"
 				>
 					<em class="icon-last-page"></em>
@@ -95,15 +95,13 @@
 			<div class="page-option flex items-center">
 				<q-select
 					class="app-input input-select input-small"
-					:error="pagination.state.error.off"
-					:disable="pagination.state.disable.off"
-					:readonly="pagination.state.readonly.off"
 					outlined
 					dropdown-icon="icon-keyboard-arrow-down"
 					v-model="pagination.rowsPerPage"
 					:options="pagination.option"
 					popup-content-class="select-popup small-select-popup"
 					@update:model-value="updatePage"
+					:disable="lastPage === 0"
 				>
 					<template v-slot:selected>
 						<template v-if="pagination.rowsPerPage">
@@ -112,7 +110,6 @@
 						<template v-else> 선택하세요 </template>
 					</template>
 				</q-select>
-				Page
 			</div>
 		</div>
 
@@ -281,9 +278,6 @@
 			<div class="page-option flex items-center">
 				<q-select
 					class="app-input input-select input-small"
-					:error="pagination.state.error.off"
-					:disable="pagination.state.disable.off"
-					:readonly="pagination.state.readonly.off"
 					outlined
 					dropdown-icon="icon-keyboard-arrow-down"
 					v-model="pagination.rowsPerPage"
@@ -298,7 +292,6 @@
 						<template v-else> 선택하세요 </template>
 					</template>
 				</q-select>
-				Page
 			</div>
 		</div>
 	</template>
@@ -345,20 +338,6 @@ const pagination = ref({
 	rowsPerPage: 10,
 	option: [2, 5, 10, 20, 50],
 	rowsNumber: propDataSet.value?.pageSize,
-	state: {
-		error: {
-			on: true,
-			off: false,
-		},
-		disable: {
-			on: true,
-			off: false,
-		},
-		readonly: {
-			on: true,
-			off: false,
-		},
-	},
 });
 
 const input = ref({
