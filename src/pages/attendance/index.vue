@@ -278,7 +278,7 @@ const insertAdminCommute = async () => {
 			type: 'positive',
 			icon: 'info',
 			classes: 'app-notify',
-			timeout: 3,
+			timeout: 500,
 		};
 
 		uiStore.showNotification(notify);

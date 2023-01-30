@@ -1,6 +1,6 @@
 <template></template>
 
-<script setup lang>
+<script setup>
 import { useUiStore } from '@/store/ui';
 import { useAuthStore } from '@/store/auth';
 import { onMounted, ref } from 'vue';
@@ -21,7 +21,18 @@ const getToken = async () => {
 		if (route.query.role === 'ROLE_ADMIN') {
 			authStore.user.permission = true;
 		}
+
 		router.push('/dashboard');
+
+		let notify = {
+			caption: '로그인 성공',
+			type: 'positive',
+			icon: 'info',
+			classes: 'app-notify',
+			timeout: 500,
+		};
+
+		uiStore.showNotification(notify);
 	} else {
 		const errorResponse = {
 			code: route.query.code,
@@ -30,9 +41,18 @@ const getToken = async () => {
 		};
 
 		console.log(errorResponse);
+
 		await router.push('/login');
 
-		// uiStore.showDialog(errorResponse);
+		let notify = {
+			caption: errorResponse.message,
+			type: 'negative',
+			icon: 'warning',
+			classes: 'app-notify',
+			timeout: 500,
+		};
+
+		uiStore.showNotification(notify);
 	}
 };
 

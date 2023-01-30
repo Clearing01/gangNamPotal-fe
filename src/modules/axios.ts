@@ -95,7 +95,7 @@ const errorStatus = (response: AxiosResponse) => {
 		type: 'negative',
 		icon: 'warning',
 		classes: 'app-notify',
-		timeout: 3,
+		timeout: 500,
 	};
 
 	switch (response?.status) {
