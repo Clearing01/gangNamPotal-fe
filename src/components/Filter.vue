@@ -152,6 +152,7 @@ const manageMentFilter = () => {
 			});
 		}
 	});
+	uiStore.emitter.emit('filter', true);
 };
 
 const attendanceFilter = () => {
@@ -160,6 +161,7 @@ const attendanceFilter = () => {
 		endDate: input.value.duration.to,
 		name: input.value.string,
 	});
+	uiStore.emitter.emit('filter', true);
 };
 
 const today = () => {

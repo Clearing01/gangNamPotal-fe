@@ -71,7 +71,7 @@ const departmentVO = ref({
 	name: '',
 	orderBy: '',
 	pageNumber: '',
-	pageSize: '10',
+	pageSize: '',
 	sort: '',
 });
 
@@ -170,6 +170,8 @@ const clickFilter = () => {
 		}
 	}
 	departmentVO.value.name = '';
+	departmentVO.value.pageNumber = '1';
+
 	onRequest();
 };
 
@@ -196,11 +198,13 @@ const nameFilter = () => {
 			}
 		}
 	}
+	departmentVO.value.pageNumber = '1';
+	uiStore.emitter.emit('filter', true);
+
 	onRequest();
 };
 
 const onRequest = async () => {
-	// const list = await getDeptList(departmentVO.value.affiliation, departmentVO.value.department, departmentVO.value.name);
 	const list = await getDeptList(departmentVO);
 
 	tableDataSet.value.list = list.hrDepartmentInfoDataList;

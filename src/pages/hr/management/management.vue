@@ -19,7 +19,7 @@ import hrService from '@/service/hrService';
 const manageMentVO = ref({
 	orderBy: '',
 	pageNumber: '',
-	pageSize: '10',
+	pageSize: '',
 	searchText: '',
 	selectValue: '',
 	sort: '',
@@ -81,8 +81,10 @@ const filterDataSet = ref({
 });
 
 const getDataByFilter = (emitData: any) => {
-	manageMentVO.value.selectValue = emitData.selectValue;
 	manageMentVO.value.searchText = emitData.searchText;
+	manageMentVO.value.selectValue = emitData.selectValue;
+	manageMentVO.value.pageNumber = '1';
+	uiStore.emitter.emit('filter', true);
 
 	onRequest();
 };
@@ -98,19 +100,13 @@ const getDataByTable = (emitData: any) => {
 	tableDataSet.value.pageSize = emitData.pageSize;
 
 	onRequest();
-
-	// onRequest2();
 };
 
 const onRequest = async () => {
 	const list = await getManageMentList(manageMentVO);
 
-	console.log(list);
-
 	tableDataSet.value.list = list.hrInfoDataLists;
 	tableDataSet.value.total = list.totalCount;
-
-	// tableDataSet.value.list.email = list.email.split(',');
 };
 
 const getManageMentList = async (manageMentVO: any) => {

@@ -16,7 +16,7 @@
 				<p class="q-ml-sm">출퇴근시간 등록</p>
 			</q-card-section>
 			<q-card-section>
-				이름 <q-select class="selectBox" :options="nameList" v-model="commuteRegisterDTO.name" />
+				이름 <q-select class="selectBox" :options="nameList" v-model="commuteRegisterDTO.name" label="이름을 입력하세요" />
 				<!-- 이름 <q-input class="app-input input-medium" v-model="commuteRegisterDTO.employeeId" outlined placeholder="입력하세요" /> -->
 			</q-card-section>
 			<q-card-section>
@@ -137,13 +137,18 @@ const attendanceVO = ref({
 	name: '',
 	orderBy: '',
 	pageNumber: '',
-	pageSize: '10',
+	pageSize: '',
 	sort: '',
 });
 
 const getStartDateView = (startDt: string) => {
 	let result;
 	let endDt = '';
+
+	if (startDt === 'Invalid date') {
+		return '기간을 선택하세요';
+	}
+
 	if (Moment.diffDay(startDt, endDt) === 0) {
 		result = Moment.getYYYYMMDD(startDt);
 	} else {
@@ -156,6 +161,11 @@ const getStartDateView = (startDt: string) => {
 const getEndDateView = (startDt: string) => {
 	let result;
 	let endDt = '';
+
+	if (startDt === 'Invalid date') {
+		return '기간을 선택하세요';
+	}
+
 	if (Moment.diffDay(startDt, endDt) === 0) {
 		result = Moment.getYYYYMMDD(startDt);
 	} else {
@@ -166,11 +176,19 @@ const getEndDateView = (startDt: string) => {
 };
 
 const startDurationPicker = (val: any) => {
-	input.value.duration.from = Moment.getYYYY_MM_DD(val);
+	if (val === null) {
+		input.value.duration.from = '';
+	} else {
+		input.value.duration.from = Moment.getYYYY_MM_DD(val);
+	}
 };
 
 const endDurationPicker = (val: any) => {
-	input.value.duration.to = Moment.getYYYY_MM_DD(val);
+	if (val === null) {
+		input.value.duration.to = '';
+	} else {
+		input.value.duration.to = Moment.getYYYY_MM_DD(val);
+	}
 };
 
 const insertModal = (flag: any) => {
@@ -219,9 +237,13 @@ const getDataByFilter = (emitData: any) => {
 	attendanceVO.value.startDate = emitData.startDate;
 	attendanceVO.value.endDate = emitData.endDate;
 	attendanceVO.value.name = emitData.name;
+	attendanceVO.value.pageNumber = '1';
+
 	tableDataSet.value.startDate = emitData.startDate;
 	tableDataSet.value.endDate = emitData.endDate;
 	tableDataSet.value.name = emitData.name;
+
+	uiStore.emitter.emit('filter', true);
 
 	onRequest();
 };

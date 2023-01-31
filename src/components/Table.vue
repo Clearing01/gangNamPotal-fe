@@ -369,6 +369,11 @@ const input = ref({
 const getEndDateView = (startDt: string) => {
 	let result;
 	let endDt = '';
+
+	if (startDt === 'Invalid date') {
+		return '기간을 선택하세요';
+	}
+
 	if (Moment.diffDay(startDt, endDt) === 0) {
 		result = Moment.getYYYYMMDD(startDt);
 	} else {
@@ -379,7 +384,11 @@ const getEndDateView = (startDt: string) => {
 };
 
 const endDurationPicker = (val: any) => {
-	input.value.duration.to = Moment.getYYYY_MM_DD(val);
+	if (val === null) {
+		input.value.duration.to = '';
+	} else {
+		input.value.duration.to = Moment.getYYYY_MM_DD(val);
+	}
 };
 
 const sortTable = (field: any) => {
@@ -538,6 +547,10 @@ const splitEmail = (email: any) => {
 };
 
 onMounted(() => {
+	uiStore.emitter.on('filter', () => {
+		pagination.value.page = 1;
+	});
+
 	uiStore.emitter.on('update', () => {
 		updatePage();
 	});
