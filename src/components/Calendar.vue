@@ -73,6 +73,7 @@ const calendarOptions = ref({
 	dayMaxEventRows: 4,
 	events: propDataSet,
 	eventContent: '',
+	eventOrder: 'start',
 	customButtons: {
 		prev: {
 			click: async (e) => {

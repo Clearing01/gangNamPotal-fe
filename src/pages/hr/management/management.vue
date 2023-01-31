@@ -45,12 +45,12 @@ const tableDataSet = ref({
 	pageSize: '',
 	columnList: [
 		// 테이블 컬럼정보 정의 및 커스텀
-		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr' },
-		{ name: 'rank', align: 'center', label: '직급', field: 'rank' },
-		{ name: 'affiliation', align: 'center', label: '소속', field: 'affiliation' },
-		{ name: 'department', align: 'center', label: '부서', field: 'department' },
-		{ name: 'email', align: 'left', label: '이메일', field: 'email' },
-		{ name: 'phone', align: 'left', label: '연락처', field: 'phone' },
+		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', style: 'width:170px' },
+		{ name: 'rank', align: 'center', label: '직급', field: 'rank', style: 'width:170px' },
+		{ name: 'affiliation', align: 'center', label: '소속', field: 'affiliation', style: 'width:170px' },
+		{ name: 'department', align: 'center', label: '부서', field: 'department', style: 'width:170px' },
+		{ name: 'email', align: 'left', label: '이메일', field: 'email', style: 'width:340px' },
+		{ name: 'phone', align: 'left', label: '연락처', field: 'phone', style: 'width:230px' },
 	],
 	sortKey: {
 		nameKr: 'nameKr',

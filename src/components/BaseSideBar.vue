@@ -189,6 +189,7 @@ import { ref, onMounted } from 'vue';
 import { useUiStore } from '@/store/ui';
 import { useAuthStore } from '@/store/auth';
 import etcService from '@/service/etcService';
+import authService from '@/service/authService';
 
 const authStore = useAuthStore();
 const uiStore = useUiStore();
@@ -228,6 +229,8 @@ const weatherInfo = ref({
 });
 
 const logout = debounce(async () => {
+	await authService.logout(authStore.getAuthorization);
+
 	authStore.logout();
 }, 300);
 
@@ -340,15 +343,23 @@ const showMessage = async () => {
 
 const setShowWeather = () => {
 	isShowWeather.value = !isShowWeather.value;
+
+	if (isShowWeather.value === true) {
+		getLocation();
+	}
 };
 
 const setShowSubway = () => {
 	isShowSubway.value = !isShowSubway.value;
+
+	if (isShowSubway.value === true) {
+		getSubwayInfo();
+	}
 };
 
 onMounted(() => {
 	getLocation();
-	getSubwayInfo();
+	// getSubwayInfo();
 });
 </script>
 
@@ -375,7 +386,7 @@ onMounted(() => {
 }
 
 .etc-wrapper {
-	padding-top: 80px;
+	padding-top: 50px;
 }
 
 .weather-display-info {
