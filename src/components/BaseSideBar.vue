@@ -391,6 +391,7 @@ onMounted(() => {
 
 .weather-display-info {
 	cursor: pointer;
+	font-size: 13px;
 	margin: 0px;
 	margin-top: 20px;
 }

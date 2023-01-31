@@ -9,6 +9,7 @@
 				@click="handlePageMove(currentMenu)"
 				@mouseenter="showSubMenu(currentMenu, true)"
 				@mouseleave="showSubMenu(currentMenu, false)"
+				:active="selectMenu === currentMenu.meta.title"
 			>
 				<q-item-section class="menu-list-section">
 					<q-item-label>
@@ -21,10 +22,18 @@
 					@mouseleave="showSubMenu(currentMenu, false)"
 					:parentMenu="currentMenu"
 					:isShow="currentMenu.showSubMenu"
+					@emitDrawer="getDataByDrawer"
 				/>
 			</q-item>
 
-			<q-item v-else side="left" clickable class="menu-list-container menu-list-parents-wrapper" @click="handlePageMove(currentMenu)">
+			<q-item
+				v-else
+				side="left"
+				clickable
+				class="menu-list-container menu-list-parents-wrapper"
+				@click="handlePageMove(currentMenu)"
+				:active="selectMenu === currentMenu.meta.title"
+			>
 				<q-item-section class="menu-list-section">
 					<q-item-label>
 						{{ currentMenu.meta.title }}
@@ -41,6 +50,8 @@ import main from '@/router/main';
 import SubDrawer from '@/components/SubDrawer.vue';
 import { debounce } from 'lodash-es';
 
+const selectMenu = ref('');
+
 const menu = ref(
 	main.map((menu: any) => ({
 		...menu,
@@ -48,7 +59,14 @@ const menu = ref(
 	}))
 );
 
+const getDataByDrawer = (path: any) => {
+	selectMenu.value = '인사관리';
+	router.push(path);
+};
+
 const handlePageMove = (currentMenu: any) => {
+	selectMenu.value = currentMenu.meta.title;
+
 	router.push(currentMenu.path);
 };
 
