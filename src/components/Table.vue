@@ -532,7 +532,7 @@ const splitEmail = (email: any) => {
 };
 
 onMounted(() => {
-	uiStore.emitter.on('update', (msg) => {
+	uiStore.emitter.on('update', () => {
 		updatePage();
 	});
 });

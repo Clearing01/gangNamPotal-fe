@@ -141,8 +141,9 @@ const attendanceVO = ref({
 	sort: '',
 });
 
-const getStartDateView = (startDt: string, endDt: string) => {
+const getStartDateView = (startDt: string) => {
 	let result;
+	let endDt = '';
 	if (Moment.diffDay(startDt, endDt) === 0) {
 		result = Moment.getYYYYMMDD(startDt);
 	} else {
@@ -152,8 +153,9 @@ const getStartDateView = (startDt: string, endDt: string) => {
 	return result;
 };
 
-const getEndDateView = (startDt: string, endDt: string) => {
+const getEndDateView = (startDt: string) => {
 	let result;
+	let endDt = '';
 	if (Moment.diffDay(startDt, endDt) === 0) {
 		result = Moment.getYYYYMMDD(startDt);
 	} else {
