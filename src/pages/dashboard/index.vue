@@ -36,30 +36,19 @@ const emitData = ref({
 	month: '',
 });
 
-const commuteVO = ref({
-	title: '',
-	color: 'blue',
-	start: '',
-	end: '',
-	display: 'list-item',
-	name: '',
-});
-
 const getDataByCalendar = (emit: any) => {
 	emitData.value.selctFilter = emit.selctFilter;
 	emitData.value.year = emit.year;
 	emitData.value.month = emit.month;
 
 	onRequest();
-
-	// console.log(emitData.value);
 };
 
 const onRequest = async () => {
 	const list = await getCommuteList(emitData.value.selctFilter, emitData.value.year, emitData.value.month);
 
 	commuteList.value = list.map((v: any) => {
-		const startDate = v.startDate.substring(11, 16);
+		let startDate = v.startDate.substring(11, 16);
 		let endDate = '';
 
 		if (v.endDate !== null && v.endDate.length > 0) {
@@ -99,13 +88,9 @@ const getCommuteList = async (filter: any, year: any, month: any) => {
 		uiStore.hideLoading();
 	}
 };
-
-// onMounted(() => {
-// 	console.log(emitData.value);
-// });
 </script>
 
-<style>
+<style lang="scss">
 .btn-wrapper {
 	margin-left: 2%;
 }

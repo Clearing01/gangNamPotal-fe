@@ -77,14 +77,6 @@ const filterDataSet = ref({
 			name: 'affiliation',
 			label: '소속',
 		},
-		{
-			name: 'email',
-			label: '이메일',
-		},
-		{
-			name: 'phone',
-			label: '전화번호',
-		},
 	],
 });
 

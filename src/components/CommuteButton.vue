@@ -57,12 +57,10 @@ const uiStore = useUiStore();
 
 const startShowValue = (flag: boolean) => {
 	uiStore.start = flag;
-	console.log(uiStore.start + ': start');
 };
 
 const endShowValue = (flag: boolean) => {
 	uiStore.end = flag;
-	console.log(uiStore.end + ': end');
 };
 </script>
 

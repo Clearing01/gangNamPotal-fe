@@ -43,9 +43,11 @@ import momentPlugin from '@fullcalendar/moment';
 import { computed, onMounted, ref } from 'vue';
 import { Moment } from '@/composables/util';
 import moment from 'moment';
+import { useUiStore } from '@/store/ui';
 
 const props = defineProps({ commuteList: Array });
 const propDataSet = computed(() => props.commuteList);
+const uiStore = useUiStore();
 
 const emit = defineEmits(['emitCalendar']);
 
@@ -109,10 +111,21 @@ const calendarFilter = () => {
 };
 onMounted(() => {
 	calendarFilter();
+	uiStore.emitter.on('update', () => {
+		calendarFilter();
+	});
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
+.startDate {
+	color: #6e98f8;
+}
+
+.endDate {
+	color: rgb(247, 129, 129);
+}
+
 .filter-container {
 	// padding-inline: 10px;
 	width: 150px;
@@ -159,11 +172,10 @@ $fc-magin-top: 16px;
 		font-size: 12px;
 		line-height: 16px;
 		color: #374155;
-		// color: #ef7c7c;
 	}
 }
 
-.fc {
+.fc ::v-deep {
 	height: calc(100% - #{$fc-magin-top});
 
 	//toolbar 영역
@@ -277,6 +289,7 @@ $fc-magin-top: 16px;
 						justify-content: flex-start;
 						height: 134px;
 						font-family: $font-family;
+						overflow: hidden;
 
 						.fc-daygrid-day-top {
 							flex-direction: row;
@@ -297,25 +310,6 @@ $fc-magin-top: 16px;
 									&:hover {
 										background: transparent;
 									}
-									// .fc-daygrid-event-dot{
-									//   margin-right: 6px;
-									//   border-width: 3px;
-									//   border-radius: 50%;
-									//   background: var(--fc-event-border-color);
-									// }
-									// .fc-event-title{
-									//   font-size: $font-02;
-									//   line-height: $font-06;
-									//   font-weight: 500;
-									//   // color: $blue-gray-9;
-									//   text-overflow: ellipsis;
-									//   white-space: nowrap;
-									//   overflow: hidden;
-									//   .name{
-									//     margin-left: 4px;
-									//     // color: $blue-gray-11;
-									//   }
-									// }
 								}
 							}
 						}
@@ -370,13 +364,7 @@ $fc-magin-top: 16px;
 		}
 	}
 }
-
 // tbody {
 // 	height: 700px;
-// }
-
-// .fc-daygrid-day-top ::after {
-// 	margin-left: 35px;
-// 	content: '출근 \00a0\00a0\00a0\00a0\00a0 퇴근';
 // }
 </style>

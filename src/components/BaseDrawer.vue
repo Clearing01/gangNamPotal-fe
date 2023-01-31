@@ -42,7 +42,7 @@ import SubDrawer from '@/components/SubDrawer.vue';
 import { debounce } from 'lodash-es';
 
 const menu = ref(
-	main.map((menu: object) => ({
+	main.map((menu: any) => ({
 		...menu,
 		showSubMenu: false,
 	}))

@@ -15,9 +15,6 @@
 								label="선택하세요"
 								popup-content-class="select-popup"
 							/>
-							<!-- v-model="filterData.index"
-							@update:model-value="handleIndexFilter"
-							:options="propDataSet?.indexList" -->
 						</div>
 					</div>
 				</div>
@@ -31,9 +28,6 @@
 								outlined
 								placeholder="입력하세요"
 							/>
-							<!-- v-model="input.string"
-					:disable="selectedFilter?.isDisable"
-					@keydown="keyupEnter($event)" -->
 						</div>
 					</div>
 				</div>
@@ -81,9 +75,6 @@
 						<div class="filter-title mr-10">이름</div>
 						<div>
 							<q-input class="app-input input-medium" outlined placeholder="입력하세요" v-model="input.string" />
-							<!-- 
-					:disable="selectedFilter?.isDisable"
-					@keydown="keyupEnter($event)" -->
 						</div>
 					</div>
 				</div>
@@ -219,8 +210,7 @@ onMounted(() => {
 		color: $blue-gray-10;
 		font-weight: 500;
 	}
-	.app-input,
-	.app-input-picker {
+	.app-input .app-input-picker {
 		width: 100%;
 	}
 }

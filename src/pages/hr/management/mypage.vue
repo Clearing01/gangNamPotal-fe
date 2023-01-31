@@ -68,6 +68,7 @@
 								<q-btn-toggle
 									v-model="employeeData.gender"
 									class="app-btn btn-small-toggle-switch"
+									disable
 									no-caps
 									unelevated
 									readonly
