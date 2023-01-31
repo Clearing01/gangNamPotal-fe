@@ -40,8 +40,6 @@ const getToken = async () => {
 			message: route.query.message,
 		};
 
-		console.log(errorResponse);
-
 		await router.push('/login');
 
 		let notify = {

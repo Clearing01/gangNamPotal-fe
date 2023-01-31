@@ -1,6 +1,6 @@
 <template>
 	<template v-if="propDataSet?.isAttendance">
-		<div class="table-header" :loading="loading">
+		<div class="table-header">
 			<q-space></q-space>
 			<q-btn class="app-btn" color="grey" outline @click="excelDown" :disable="lastPage === 0"> Excel로 추출 </q-btn>
 		</div>
@@ -44,6 +44,14 @@
 						{{ col.value }}
 					</q-td>
 				</q-tr>
+			</template>
+			<template v-slot:no-data="{ message }">
+				<div class="no-data full-width row flex-center text-grey-6">
+					<q-icon size="24px" name="icon-warning-alt" class="m-r-12" />
+					<span class="message">
+						{{ message }}
+					</span>
+				</div>
 			</template>
 		</q-table>
 		<div class="app-pagination-wrapper flex items-center justify-between">
@@ -228,6 +236,14 @@
 					</q-td>
 				</q-tr>
 			</template>
+			<template v-slot:no-data="{ message }">
+				<div class="no-data full-width row flex-center text-grey-6">
+					<q-icon size="24px" name="icon-warning-alt" class="m-r-12" />
+					<span class="message">
+						{{ message }}
+					</span>
+				</div>
+			</template>
 		</q-table>
 		<div class="app-pagination-wrapper flex items-center justify-between">
 			<div class="page-info">Total {{ propDataSet?.total }}</div>
@@ -350,14 +366,14 @@ const input = ref({
 	},
 });
 
-const getEndDateView = (startDt: string, endDt: string) => {
+const getEndDateView = (startDt: string) => {
 	let result;
+	let endDt = '';
 	if (Moment.diffDay(startDt, endDt) === 0) {
 		result = Moment.getYYYYMMDD(startDt);
 	} else {
 		result = `${Moment.getYYYYMMDD(startDt)}`;
 	}
-	// console.log(input.value.inputDuration);
 
 	return result;
 };
@@ -365,14 +381,6 @@ const getEndDateView = (startDt: string, endDt: string) => {
 const endDurationPicker = (val: any) => {
 	input.value.duration.to = Moment.getYYYY_MM_DD(val);
 };
-
-// const countRows = () => {
-
-// 	if (rowEnd.value - (pagination.value.rowsPerPage - 10) > propDataSet.value?.total) {
-// 		return `${rowStart.value + 1} ~ ${propDataSet.value?.total}`;
-// 	}
-// 	return `${rowStart.value + 1} ~ ${rowEnd.value}`;
-// };
 
 const sortTable = (field: any) => {
 	if (pagination.value.orderBy == 'desc') {
@@ -424,8 +432,6 @@ const updateModal = (flag: any, value: any) => {
 	employeeData.value.registerDate = value.row.registerDate;
 	employeeData.value.startDate = startDate.substring(11, startDate.length);
 	employeeData.value.endDate = endDate.substring(11, endDate.length);
-
-	console.log(employeeData.value);
 };
 
 // 적용될 컬럼
@@ -598,30 +604,13 @@ onMounted(() => {
 	}
 }
 
-/* .test {
-  display: flex;
-} */
-
 .focus-table {
 	background: red;
 	&:focus {
 		outline: solid;
 		background: red;
 	}
-
-	/* .q-field__native {
-    &:focus {
-      outline: solid;
-      background: red;
-    }
-  } */
 }
-/* .residual-year-flex {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  background: red;
-} */
 </style>
 
 function created() { throw new Error('Function not implemented.'); }

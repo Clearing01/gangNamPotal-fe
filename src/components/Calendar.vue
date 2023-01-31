@@ -117,6 +117,14 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.startDate {
+	color: #6e98f8;
+}
+
+.endDate {
+	color: rgb(247, 129, 129);
+}
+
 .filter-container {
 	// padding-inline: 10px;
 	width: 150px;

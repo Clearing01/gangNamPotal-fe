@@ -41,10 +41,6 @@ const onDialogHide = () => {
 const close = async () => {
 	uiStore.hideDialog();
 
-	// authStore.logout();
-
-	// window.location.replace('https://accounts.google.com/logout');
-
 	router.push('/login');
 };
 </script>
