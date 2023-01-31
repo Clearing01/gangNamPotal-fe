@@ -47,7 +47,13 @@
 							<div class="row-info">
 								<div class="info-title">영어 이름<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="employeeData.nameEn" />
+									<template v-if="buttonValue">
+										<q-input class="app-input" outlined v-model="employeeData.nameEn" readonly />
+									</template>
+									<template v-else>
+										<q-input class="app-input" outlined v-model="employeeData.nameEn" />
+									</template>
+
 									<div class="hint-text-wrapper">
 										<div class="hint-text">
 											<!-- checkErrorNameEn -->
@@ -81,7 +87,12 @@
 							<div class="row-info">
 								<div class="info-title">연락처<span class="aster">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="employeeData.phone" mask="###-####-####" />
+									<template v-if="buttonValue">
+										<q-input class="app-input" outlined v-model="employeeData.phone" mask="###-####-####" readonly />
+									</template>
+									<template v-else>
+										<q-input class="app-input" outlined v-model="employeeData.phone" mask="###-####-####" />
+									</template>
 									<div class="hint-text-wrapper">
 										<div class="hint-text">
 											<!-- checkErrorPhone -->
@@ -93,7 +104,18 @@
 							<div class="row-info address-info">
 								<div class="info-title">주소<span class="aster">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input input-textarea" type="textarea" outlined v-model="employeeData.address" />
+									<template v-if="buttonValue">
+										<q-input
+											class="app-input input-textarea"
+											type="textarea"
+											outlined
+											v-model="employeeData.address"
+											readonly
+										/>
+									</template>
+									<template v-else>
+										<q-input class="app-input input-textarea" type="textarea" outlined v-model="employeeData.address" />
+									</template>
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
 										<div class="num-text"></div>

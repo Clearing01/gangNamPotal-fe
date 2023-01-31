@@ -393,19 +393,26 @@ onMounted(() => {
 	cursor: pointer;
 	margin: 0px;
 	margin-top: 20px;
+	color: #4d586f;
 }
 
 .more-icon {
 	font-size: 1.5rem;
 }
 
+.weather-datetime-wrapper > p {
+	margin: 0px;
+	padding: 10px 0px;
+}
+
 .weather-wrapper {
-	border: 1px solid black;
+	// border: 1px solid black;
 	width: 100%;
 	// height: 200px;
 	// background-color: rgb(48,48,48);
 	border-radius: 10px;
-	border: 1px solid rgb(48, 48, 48);
+	color: #4d586f;
+	background-color: #f7f9fc;
 }
 
 .addition-info-wrapper {
@@ -455,6 +462,7 @@ onMounted(() => {
 .addition-content {
 	padding-top: 5px;
 	padding-left: 10px;
+	color: #4d586f;
 }
 
 .weather-wrapper > p {
@@ -515,6 +523,7 @@ onMounted(() => {
 	border-radius: 10px;
 	background-color: white;
 	border: 1px solid rgb(48, 48, 48);
+	color: #4d586f;
 }
 
 .fortune-modal-close {
