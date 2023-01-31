@@ -74,7 +74,7 @@ const authHeader = (req: AxiosRequestConfig) => {
 
 const onRequest = async () => {
 	await updateToken();
-	router.go(0);
+	// router.go(0);
 };
 
 const updateToken = async () => {
@@ -86,7 +86,19 @@ const updateToken = async () => {
 		await authStore.setUserInfo(result);
 
 		return result;
-	} catch {}
+	} catch (error: any) {
+		router.push('/login');
+
+		const notify: Notification = {
+			caption: '토큰이 만료되었습니다. 다시 로그인해주세요!',
+			type: 'negative',
+			icon: 'warning',
+			classes: 'app-notify',
+			timeout: 500,
+		};
+
+		Notify.create(notify);
+	}
 };
 
 const errorStatus = (response: AxiosResponse) => {
