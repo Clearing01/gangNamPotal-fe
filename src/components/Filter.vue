@@ -205,6 +205,7 @@ onMounted(() => {
 	width: 100%;
 	padding: 16px 24px;
 	.filter-container {
+		border: none;
 		display: inline-block;
 		vertical-align: top;
 		margin-left: 20px;

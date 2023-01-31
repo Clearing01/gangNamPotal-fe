@@ -6,7 +6,7 @@ class hrService {
 	}
 
 	static async getTeamList() {
-		return api.get('/hr/teamList');
+		return api.get('/hr/teams');
 	}
 
 	static async getDeptList(departmentVO: any) {
@@ -23,6 +23,10 @@ class hrService {
 
 	static async updateInfo(nameEn: string, phone: string, address: string) {
 		return api.put('/hr/info', { nameEn: nameEn, phone: phone, address: address });
+	}
+
+	static async getNames() {
+		return api.get('/hr/names');
 	}
 
 	static async insertStartCommute(date: any) {

@@ -2,7 +2,15 @@
 	<div class="app-pageheader">
 		<span class="main-title">대시보드</span>
 		<div class="filter-container">
-			<q-select :options="filter" v-model="selectFilter.param" @update:model-value="calendarFilter" />
+			<q-select
+				outlined
+				dense
+				:options="filter"
+				v-model="selectFilter.param"
+				@update:model-value="calendarFilter"
+				popup-content-class="app-dropbox"
+				class="app-input"
+			/>
 		</div>
 
 		<!-- <div class="btn-wrapper">
@@ -14,7 +22,14 @@
 			<div class="event-content">
 				<div class="circle" :style="{ background: arg.event.backgroundColor }"></div>
 				<div class="event-content-title">{{ arg.event.title }}</div>
-				<div class="event-content-name">&nbsp;&nbsp;{{ arg.event.extendedProps.name }}</div>
+				&nbsp;
+				<div class="event-content-name">
+					<q-icon name="icon-notifications-active" class="mr-8" />
+					<span class="startDate">{{ arg.event.extendedProps.startDate }}</span>
+					&nbsp;
+					<q-icon name="icon-notifications-paused" class="mr-8" />
+					<span class="endDate">{{ arg.event.extendedProps.endDate }}</span>
+				</div>
 			</div>
 		</template>
 	</FullCalendar>
@@ -96,10 +111,16 @@ onMounted(() => {
 });
 </script>
 
-<style scoped lang="scss">
-// .fc-daygrid-day-frame {
-// 	max-height: 50px;
-// }
+<style lang="scss">
+.filter-container {
+	// padding-inline: 10px;
+	width: 150px;
+}
+
+.main-title {
+	margin-right: 2%;
+}
+
 $fc-magin-top: 16px;
 
 .more-link {
@@ -137,6 +158,7 @@ $fc-magin-top: 16px;
 		font-size: 12px;
 		line-height: 16px;
 		color: #374155;
+		// color: #ef7c7c;
 	}
 }
 
@@ -348,9 +370,9 @@ $fc-magin-top: 16px;
 	}
 }
 
-tbody {
-	height: 700px;
-}
+// tbody {
+// 	height: 700px;
+// }
 
 // .fc-daygrid-day-top ::after {
 // 	margin-left: 35px;

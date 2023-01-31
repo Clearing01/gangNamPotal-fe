@@ -31,8 +31,9 @@
 		<div class="page-right-wrapper">
 			<div class="page-content-header flex justify-between items-center no-wrap">
 				<div class="page-content-title">
-					구성원<span>({{ tableDataSet.total }})</span>
+					<span>구성원 ({{ tableDataSet.total }})</span>
 				</div>
+				<q-space />
 				<q-input
 					class="app-input input-medium input-append-search-icon"
 					outlined
@@ -40,7 +41,7 @@
 					placeholder="이름을 검색하세요"
 					v-model="departmentVO.name"
 				/>
-				<q-btn class="app-btn btn-basic btn-primary" flat @click="clickFilter()">입력</q-btn>
+				<q-btn class="app-btn btn-basic btn-primary" flat @click="nameFilter()">입력</q-btn>
 			</div>
 			<Table :tableData="tableDataSet" @emitPageData="getDataByTable" />
 		</div>
@@ -133,6 +134,9 @@ const deptList = ref({
 });
 
 const getDataByTable = (emitData: any) => {
+	if (emitData.pageNumber > Math.ceil(tableDataSet.value.total / emitData.pageSize)) {
+		emitData.pageNumber = Math.ceil(tableDataSet.value.total / emitData.pageSize);
+	}
 	departmentVO.value.orderBy = emitData.orderBy;
 	departmentVO.value.pageNumber = emitData.pageNumber;
 	departmentVO.value.pageSize = emitData.pageSize;
@@ -143,6 +147,33 @@ const getDataByTable = (emitData: any) => {
 };
 
 const clickFilter = () => {
+	let list = deptList.value.list[0].children.map((v: any) => {
+		return v.label;
+	});
+	const selectValue = list.filter((v: any) => v === selectedMenu.value);
+
+	if (selectedMenu.value !== null) {
+		if (selectValue.length !== 0) {
+			departmentVO.value.department = '';
+			departmentVO.value.affiliation = selectedMenu.value;
+			if (selectedMenu.value === '개발 ') {
+				departmentVO.value.affiliation = '개발';
+			} else if (selectedMenu.value === 'QA ') {
+				departmentVO.value.affiliation = 'QA';
+			}
+		} else {
+			departmentVO.value.affiliation = '';
+			departmentVO.value.department = selectedMenu.value;
+			if (selectedMenu.value === '구성원') {
+				departmentVO.value.department = '';
+			}
+		}
+	}
+	departmentVO.value.name = '';
+	onRequest();
+};
+
+const nameFilter = () => {
 	let list = deptList.value.list[0].children.map((v: any) => {
 		return v.label;
 	});
@@ -250,12 +281,13 @@ onMounted(() => {
 
 .app-input {
 	width: 220px;
+	margin-right: 20px;
 }
 
 .app-table {
 	margin-bottom: 28px;
 }
-.page-content-title {
-	margin-right: 65%;
-}
+// .page-content-title {
+// 	margin-right: 65%;
+// }
 </style>

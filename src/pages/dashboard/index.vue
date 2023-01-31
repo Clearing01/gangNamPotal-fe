@@ -60,6 +60,7 @@ const onRequest = async () => {
 
 	commuteList.value = list.map((v: any) => {
 		const startDate = v.startDate.substring(11, 16);
+		const endDate = v.endDate.substring(11, 16);
 
 		return {
 			title: v.nameKr,
@@ -67,7 +68,8 @@ const onRequest = async () => {
 			start: v.registerDate,
 			end: v.endDate,
 			display: 'list-item',
-			name: startDate,
+			startDate: startDate,
+			endDate: endDate,
 		};
 	});
 };
@@ -104,7 +106,7 @@ const getCommuteList = async (filter: any, year: any, month: any) => {
 	margin-left: 2%;
 }
 .filter-container {
-	border: 1px solid rgba(231, 235, 243, 0.8);
+	border: none;
 	display: inline-block;
 	vertical-align: top;
 	margin-left: 20px;
@@ -112,5 +114,6 @@ const getCommuteList = async (filter: any, year: any, month: any) => {
 .dashboard-calendar-section {
 	padding: 1px 0;
 	height: 100vh;
+	border: none;
 }
 </style>

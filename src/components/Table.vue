@@ -2,7 +2,7 @@
 	<template v-if="propDataSet?.isAttendance">
 		<div class="table-header" :loading="loading">
 			<q-space></q-space>
-			<q-btn class="app-btn" color="grey" outline @click="excelDown"> Excel로 추출 </q-btn>
+			<q-btn class="app-btn" color="grey" outline @click="excelDown" :disable="lastPage === 0"> Excel로 추출 </q-btn>
 		</div>
 		<q-table
 			flat
@@ -77,7 +77,7 @@
 				<q-btn
 					class="app-btn btn-basic btn-ghost-black btn-small btn-only-icon"
 					flat
-					:disable="pagination.page === lastPage"
+					:disable="pagination.page === lastPage || lastPage === 0"
 					@click="emitPageData(pagination.page + 1)"
 				>
 					<em class="icon-chevron-right"></em>
@@ -86,7 +86,7 @@
 				<q-btn
 					class="app-btn btn-basic btn-ghost-black btn-only-icon btn-small"
 					flat
-					:disable="pagination.page === lastPage"
+					:disable="pagination.page === lastPage || lastPage === 0"
 					@click="emitPageData(lastPage)"
 				>
 					<em class="icon-last-page"></em>
@@ -95,15 +95,13 @@
 			<div class="page-option flex items-center">
 				<q-select
 					class="app-input input-select input-small"
-					:error="pagination.state.error.off"
-					:disable="pagination.state.disable.off"
-					:readonly="pagination.state.readonly.off"
 					outlined
 					dropdown-icon="icon-keyboard-arrow-down"
 					v-model="pagination.rowsPerPage"
 					:options="pagination.option"
 					popup-content-class="select-popup small-select-popup"
 					@update:model-value="updatePage"
+					:disable="lastPage === 0"
 				>
 					<template v-slot:selected>
 						<template v-if="pagination.rowsPerPage">
@@ -112,11 +110,10 @@
 						<template v-else> 선택하세요 </template>
 					</template>
 				</q-select>
-				Page
 			</div>
 		</div>
 
-		<q-dialog v-model="commuteUpdateModal" persistent>
+		<q-dialog v-model="commuteUpdateModal" persistent class="dialog-wrapper">
 			<q-card>
 				<q-card-section class="row items-center">
 					<p class="q-ml-sm">출퇴근시간 변경</p>
@@ -168,7 +165,13 @@
 				</q-card-section>
 
 				<q-card-actions align="right">
-					<q-btn flat label="등록" color="primary" @click="updateAdminCommute" />
+					<q-btn
+						flat
+						label="등록"
+						color="primary"
+						@click="updateAdminCommute"
+						:disabled="input.duration.to.length === 0 || employeeData.startDate.length < 5 || employeeData.endDate.length < 5"
+					/>
 					<q-btn flat label="취소" color="primary" v-close-popup />
 				</q-card-actions>
 			</q-card>
@@ -207,7 +210,7 @@
 					<q-td v-for="col in props.cols" :key="col.name" :props="props">
 						<template v-if="col.label == '이메일'">
 							<template v-if="col.value.length > 1">
-								<p class="email-info-wrapper" @click="">{{ col.value[0] }} ...</p>
+								<p class="email-info-wrapper">{{ col.value[0] }} ...</p>
 								<!-- 이메일 div 표시 -->
 								<p class="email-hidden-info-wrapper">
 									<template v-for="email in col.value" :key="email">
@@ -275,9 +278,6 @@
 			<div class="page-option flex items-center">
 				<q-select
 					class="app-input input-select input-small"
-					:error="pagination.state.error.off"
-					:disable="pagination.state.disable.off"
-					:readonly="pagination.state.readonly.off"
 					outlined
 					dropdown-icon="icon-keyboard-arrow-down"
 					v-model="pagination.rowsPerPage"
@@ -292,7 +292,6 @@
 						<template v-else> 선택하세요 </template>
 					</template>
 				</q-select>
-				Page
 			</div>
 		</div>
 	</template>
@@ -339,20 +338,6 @@ const pagination = ref({
 	rowsPerPage: 10,
 	option: [2, 5, 10, 20, 50],
 	rowsNumber: propDataSet.value?.pageSize,
-	state: {
-		error: {
-			on: true,
-			off: false,
-		},
-		disable: {
-			on: true,
-			off: false,
-		},
-		readonly: {
-			on: true,
-			off: false,
-		},
-	},
 });
 
 const input = ref({
@@ -430,12 +415,17 @@ const updatePage = () => {
 };
 
 const updateModal = (flag: any, value: any) => {
+	const startDate = value.row.startDate;
+	const endDate = value.row.endDate;
+
 	commuteUpdateModal.value = flag;
 	employeeData.value.id = value.row.commuteId;
 	employeeData.value.nameKr = value.row.nameKr;
 	employeeData.value.registerDate = value.row.registerDate;
-	employeeData.value.startDate = value.row.startDate;
-	employeeData.value.endDate = value.row.endDate;
+	employeeData.value.startDate = startDate.substring(11, startDate.length);
+	employeeData.value.endDate = endDate.substring(11, endDate.length);
+
+	console.log(employeeData.value);
 };
 
 // 적용될 컬럼
@@ -477,7 +467,7 @@ const updateAdminCommute = async () => {
 			type: 'positive',
 			icon: 'info',
 			classes: 'app-notify',
-			timeout: 3,
+			timeout: 500,
 		};
 
 		uiStore.showNotification(notify);
@@ -508,7 +498,6 @@ const excelDown = async () => {
 				퇴근시간: v.endDate,
 			};
 		});
-		console.log(list);
 
 		const data = list;
 		const excelData = utils.json_to_sheet(data);
@@ -516,6 +505,16 @@ const excelDown = async () => {
 		const workBook = utils.book_new();
 		utils.book_append_sheet(workBook, excelData, `출퇴근현황(${propDataSet.value?.startDate} ~ ${propDataSet.value?.endDate})`);
 		writeFile(workBook, `출퇴근현황(${propDataSet.value?.startDate} ~ ${propDataSet.value?.endDate}).xlsx`);
+
+		let notify = {
+			caption: response.data.message,
+			type: 'positive',
+			icon: 'info',
+			classes: 'app-notify',
+			timeout: 500,
+		};
+
+		uiStore.showNotification(notify);
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();
@@ -531,9 +530,21 @@ const splitEmail = (email: any) => {
 		return emails[0] + ' ...';
 	}
 };
+
+onMounted(() => {
+	uiStore.emitter.on('update', (msg) => {
+		updatePage();
+	});
+});
 </script>
 
 <style scoped lang="scss">
+.dialog-wrapper {
+	.app-input,
+	.app-input-picker {
+		margin-top: 10px;
+	}
+}
 .email-info-wrapper {
 	cursor: pointer;
 	margin: 0px;
@@ -612,3 +623,5 @@ const splitEmail = (email: any) => {
   background: red;
 } */
 </style>
+
+function created() { throw new Error('Function not implemented.'); }

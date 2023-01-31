@@ -1,6 +1,10 @@
 <template>
 	<q-drawer side="left" bordered class="app-menu-wrapper" :width="200" :breakpoint="500" show-if-above>
 		<ProfileBox />
+		<div class="btn-wrapper">
+			<q-btn class="app-btn btn-basic btn-primary start" flat @click="startShowValue(true)">출근</q-btn>
+			<q-btn class="app-btn btn-basic btn-primary end" flat @click="endShowValue(true)">퇴근</q-btn>
+		</div>
 		<q-separator class="app-divider" />
 		<BaseDrawer />
 		<q-separator class="app-divider" />
@@ -9,14 +13,6 @@
 			<div class="menu-title logout">
 				<q-icon name="icon-login" class="mr-8" />
 				로그아웃
-			</div>
-		</div>
-		<div>
-			<div class="button-wrapper start">
-				<q-btn class="app-btn btn-basic btn-primary" flat @click="startShowValue(true)">출근</q-btn>
-			</div>
-			<div class="button-wrapper end">
-				<q-btn class="app-btn btn-basic btn-primary" flat @click="endShowValue(true)">퇴근</q-btn>
 			</div>
 		</div>
 
@@ -361,16 +357,16 @@ onMounted(() => {
 	margin-bottom: 30px;
 }
 
-.start {
-	.app-btn {
-		width: 100%;
-		margin-bottom: 10px;
+.btn-wrapper {
+	display: flex;
+	margin: 0px;
+	.start {
+		width: 48%;
+		margin-right: 1%;
 	}
-}
 
-.end {
-	.app-btn {
-		width: 100%;
+	.end {
+		width: 48%;
 		background: rgb(236, 7, 7);
 		&:hover {
 			background: rgb(194, 45, 45);

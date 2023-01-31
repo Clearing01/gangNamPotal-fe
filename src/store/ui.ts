@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 import { Loading } from 'quasar';
 import { Notify } from 'quasar';
+import mitt from 'mitt';
+
+const emitter = mitt();
 
 interface Dialog {
 	show?: boolean;
@@ -19,16 +22,13 @@ interface Notification {
 
 export const useUiStore = defineStore('ui', {
 	state: () => ({
+		emitter: emitter,
 		drawer: true,
 		start: false,
 		end: false,
 		currentDate: '',
 		dateString: '',
 		timeString: '',
-		img: '',
-		name: '',
-		department: '',
-		rank: '',
 		dialog: {
 			show: false,
 			code: '',
@@ -40,7 +40,7 @@ export const useUiStore = defineStore('ui', {
 			type: '',
 			icon: '',
 			classes: '',
-			timeout: 3,
+			timeout: 500,
 		} as Notification,
 	}),
 	getters: {
