@@ -43,9 +43,11 @@ import momentPlugin from '@fullcalendar/moment';
 import { computed, onMounted, ref } from 'vue';
 import { Moment } from '@/composables/util';
 import moment from 'moment';
+import { useUiStore } from '@/store/ui';
 
 const props = defineProps({ commuteList: Array });
 const propDataSet = computed(() => props.commuteList);
+const uiStore = useUiStore();
 
 const emit = defineEmits(['emitCalendar']);
 
@@ -108,6 +110,9 @@ const calendarFilter = () => {
 };
 onMounted(() => {
 	calendarFilter();
+	uiStore.emitter.on('update', () => {
+		calendarFilter();
+	});
 });
 </script>
 
@@ -158,7 +163,7 @@ $fc-magin-top: 16px;
 		font-size: 12px;
 		line-height: 16px;
 		color: #374155;
-		// color: #ef7c7c;
+		// color: #ef7c7c; fc-scroller fc-scroller-liquid-absolute
 	}
 }
 
@@ -276,6 +281,7 @@ $fc-magin-top: 16px;
 						justify-content: flex-start;
 						height: 134px;
 						font-family: $font-family;
+						overflow: hidden;
 
 						.fc-daygrid-day-top {
 							flex-direction: row;
