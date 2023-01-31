@@ -212,13 +212,13 @@ const tableDataSet = ref({
 			align: 'center',
 			label: '날짜',
 			field: 'registerDate',
-			headerStyle: '',
+			headerStyle: 'width:260px',
 			style: '',
 			classes: 'app-fw-6',
 		},
-		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr' },
-		{ name: 'startDate', align: 'center', label: '출근시간', field: 'startDate', headerStyle: '', style: '', classes: '' },
-		{ name: 'endDate', align: 'center', label: '퇴근시간', field: 'endDate', headerStyle: '', style: '', classes: '' },
+		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', style: 'width:215px' },
+		{ name: 'startDate', align: 'center', label: '출근시간', field: 'startDate', headerStyle: '', style: 'width:387px', classes: '' },
+		{ name: 'endDate', align: 'center', label: '퇴근시간', field: 'endDate', headerStyle: '', style: 'width:387px', classes: '' },
 	],
 });
 

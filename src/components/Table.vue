@@ -445,7 +445,7 @@ const updateModal = (flag: any, value: any) => {
 
 // 적용될 컬럼
 const defaultColumnList = ref([
-	{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', headerStyle: '', style: '', classes: 'app-fw-6' },
+	{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', headerStyle: '', style: '51', classes: 'app-fw-6' },
 	{ name: 'rank', align: 'center', label: '직급', field: 'rank', headerStyle: '', style: '', classes: '' },
 	{ name: 'affi', align: 'center', label: '소속', field: 'dept', headerStyle: '', style: '', classes: '' },
 	{ name: 'dept', align: 'center', label: '부서', field: 'team', headerStyle: '', style: '', classes: '' },
@@ -511,6 +511,7 @@ const excelDown = async () => {
 				요일: v.dayOfTheWeek,
 				출근시간: v.startDate,
 				퇴근시간: v.endDate,
+				총근무시간: v.totalCommuteTime,
 			};
 		});
 
@@ -533,16 +534,6 @@ const excelDown = async () => {
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();
-	}
-};
-
-const splitEmail = (email: any) => {
-	const emails = email.split(',');
-
-	if (emails.length === 1) {
-		return email;
-	} else {
-		return emails[0] + ' ...';
 	}
 };
 
@@ -576,7 +567,13 @@ onMounted(() => {
 	border-radius: 5px;
 	color: #ffffff;
 	display: none;
+	z-index: 1;
 	// visibility: none;
+}
+
+.email-hidden-info-wrapper:hover {
+	display: block;
+	position: absolute;
 }
 .email-info-wrapper:hover + .email-hidden-info-wrapper {
 	display: block;

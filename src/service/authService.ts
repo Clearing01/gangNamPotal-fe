@@ -45,6 +45,16 @@ const authService = {
 		}
 		return response;
 	},
+	async logout(accesstoken: any) {
+		let response;
+
+		try {
+			response = await api.get('/auth/logout');
+		} catch (e) {
+			return e;
+		}
+		return response;
+	},
 };
 
 export default authService;
