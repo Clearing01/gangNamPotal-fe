@@ -21,13 +21,8 @@ import router from '@/router';
 const props = defineProps({ parentMenu: Object, isShow: Boolean });
 const parentMenu = computed(() => props.parentMenu?.children);
 const isShow = computed(() => props.isShow);
-const emit = defineEmits(['emitDrawer']);
 
 const handlePageMove = (currentMenu: any) => {
-	emit('emitDrawer', {
-		isShow: currentMenu.path,
-	});
-
 	router.push(currentMenu.path);
 };
 </script>

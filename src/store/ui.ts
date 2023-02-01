@@ -22,6 +22,8 @@ interface Notification {
 
 export const useUiStore = defineStore('ui', {
 	state: () => ({
+		dataReload: false,
+		selectMenu: '',
 		emitter: emitter,
 		drawer: true,
 		start: false,
