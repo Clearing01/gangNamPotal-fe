@@ -10,7 +10,7 @@
 		<Table :tableData="tableDataSet" @emitPageData="getDataByTable" />
 	</div>
 
-	<q-dialog v-model="commuteInsertModal" persistent class="dialog-wrapper">
+	<q-dialog v-model="commuteInsertModal" class="dialog-wrapper">
 		<q-card>
 			<q-card-section class="row items-center">
 				<p class="q-ml-sm">출퇴근시간 등록</p>

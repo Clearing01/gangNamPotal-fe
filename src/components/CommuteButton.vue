@@ -1,5 +1,5 @@
 <template>
-	<q-dialog v-model="uiStore.start" persistent>
+	<q-dialog v-model="uiStore.start">
 		<q-card>
 			<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="60%" viewBox="0 0 24 24" width="100%" fill="#000000">
 				<path d="M0 0h24v24H0z" fill="none" />
@@ -22,7 +22,7 @@
 		</q-card>
 	</q-dialog>
 
-	<q-dialog v-model="uiStore.end" persistent>
+	<q-dialog v-model="uiStore.end">
 		<q-card>
 			<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="60%" viewBox="0 0 24 24" width="100%" fill="#000000">
 				<path d="M0 0h24v24H0z" fill="none" />

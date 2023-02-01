@@ -1,15 +1,12 @@
 <template>
 	<div class="dashboard-calendar-section">
-		<!-- <div class="app-pageheader">
-			<span class="main-title">대쉬보드</span>
-		</div> -->
 		<Calendar :commuteList="commuteList" @emitCalendar="getDataByCalendar" />
 	</div>
 </template>
 
 <script lang="ts" setup>
 import Calendar from '@/components/Calendar.vue';
-import { ref } from '@vue/reactivity';
+import { ref } from 'vue';
 import { useUiStore } from '@/store/ui';
 import dashBoardService from '@/service/dashBoardService';
 import { onMounted } from 'vue-demi';
