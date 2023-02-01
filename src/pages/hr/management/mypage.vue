@@ -279,8 +279,18 @@ import hrService from '@/service/hrService';
 const uiStore = useUiStore();
 const buttonValue = ref(true);
 
+const updateValue = ref(false);
+
 const showButton = (flag: boolean) => {
 	buttonValue.value = flag;
+
+	if (flag === false) {
+		isUpdateMode();
+	}
+};
+
+const isUpdateMode = () => {
+	updateValue.value = !updateValue.value;
 };
 
 const employeeData = ref({
@@ -386,8 +396,6 @@ const sampleSelectData = ref({
 
 const onRequest = async () => {
 	await updateInfo(employeeData.value.nameEn, employeeData.value.phone, employeeData.value.address);
-	onMypage();
-	showButton(true);
 };
 
 const updateInfo = async (nameEn: string, phone: string, address: string) => {
@@ -397,7 +405,11 @@ const updateInfo = async (nameEn: string, phone: string, address: string) => {
 		const result = response.status;
 
 		successNotify(response.data.message);
+		showButton(true);
+		isUpdateMode();
+		onMypage();
 	} catch (error: any) {
+		updateValue.value = false;
 	} finally {
 		uiStore.hideLoading();
 	}

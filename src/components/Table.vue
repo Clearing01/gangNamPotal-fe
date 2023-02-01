@@ -488,10 +488,10 @@ const updateAdminCommute = async () => {
 		uiStore.showNotification(notify);
 		updatePage();
 		router.push('/attendance');
+		commuteUpdateModal.value = false;
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();
-		commuteUpdateModal.value = false;
 	}
 };
 

@@ -336,10 +336,10 @@ const insertAdminCommute = async () => {
 		};
 
 		uiStore.showNotification(notify);
+		commuteInsertModal.value = false;
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();
-		commuteInsertModal.value = false;
 	}
 };
 </script>
