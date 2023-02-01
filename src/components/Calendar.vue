@@ -40,7 +40,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import momentPlugin from '@fullcalendar/moment';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { Moment } from '@/composables/util';
 import moment from 'moment';
 import { useUiStore } from '@/store/ui';
@@ -109,11 +109,17 @@ const calendarFilter = () => {
 		month: month,
 	});
 };
+
+watch(
+	() => uiStore.dataReload,
+	() => {
+		if (uiStore.dataReload) calendarFilter();
+		uiStore.dataReload = false;
+	}
+);
+
 onMounted(() => {
 	calendarFilter();
-	uiStore.emitter.on('update', () => {
-		calendarFilter();
-	});
 });
 </script>
 

@@ -121,7 +121,7 @@
 			</div>
 		</div>
 
-		<q-dialog v-model="commuteUpdateModal" persistent class="dialog-wrapper">
+		<q-dialog v-model="commuteUpdateModal" class="dialog-wrapper">
 			<q-card>
 				<q-card-section class="row items-center">
 					<p class="q-ml-sm">출퇴근시간 변경</p>
@@ -315,7 +315,7 @@
 
 <script setup lang="ts">
 import router from '@/router';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useUiStore } from '@/store/ui';
 import attendanceService from '@/service/attendanceService';
 import { useAuthStore } from '@/store/auth';
@@ -423,6 +423,8 @@ const emitPageData = (page: any) => {
 };
 
 const updatePage = () => {
+	uiStore.dataReload = false;
+	uiStore.dataReload = true;
 	emit('emitPageData', {
 		pageNumber: pagination.value.page, //page
 		pageSize: pagination.value.rowsPerPage,
@@ -537,13 +539,17 @@ const excelDown = async () => {
 	}
 };
 
+watch(
+	() => uiStore.dataReload,
+	() => {
+		if (uiStore.dataReload) updatePage();
+		uiStore.dataReload = false;
+	}
+);
+
 onMounted(() => {
 	uiStore.emitter.on('filter', () => {
 		pagination.value.page = 1;
-	});
-
-	uiStore.emitter.on('update', () => {
-		updatePage();
 	});
 });
 </script>
