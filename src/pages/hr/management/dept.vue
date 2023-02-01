@@ -84,10 +84,10 @@ const tableDataSet = ref({
 
 	columnList: [
 		// 테이블 컬럼정보 정의 및 커스텀
-		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr' },
-		{ name: 'rank', align: 'center', label: '직급', field: 'rank' },
-		{ name: 'affiliation', align: 'center', label: '소속', field: 'affiliation' },
-		{ name: 'department', align: 'center', label: '부서', field: 'department' },
+		{ name: 'nameKr', align: 'center', label: '이름', field: 'nameKr', style: 'width:520px' },
+		{ name: 'rank', align: 'center', label: '직급', field: 'rank', style: 'width:520px' },
+		{ name: 'affiliation', align: 'center', label: '소속', field: 'affiliation', style: 'width:520px' },
+		{ name: 'department', align: 'center', label: '부서', field: 'department', style: 'width:520px' },
 	],
 	sortKey: {
 		nameKr: 'nameKr',
