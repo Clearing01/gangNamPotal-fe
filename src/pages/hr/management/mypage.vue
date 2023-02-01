@@ -37,9 +37,7 @@
 								<div class="app-input-wrapper">
 									<q-input class="app-input" outlined v-model="employeeData.nameKr" readonly />
 									<div class="hint-text-wrapper">
-										<div class="hint-text">
-											<!-- checkErrorNameKr -->
-										</div>
+										<div class="hint-text"></div>
 										<div class="num-text"></div>
 									</div>
 								</div>
@@ -55,9 +53,7 @@
 									</template>
 
 									<div class="hint-text-wrapper">
-										<div class="hint-text">
-											<!-- checkErrorNameEn -->
-										</div>
+										<div class="hint-text"></div>
 										<div class="num-text"></div>
 									</div>
 								</div>
@@ -85,7 +81,7 @@
 								/>
 							</div>
 							<div class="row-info">
-								<div class="info-title">연락처<span class="aster">*</span></div>
+								<div class="info-title">연락처<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
 									<template v-if="buttonValue">
 										<q-input class="app-input" outlined v-model="employeeData.phone" mask="###-####-####" readonly />
@@ -102,7 +98,7 @@
 								</div>
 							</div>
 							<div class="row-info address-info">
-								<div class="info-title">주소<span class="aster">*</span></div>
+								<div class="info-title">주소<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
 									<template v-if="buttonValue">
 										<q-input
