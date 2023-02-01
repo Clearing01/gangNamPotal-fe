@@ -391,7 +391,7 @@ onMounted(() => {
 
 .weather-display-info {
 	cursor: pointer;
-	font-size: 13px;
+	font-size: 14px;
 	margin: 0px;
 	margin-top: 20px;
 	color: #4d586f;
@@ -407,13 +407,13 @@ onMounted(() => {
 }
 
 .weather-wrapper {
-	// border: 1px solid black;
+	border: 1px solid grey;
 	width: 100%;
 	// height: 200px;
 	// background-color: rgb(48,48,48);
 	border-radius: 10px;
 	color: #4d586f;
-	background-color: #f7f9fc;
+	// background-color: #f7f9fc;
 }
 
 .addition-info-wrapper {
@@ -435,12 +435,14 @@ onMounted(() => {
 .subway-body-content {
 	padding-top: 10px;
 	padding-bottom: 15px;
+	font-size: 14px;
 	text-align: center;
-	border-top: 1px solid black;
+	border-top: 1px solid grey;
 }
 
 .subway-body-content > p {
 	margin: 0px;
+	font-size: 14px;
 }
 
 .subway-direction {
@@ -479,6 +481,7 @@ onMounted(() => {
 
 .refresh-icon {
 	font-size: 1rem;
+	color: grey;
 	cursor: pointer;
 }
 
@@ -491,6 +494,7 @@ onMounted(() => {
 .weather-temperature {
 	padding-left: 10px;
 	padding-top: 7px;
+	font-size: 14px;
 	text-align: center;
 	width: 90px;
 }
@@ -511,7 +515,7 @@ onMounted(() => {
 	justify-content: center;
 	text-align: center;
 
-	padding-top: 10px;
+	// padding-top: 10px;
 	font-size: 0.8rem;
 }
 .weather-addition {

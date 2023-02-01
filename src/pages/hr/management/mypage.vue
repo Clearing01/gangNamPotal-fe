@@ -286,6 +286,8 @@ const showButton = (flag: boolean) => {
 
 	if (flag === false) {
 		isUpdateMode();
+	} else {
+		onMypage();
 	}
 };
 
