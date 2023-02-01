@@ -183,12 +183,11 @@ $fc-magin-top: 16px;
 
 .fc ::v-deep {
 	height: calc(100% - #{$fc-magin-top});
-
 	//toolbar 영역
 	.fc-toolbar.fc-header-toolbar {
-		height: 56px;
+		height: 30px;
 		padding: 12px 24px;
-		margin-bottom: 0;
+		margin-bottom: 12px;
 		.fc-toolbar-title {
 			font-family: $font-family;
 			font-size: $font-20;
@@ -227,7 +226,6 @@ $fc-magin-top: 16px;
 	//table 영역
 	.fc-scrollgrid {
 		border: none;
-
 		//table-header 영역
 		.fc-col-header {
 			border: none;
