@@ -126,9 +126,6 @@
 				<template v-if="isShowSubway">
 					<div class="addition-info-wrapper">
 						<div class="weather-wrapper">
-							<!-- <q-icon name="subway" class="addition-icon"/>
-							<span class="addition-content">강남역 지하철</span> -->
-
 							<div class="weather-datetime-wrapper">
 								<p>
 									{{ subwayInfoList.baseDateTime }} 기준
@@ -137,11 +134,13 @@
 							</div>
 
 							<div class="subway-body-wrapper">
-								<template v-for="subwayInfo in subwayInfoList.subwayInfo">
+								<template v-for="subwayInfo in subwayList" :key="subwayInfo.direction">
 									<div class="subway-body-content">
 										<template v-if="subwayInfo.direction !== '없음'">
 											<p class="subway-direction">{{ subwayInfo.direction }}</p>
-											<p>{{ subwayInfo.time }}</p>
+											<template v-for="arriveTime in subwayInfo.time" :key="arriveTime">
+												<p>{{ arriveTime }}</p>
+											</template>
 										</template>
 										<template v-else>
 											<p>없음</p>
@@ -190,6 +189,7 @@ import { useUiStore } from '@/store/ui';
 import { useAuthStore } from '@/store/auth';
 import etcService from '@/service/etcService';
 import authService from '@/service/authService';
+import _ from 'lodash';
 
 const authStore = useAuthStore();
 const uiStore = useUiStore();
@@ -198,6 +198,7 @@ const fortuneMessageModal = ref(false);
 
 const isShowWeather = ref(false);
 const isShowSubway = ref(false);
+const subwayList: any = ref([]);
 
 const fortuneMessage = ref({
 	isOpened: false,
@@ -296,11 +297,32 @@ const getSubwayInfo = async () => {
 
 		subwayInfoList.value = result;
 
+		setSubwayList();
 		return result;
 	} catch (error: any) {
 	} finally {
 		uiStore.hideLoading();
 	}
+};
+
+const setSubwayList = () => {
+	let list = _.cloneDeep(subwayInfoList.value.subwayInfo);
+	let cloneList: any = [];
+
+	const set = new Set(list.map((station) => station.direction));
+
+	const directionList = [...set];
+
+	directionList.forEach((direction) => {
+		const timeList = list.filter((obj) => obj.direction === direction).map((obj) => obj.time);
+
+		cloneList.push({
+			direction,
+			time: timeList,
+		});
+	});
+
+	subwayList.value = cloneList;
 };
 
 const onRequest = async () => {
