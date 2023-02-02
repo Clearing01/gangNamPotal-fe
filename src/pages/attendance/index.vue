@@ -239,8 +239,6 @@ const filterDataSet = ref({
 			label: '이름',
 		},
 	],
-	nameList: filterNameList,
-	employeeList: employeeList,
 });
 
 const getDataByFilter = (emitData: any) => {

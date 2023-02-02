@@ -75,7 +75,7 @@
 						<div class="filter-title mr-10">이름</div>
 						<div>
 							<q-select
-								:options="nameList"
+								:options="filterNameList"
 								v-model="input.string"
 								class="app-input input-medium input-select"
 								outlined
@@ -99,10 +99,15 @@
 import { onMounted, computed, ref } from 'vue';
 import { Moment } from '@/composables/util';
 import { useUiStore } from '@/store/ui';
+import hrService from '@/service/hrService';
 
 const props = defineProps({ filterData: Object });
 const emit = defineEmits(['emitManageMent', 'emitAttendance']);
 const propDataSet = computed(() => props.filterData);
+
+const employeeList = ref([]);
+const nameList = ref([]);
+const filterNameList = ref([]);
 
 const uiStore = useUiStore();
 
@@ -120,9 +125,6 @@ const input = ref({
 		to: '',
 	},
 });
-
-const nameList = computed(() => propDataSet.value?.nameList);
-const employeeList = computed(() => propDataSet.value?.employeeList);
 
 const getDateView = (startDt: string, endDt: string) => {
 	let result;
@@ -167,8 +169,6 @@ const manageMentFilter = () => {
 };
 
 const attendanceFilter = () => {
-	const nameVo = employeeList.value.filter((v: any) => v.name === input.value.string);
-
 	if (input.value.string === '전체' || input.value.string === null) {
 		emit('emitAttendance', {
 			startDate: input.value.duration.from,
@@ -177,10 +177,13 @@ const attendanceFilter = () => {
 		});
 		return;
 	}
+
+	const nameVo: any = employeeList.value.filter((v: any) => v.name === input.value.string);
+
 	emit('emitAttendance', {
 		startDate: input.value.duration.from,
 		endDate: input.value.duration.to,
-		employeeId: nameVo[0]?.employeeId,
+		employeeId: nameVo[0].employeeId,
 	});
 	uiStore.emitter.emit('filter', true);
 };
@@ -198,10 +201,41 @@ const today = () => {
 	input.value.duration.to = dateString;
 };
 
+const setNameList = async () => {
+	const list = await getNameList();
+	let filterList: any = [];
+
+	employeeList.value = list;
+	nameList.value = list.map((v: any) => {
+		return v.name;
+	});
+
+	filterList = list.map((v: any) => {
+		return v.name;
+	});
+	filterList.unshift('전체');
+
+	filterNameList.value = filterList;
+};
+
+const getNameList = async () => {
+	await uiStore.showLoading();
+	try {
+		const response = await hrService.getNames();
+		const result = response.data.data;
+
+		return result;
+	} catch (error: any) {
+	} finally {
+		uiStore.hideLoading();
+	}
+};
+
 onMounted(() => {
 	today();
 	manageMentFilter();
 	attendanceFilter();
+	setNameList();
 });
 </script>
 
