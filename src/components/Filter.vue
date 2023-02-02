@@ -74,7 +74,15 @@
 					<div class="flex items-center">
 						<div class="filter-title mr-10">이름</div>
 						<div>
-							<q-input class="app-input input-medium" outlined placeholder="입력하세요" v-model="input.string" />
+							<q-select
+								:options="nameList"
+								v-model="input.string"
+								class="app-input input-medium input-select"
+								outlined
+								dropdown-icon="icon-keyboard-arrow-down"
+								label="선택하세요"
+								popup-content-class="select-popup"
+							/>
 						</div>
 					</div>
 				</div>
@@ -104,7 +112,7 @@ const manageMentFilterValue = ref({
 });
 
 const input = ref({
-	string: '',
+	string: '전체',
 	selectList: [],
 	inputDuration: '',
 	duration: {
@@ -112,6 +120,9 @@ const input = ref({
 		to: '',
 	},
 });
+
+const nameList = computed(() => propDataSet.value?.nameList);
+const employeeList = computed(() => propDataSet.value?.employeeList);
 
 const getDateView = (startDt: string, endDt: string) => {
 	let result;
@@ -156,10 +167,20 @@ const manageMentFilter = () => {
 };
 
 const attendanceFilter = () => {
+	const nameVo = employeeList.value.filter((v: any) => v.name === input.value.string);
+
+	if (input.value.string === '전체' || input.value.string === null) {
+		emit('emitAttendance', {
+			startDate: input.value.duration.from,
+			endDate: input.value.duration.to,
+			employeeId: 0,
+		});
+		return;
+	}
 	emit('emitAttendance', {
 		startDate: input.value.duration.from,
 		endDate: input.value.duration.to,
-		name: input.value.string,
+		employeeId: nameVo[0]?.employeeId,
 	});
 	uiStore.emitter.emit('filter', true);
 };

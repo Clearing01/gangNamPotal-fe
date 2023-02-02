@@ -16,8 +16,16 @@
 				<p class="q-ml-sm">출퇴근시간 등록</p>
 			</q-card-section>
 			<q-card-section>
-				이름 <q-select class="selectBox" :options="nameList" v-model="commuteRegisterDTO.name" label="이름을 입력하세요" />
-				<!-- 이름 <q-input class="app-input input-medium" v-model="commuteRegisterDTO.employeeId" outlined placeholder="입력하세요" /> -->
+				이름
+				<q-select
+					:options="nameList"
+					v-model="commuteRegisterDTO.name"
+					class="app-input input-medium input-select"
+					outlined
+					dropdown-icon="icon-keyboard-arrow-down"
+					label="선택하세요"
+					popup-content-class="select-popup"
+				/>
 			</q-card-section>
 			<q-card-section>
 				출근일
@@ -112,6 +120,7 @@ const authStore = useAuthStore();
 const commuteInsertModal = ref(false);
 const employeeList = ref([]);
 const nameList = ref([]);
+const filterNameList = ref([]);
 
 const commuteRegisterDTO = ref({
 	employeeId: '',
@@ -134,7 +143,7 @@ const input = ref({
 const attendanceVO = ref({
 	startDate: '',
 	endDate: '',
-	name: '',
+	employeeId: 0,
 	orderBy: '',
 	pageNumber: '',
 	pageSize: '',
@@ -193,7 +202,6 @@ const endDurationPicker = (val: any) => {
 
 const insertModal = (flag: any) => {
 	commuteInsertModal.value = flag;
-	setNameList();
 };
 
 const tableDataSet = ref({
@@ -231,12 +239,14 @@ const filterDataSet = ref({
 			label: '이름',
 		},
 	],
+	nameList: filterNameList,
+	employeeList: employeeList,
 });
 
 const getDataByFilter = (emitData: any) => {
 	attendanceVO.value.startDate = emitData.startDate;
 	attendanceVO.value.endDate = emitData.endDate;
-	attendanceVO.value.name = emitData.name;
+	attendanceVO.value.employeeId = emitData.employeeId;
 	attendanceVO.value.pageNumber = '1';
 
 	tableDataSet.value.startDate = emitData.startDate;
@@ -283,11 +293,19 @@ const getCommuteList = async (attendanceVO: any) => {
 
 const setNameList = async () => {
 	const list = await getNameList();
+	let filterList: any = [];
 
 	employeeList.value = list;
 	nameList.value = list.map((v: any) => {
 		return v.name;
 	});
+
+	filterList = list.map((v: any) => {
+		return v.name;
+	});
+	filterList.unshift('전체');
+
+	filterNameList.value = filterList;
 };
 
 const getNameList = async () => {
@@ -342,6 +360,10 @@ const insertAdminCommute = async () => {
 		uiStore.hideLoading();
 	}
 };
+
+onMounted(() => {
+	setNameList();
+});
 </script>
 
 <style scoped lang="scss">
