@@ -40,9 +40,6 @@
 				<div class="img-wrapper">
 					<img src="../assets/images/kakao.png" alt="googleLogin" style="cursor: pointer" @click="kakaoLogin()" />
 				</div>
-
-				<!-- 로컬 테스트용 bypass 추가 - 09.01 임우송 -->
-				<q-btn class="app-btn btn-underline btn-reset-pw" flat @click="bypass()"> bypass </q-btn>
 			</div>
 		</div>
 	</div>
@@ -80,10 +77,6 @@ const kakaoLogin = async () => {
 	} finally {
 		uiStore.hideLoading();
 	}
-};
-
-const bypass = () => {
-	router.push('/index');
 };
 
 onMounted(() => {

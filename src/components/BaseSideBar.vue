@@ -137,7 +137,12 @@
 								<template v-for="subwayInfo in subwayList" :key="subwayInfo.direction">
 									<div class="subway-body-content">
 										<template v-if="subwayInfo.direction !== '없음'">
-											<p class="subway-direction">{{ subwayInfo.direction }}</p>
+											<template v-if="subwayInfo.direction === '교대방면' || subwayInfo.direction === '역삼방면'">
+												<p class="subway-direction station2">{{ subwayInfo.direction }}</p>
+											</template>
+											<template v-else>
+												<p class="subway-direction stationNew">{{ subwayInfo.direction }}</p>
+											</template>
 											<template v-for="arriveTime in subwayInfo.time" :key="arriveTime">
 												<p>{{ arriveTime }}</p>
 											</template>
@@ -381,11 +386,16 @@ const setShowSubway = () => {
 
 onMounted(() => {
 	getLocation();
-	// getSubwayInfo();
 });
 </script>
 
 <style scoped lang="scss">
+.station2 {
+	color: rgb(2, 139, 2);
+}
+.stationNew {
+	color: rgb(192, 73, 73);
+}
 .logout {
 	margin-bottom: 30px;
 }
