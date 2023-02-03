@@ -21,12 +21,12 @@
 		<template v-slot:eventContent="arg">
 			<div class="event-content">
 				<div class="circle" :style="{ background: arg.event.backgroundColor }"></div>
-				<div class="event-content-title">{{ arg.event.title }}</div>
-				&nbsp;
-				<div class="event-content-name">
+				<div class="event-content-title" style="width: 70px">{{ arg.event.title }}</div>
+				<div class="time-wrapper" style="width: 70px">
 					<q-icon name="icon-notifications-active" class="mr-8" />
 					<span class="startDate">{{ arg.event.extendedProps.startDate }}</span>
-					&nbsp;
+				</div>
+				<div class="time-wrapper">
 					<q-icon name="icon-notifications-paused" class="mr-8" />
 					<span class="endDate">{{ arg.event.extendedProps.endDate }}</span>
 				</div>
@@ -164,6 +164,7 @@ $fc-magin-top: 16px;
 
 .event-content {
 	display: flex;
+	// justify-content: space-between;
 	align-items: center;
 	.event-content-title {
 		padding-left: 6px;
