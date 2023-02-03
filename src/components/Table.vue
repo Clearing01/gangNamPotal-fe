@@ -32,9 +32,33 @@
 
 			<template v-slot:body="props" v-if="authStore.user.permission">
 				<q-tr class="cursor-pointer" :props="props">
-					<q-td v-for="col in props.cols" :key="col.name" :props="props" @click="updateModal(true, props)">
-						{{ col.value }}
-					</q-td>
+					<template v-if="props.row.holidayName === null">
+						<q-td v-for="col in props.cols" :key="col.name" :props="props" @click="updateModal(true, props)">
+							{{ col.value }}
+						</q-td>
+					</template>
+					<template v-else>
+						<template v-if="props.row.holidayName === '토요일'">
+							<q-td v-for="col in props.cols" :key="col.name" :props="props" @click="updateModal(true, props)">
+								<template v-if="col.field === 'registerDate'">
+									<div style="color: blue">{{ col.value }}</div>
+								</template>
+								<template v-else>
+									{{ col.value }}
+								</template>
+							</q-td>
+						</template>
+						<template v-else>
+							<q-td v-for="col in props.cols" :key="col.name" :props="props" @click="updateModal(true, props)">
+								<template v-if="col.field === 'registerDate'">
+									<div style="color: rgb(245, 70, 48)">{{ col.value }}</div>
+								</template>
+								<template v-else>
+									{{ col.value }}
+								</template>
+							</q-td>
+						</template>
+					</template>
 				</q-tr>
 			</template>
 
@@ -519,6 +543,12 @@ const excelDown = async () => {
 
 		const data = list;
 		const excelData = utils.json_to_sheet(data);
+		excelData['D2'].s = {
+			font: {
+				color: { rgb: 'FF0187FA' },
+				bold: true,
+			},
+		};
 
 		const workBook = utils.book_new();
 		utils.book_append_sheet(workBook, excelData, `출퇴근현황(${propDataSet.value?.startDate} ~ ${propDataSet.value?.endDate})`);
