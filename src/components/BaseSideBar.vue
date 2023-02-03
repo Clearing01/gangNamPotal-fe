@@ -28,88 +28,48 @@
 					날씨 정보
 				</p>
 
-				<template v-if="isShowWeather">
-					<div class="weather-wrapper">
-						<div class="weather-datetime-wrapper">
-							<p>
-								{{ weatherInfo.date }} {{ weatherInfo.time }}시 기준
-								<span @click="getLocation"><q-icon name="refresh" class="refresh-icon" /></span>
-							</p>
-						</div>
+				<q-card class="weather-wrapper">
+					<template v-if="isShowWeather">
+						<div class="">
+							<q-inner-loading
+								:showing="weatherVisible"
+								label="Please wait..."
+								label-class="text-teal"
+								label-style="font-size: 1.1em"
+								style="background-color: white; border-radius: 10px"
+							/>
+							<div class="weather-datetime-wrapper">
+								<p>
+									{{ weatherInfo.date }} {{ weatherInfo.time }}시 기준
+									<span @click="getLocation"><q-icon name="refresh" class="refresh-icon" /></span>
+								</p>
+							</div>
 
-						<div class="weather-temperature-wrapper">
-							<template v-if="weatherInfo.pty === '없음'">
-								<template v-if="weatherInfo.sky === '맑음'">
-									<template v-if="weatherInfo.isNight === false">
-										<img class="weather-image" src="https://i.ibb.co/LgXkhSb/image.png" alt="image" />
-									</template>
-									<template v-else>
-										<img class="weather-image" src="https://i.ibb.co/gvHbXf1/image.png" alt="image" />
-									</template>
-								</template>
-								<template v-else-if="weatherInfo.sky === '구름 많음'">
-									<template v-if="weatherInfo.isNight === false">
-										<img class="weather-image" src="https://i.ibb.co/MgwT2nM/image.png" alt="image" />
-									</template>
-									<template v-else>
-										<img class="weather-image" src="https://i.ibb.co/QrK4GTY/image.png" alt="image" />
-									</template>
-								</template>
-								<template v-else-if="weatherInfo.sky === '흐림'">
-									<template v-if="weatherInfo.isNight === false">
-										<img class="weather-image" src="https://i.ibb.co/V2PpgYC/image.png" alt="image" />
-									</template>
-									<template v-else>
-										<img class="weather-image" src="https://i.ibb.co/XbW2QMQ/image.png" alt="image" />
-									</template>
-								</template>
-							</template>
-							<template v-else-if="weatherInfo.pty === '비' || weatherInfo.pty === '소나기'">
-								<template v-if="weatherInfo.isNight === false">
-									<img class="weather-image" src="https://i.ibb.co/XXnTVcN/image.png" alt="image" />
-								</template>
-								<template v-else>
-									<img class="weather-image" src="https://i.ibb.co/bFK4jvL/image.png" alt="image" />
-								</template>
-							</template>
-							<template v-else-if="weatherInfo.pty === '비/눈'">
-								<template v-if="weatherInfo.isNight === false">
-									<img class="weather-image" src="https://i.ibb.co/nrMnnvt/image.png" alt="image" />
-								</template>
-								<template v-else>
-									<img class="weather-image" src="https://i.ibb.co/nj0T8zS/image.png" alt="image" />
-								</template>
-							</template>
-							<template v-else-if="weatherInfo.pty === '눈'">
-								<template v-if="weatherInfo.isNight === false">
-									<img class="weather-image" src="https://i.ibb.co/BNSkCWg/image.png" alt="image" />
-								</template>
-								<template v-else>
-									<img class="weather-image" src="https://i.ibb.co/jbTk8Bq/image.png" alt="image" />
-								</template>
-							</template>
-							<span class="weather-temperature">{{ weatherInfo.tmp }} ℃</span>
-						</div>
-						<div class="weather-temperature-wrapper">
-							<img class="weather-image" src="https://i.ibb.co/d0zJZv8/image.png" alt="image" />
-							<span class="weather-temperature">{{ weatherInfo.wsd }} m/s</span>
-						</div>
+							<div class="weather-temperature-wrapper">
+								<img class="weather-image" v-bind:src="getWeatherImageSrc(weatherInfo)" alt="image" />
+								<span class="weather-temperature">{{ weatherInfo.tmp }} ℃</span>
+							</div>
+							<div class="weather-temperature-wrapper">
+								<img class="weather-image" src="https://i.ibb.co/d0zJZv8/image.png" alt="image" />
+								<span class="weather-temperature">{{ weatherInfo.wsd }} m/s</span>
+							</div>
 
-						<div class="weather-addition-wrapper">
-							<template v-if="weatherInfo.pop !== '0'">
-								<div class="weather-addition">강수확률 : {{ weatherInfo.pop }} %</div>
-							</template>
+							<div class="weather-addition-wrapper">
+								<template v-if="weatherInfo.pop !== '0'">
+									<div class="weather-addition">강수확률 : {{ weatherInfo.pop }} %</div>
+								</template>
 
-							<template v-if="weatherInfo.pcp !== '강수없음'">
-								<div class="weather-addition">강수량 : {{ weatherInfo.pcp }} mm</div>
-							</template>
+								<template v-if="weatherInfo.pcp !== '강수없음'">
+									<div class="weather-addition">강수량 : {{ weatherInfo.pcp }} mm</div>
+								</template>
 
-							<template v-if="weatherInfo.sno !== '적설없음'">
-								<div class="weather-addition">적설량 : {{ weatherInfo.sno }} cm</div>
-							</template>
+								<template v-if="weatherInfo.sno !== '적설없음'">
+									<div class="weather-addition">적설량 : {{ weatherInfo.sno }} cm</div>
+								</template>
+							</div>
 						</div>
-					</div>
-				</template>
+					</template>
+				</q-card>
 			</div>
 
 			<div>
@@ -123,34 +83,43 @@
 					강남 지하철 정보
 				</p>
 
-				<template v-if="isShowSubway">
-					<div class="addition-info-wrapper">
-						<div class="weather-wrapper">
-							<div class="weather-datetime-wrapper">
-								<p>
-									{{ subwayInfoList.baseDateTime }} 기준
-									<span @click="getSubwayInfo"><q-icon name="refresh" class="refresh-icon" /></span>
-								</p>
-							</div>
+				<q-card class="weather-wrapper">
+					<template v-if="isShowSubway">
+						<div class="addition-info-wrapper">
+							<div class="">
+								<q-inner-loading
+									:showing="subwayVisible"
+									label="Please wait..."
+									label-class="text-teal"
+									label-style="font-size: 1.1em"
+									style="background-color: white; border-radius: 10px"
+								/>
+								<div class="weather-datetime-wrapper">
+									<p>
+										{{ subwayInfoList.baseDateTime }} 기준
+										<span @click="getSubwayInfo"><q-icon name="refresh" class="refresh-icon" /></span>
+									</p>
+								</div>
 
-							<div class="subway-body-wrapper">
-								<template v-for="subwayInfo in subwayList" :key="subwayInfo.direction">
-									<div class="subway-body-content">
-										<template v-if="subwayInfo.direction !== '없음'">
-											<p class="subway-direction">{{ subwayInfo.direction }}</p>
-											<template v-for="arriveTime in subwayInfo.time" :key="arriveTime">
-												<p>{{ arriveTime }}</p>
+								<div class="subway-body-wrapper">
+									<template v-for="subwayInfo in subwayList" :key="subwayInfo.direction">
+										<div class="subway-body-content">
+											<template v-if="subwayInfo.direction !== '없음'">
+												<p class="subway-direction">{{ subwayInfo.direction }}</p>
+												<template v-for="arriveTime in subwayInfo.time" :key="arriveTime">
+													<p>{{ arriveTime }}</p>
+												</template>
 											</template>
-										</template>
-										<template v-else>
-											<p>없음</p>
-										</template>
-									</div>
-								</template>
+											<template v-else>
+												<p>없음</p>
+											</template>
+										</div>
+									</template>
+								</div>
 							</div>
 						</div>
-					</div>
-				</template>
+					</template>
+				</q-card>
 				<div class="addition-wrapper" @click="setFortuneModal(true)">
 					<q-icon name="auto_awesome" class="addition-icon" />
 					<span class="addition-content">오늘의 운세</span>
@@ -204,6 +173,12 @@ const fortuneMessage = ref({
 	isOpened: false,
 	message: '메시지가 없습니다',
 });
+
+const weatherVisible = ref(false);
+const showWeaterSimulatedReturnData = ref(false);
+
+const subwayVisible = ref(false);
+const showSubwaySimulatedReturnData = ref(false);
 
 const subwayInfoList = ref({
 	baseDateTime: '',
@@ -268,6 +243,77 @@ const locationVO = {
 	longitude: 0,
 };
 
+const getWeatherImageSrc = (weaterInfo: any) => {
+	const pty = weaterInfo.pty;
+	const sky = weaterInfo.sky;
+	const isNight = weaterInfo.isNight;
+
+	// 맑음 - 낮
+	const sunnyMorning = 'https://i.ibb.co/LgXkhSb/image.png';
+	// 맑음 - 밤
+	const sunnyNight = 'https://i.ibb.co/LgXkhSb/image.png';
+	// 구름많음 - 낮
+	const cloudsMorning = 'https://i.ibb.co/MgwT2nM/image.png';
+	// 구름많음 - 밤
+	const cloudsNight = 'https://i.ibb.co/QrK4GTY/image.png';
+	// 흐림 - 낮
+	const fogMorning = 'https://i.ibb.co/V2PpgYC/image.png';
+	// 흐림 - 밤
+	const fogNight = 'https://i.ibb.co/LgXkhSb/image.png';
+	// 비/소나기 - 낮
+	const rainMorning = 'https://i.ibb.co/XXnTVcN/image.png';
+	// 비/소나기 - 밤
+	const rainNight = 'https://i.ibb.co/bFK4jvL/image.png';
+	// 비/눈 - 낮
+	const rainSnowMorning = 'https://i.ibb.co/nrMnnvt/image.png';
+	// 비/눈 - 밤
+	const rainSNowNight = 'https://i.ibb.co/nj0T8zS/image.png';
+	// 눈 - 낮
+	const snowMorning = 'https://i.ibb.co/BNSkCWg/image.png';
+	// 눈 - 낮
+	const snowNight = 'https://i.ibb.co/jbTk8Bq/image.png';
+
+	if (pty === '없음') {
+		if (sky === '맑음') {
+			if (isNight === false) {
+				return sunnyMorning;
+			} else {
+				return sunnyNight;
+			}
+		} else if (sky === '구름 많음') {
+			if (isNight === false) {
+				return cloudsMorning;
+			} else {
+				return cloudsNight;
+			}
+		} else if (sky === '흐림') {
+			if (isNight === false) {
+				return fogMorning;
+			} else {
+				return fogNight;
+			}
+		}
+	} else if (pty === '비' || pty === '소나기') {
+		if (isNight === false) {
+			return rainMorning;
+		} else {
+			return rainNight;
+		}
+	} else if (pty === '비/눈') {
+		if (isNight === false) {
+			return rainSnowMorning;
+		} else {
+			return rainSNowNight;
+		}
+	} else if (pty === '눈') {
+		if (isNight === false) {
+			return snowMorning;
+		} else {
+			return snowNight;
+		}
+	}
+};
+
 const getLocation = async () => {
 	if (!navigator.geolocation) {
 		const notification = {
@@ -290,7 +336,9 @@ const getLocation = async () => {
 };
 
 const getSubwayInfo = async () => {
-	await uiStore.showLoading();
+	subwayVisible.value = true;
+	showSubwaySimulatedReturnData.value = false;
+
 	try {
 		const response = await etcService.getSubwayInfo();
 		const result = response.data.data;
@@ -301,7 +349,8 @@ const getSubwayInfo = async () => {
 		return result;
 	} catch (error: any) {
 	} finally {
-		uiStore.hideLoading();
+		subwayVisible.value = false;
+		showSubwaySimulatedReturnData.value = true;
 	}
 };
 
@@ -332,7 +381,9 @@ const onRequest = async () => {
 };
 
 const getWeatherInfo = async (locationVO: any) => {
-	await uiStore.showLoading();
+	weatherVisible.value = true;
+	showWeaterSimulatedReturnData.value = false;
+
 	try {
 		const response = await etcService.getWeatherInfo(locationVO);
 		const result = response.data.data;
@@ -340,7 +391,8 @@ const getWeatherInfo = async (locationVO: any) => {
 		return result;
 	} catch (error: any) {
 	} finally {
-		uiStore.hideLoading();
+		weatherVisible.value = false;
+		showWeaterSimulatedReturnData.value = true;
 	}
 };
 
@@ -425,6 +477,7 @@ onMounted(() => {
 
 .weather-datetime-wrapper > p {
 	margin: 0px;
+	font-size: 0.7rem;
 	padding: 10px 0px;
 }
 
@@ -435,6 +488,7 @@ onMounted(() => {
 	// background-color: rgb(48,48,48);
 	border-radius: 10px;
 	color: #4d586f;
+
 	// background-color: #f7f9fc;
 }
 
