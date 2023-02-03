@@ -51,7 +51,6 @@ import { debounce } from 'lodash-es';
 import { useUiStore } from '@/store/ui';
 
 const uiStore = useUiStore();
-
 const selectMenu = ref();
 
 const menu = ref(

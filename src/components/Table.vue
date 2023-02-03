@@ -543,12 +543,6 @@ const excelDown = async () => {
 
 		const data = list;
 		const excelData = utils.json_to_sheet(data);
-		excelData['D2'].s = {
-			font: {
-				color: { rgb: 'FF0187FA' },
-				bold: true,
-			},
-		};
 
 		const workBook = utils.book_new();
 		utils.book_append_sheet(workBook, excelData, `출퇴근현황(${propDataSet.value?.startDate} ~ ${propDataSet.value?.endDate})`);
