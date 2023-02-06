@@ -497,8 +497,10 @@ const updateAdminCommute = async () => {
 			startDate: '',
 			endDate: '',
 		};
+		let registerDate = employeeData.value.registerDate.split(' ');
+
 		commuteRegisterDTO.commuteId = Number(employeeData.value.id);
-		commuteRegisterDTO.startDate = `${employeeData.value.registerDate} ${employeeData.value.startDate}:00`;
+		commuteRegisterDTO.startDate = `${registerDate[0]} ${employeeData.value.startDate}:00`;
 		commuteRegisterDTO.endDate = `${input.value.duration.to} ${employeeData.value.endDate}:00`;
 
 		const response = await attendanceService.updateAdminCommute(commuteRegisterDTO);

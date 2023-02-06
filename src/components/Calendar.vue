@@ -12,10 +12,6 @@
 				class="app-input"
 			/>
 		</div>
-
-		<!-- <div class="btn-wrapper">
-			<q-btn class="app-btn btn-basic btn-primary" flat @click="calendarFilter">입력</q-btn>
-		</div> -->
 	</div>
 	<FullCalendar ref="calendarRef" :options="calendarOptions">
 		<template v-slot:eventContent="arg">

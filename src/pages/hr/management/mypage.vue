@@ -250,12 +250,7 @@
 								<div class="info-title">이메일<span class="aster" v-if="1 !== 1">*</span></div>
 
 								<div class="email-wrapper">
-									<!-- <div class="app-input-wrapper"> -->
 									<div class="email-info" v-for="(email, i) in employeeData.email" :key="i">{{ email }}</div>
-									<!-- <div class="hint-text-wrapper">
-											<div class="hint-text"></div>
-										</div> -->
-									<!-- </div> -->
 								</div>
 							</div>
 						</div>
