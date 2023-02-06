@@ -2,7 +2,7 @@
 FROM node:14-alpine as build-stage
 ARG MODE
 WORKDIR /app
-COPY package*.json ./
+COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install
 COPY . .

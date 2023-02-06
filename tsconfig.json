@@ -5,7 +5,7 @@
 		"module": "ESNext",
 		"moduleResolution": "Node",
 		"strict": true,
-		"jsx": "preserve",
+		"jsx": "react",
 		"sourceMap": true,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
@@ -15,9 +15,10 @@
 			"@/*": ["src/*"]
 		},
 		"lib": ["ESNext", "DOM"],
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"allowJs": true
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.jsx"],
 	"exclude": ["node_modules"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }
