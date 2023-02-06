@@ -101,21 +101,54 @@
 								<div class="info-title">주소<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
 									<template v-if="buttonValue">
-										<q-input
-											class="app-input input-textarea"
-											type="textarea"
-											outlined
-											v-model="employeeData.address"
-											readonly
-										/>
+										<div class="address-wrapper" style="display: flex">
+											<q-input
+												class="app-input"
+												style="width: 79%; margin-right: auto"
+												outlined
+												v-model="result"
+												placeholder="주소"
+												readonly
+											/>
+											<q-btn disable style="width: 80px" outline @click="postModal(true)">검색</q-btn>
+										</div>
 									</template>
 									<template v-else>
-										<q-input class="app-input input-textarea" type="textarea" outlined v-model="employeeData.address" />
+										<div class="address-wrapper" style="display: flex">
+											<q-input
+												class="app-input"
+												style="width: 79%; margin-right: auto"
+												outlined
+												v-model="result"
+												placeholder="주소"
+												readonly
+											/>
+											<q-btn style="width: 80px" outline @click="postModal(true)">검색</q-btn>
+										</div>
 									</template>
-									<div class="hint-text-wrapper">
-										<div class="hint-text"></div>
-										<div class="num-text"></div>
-									</div>
+								</div>
+							</div>
+							<div class="row-info address-info">
+								<div class="info-title">상세주소</div>
+								<div class="app-input-wrapper">
+									<template v-if="buttonValue">
+										<q-input class="app-input" outlined v-model="detailAddress" readonly />
+									</template>
+									<template v-else>
+										<q-input class="app-input" outlined v-model="detailAddress" @change="addAddress" />
+									</template>
+								</div>
+							</div>
+							<div class="row-info address-info">
+								<div class="info-title"></div>
+								<div class="app-input-wrapper">
+									<q-input
+										class="app-input input-textarea"
+										type="textarea"
+										outlined
+										v-model="employeeData.address"
+										readonly
+									/>
 								</div>
 							</div>
 						</div>
@@ -259,6 +292,9 @@
 			</div>
 		</div>
 	</div>
+	<q-dialog v-model="openPost">
+		<VueDaumPostcode @complete="onComplete" />
+	</q-dialog>
 </template>
 
 <script setup lang="ts">
@@ -266,11 +302,32 @@ import router from '@/router';
 import { ref, computed, onMounted } from 'vue';
 import { useUiStore } from '@/store/ui';
 import hrService from '@/service/hrService';
+import { VueDaumPostcode } from 'vue-daum-postcode';
 
 const uiStore = useUiStore();
 const buttonValue = ref(true);
-
 const updateValue = ref(false);
+const openPost = ref(false);
+
+const result = ref(null);
+const detailAddress = ref('');
+
+const postModal = (flag: boolean) => {
+	openPost.value = flag;
+};
+
+const addAddress = () => {
+	if (result.value !== null) {
+		employeeData.value.address = `${result.value} ${detailAddress.value}`;
+	}
+};
+
+const onComplete = (newResult: any) => {
+	result.value = newResult.address;
+	employeeData.value.address = newResult.address;
+	postModal(false);
+	console.log(result.value);
+};
 
 const showButton = (flag: boolean) => {
 	buttonValue.value = flag;
@@ -278,6 +335,7 @@ const showButton = (flag: boolean) => {
 	if (flag === false) {
 		isUpdateMode();
 	} else {
+		openPost.value = false;
 		onMypage();
 	}
 };
@@ -339,6 +397,8 @@ const sampleData = ref({
 
 const onMypage = async () => {
 	const info = await getInfo();
+	result.value = null;
+	detailAddress.value = '';
 	employeeData.value = info;
 	employeeData.value.email = info.email.split(',');
 };
@@ -426,6 +486,26 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.vue-daum-postcode {
+	position: relative;
+	z-index: 20000;
+	width: 50%;
+	padding: 20px;
+	border: 1px solid #333;
+	background-color: white;
+	border-radius: 20px;
+}
+
+.address-text {
+	width: 78%;
+	margin-right: 2%;
+	margin-bottom: 2%;
+}
+
+.search-address {
+	float: right;
+}
+
 .email-wrapper {
 	width: 100%;
 	margin-top: 8px;
@@ -448,8 +528,6 @@ onMounted(() => {
 	min-height: calc(100% - 72px);
 	padding: 28px;
 	background: $blue-gray-1;
-	//border: 1px solid $blue-gray-3;
-	//border-radius: 0 0 20px 0;
 }
 .personal-info-container {
 	display: flex;
@@ -521,7 +599,7 @@ onMounted(() => {
 						margin-top: 0;
 					}
 					.input-textarea {
-						height: 236px;
+						height: 120px;
 					}
 				}
 				&.info-birth {

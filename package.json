@@ -36,6 +36,7 @@
 		"pinia": "^2.0.17",
 		"quasar": "^2.7.5",
 		"vue": "^3.2.37",
+		"vue-daum-postcode": "^1.2.0",
 		"vue-router": "^4.1.2",
 		"vue3-geolocation": "^1.0.0",
 		"xlsx": "^0.18.5"

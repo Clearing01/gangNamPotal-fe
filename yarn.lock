@@ -2130,6 +2130,11 @@ vite@^3.0.3:
   optionalDependencies:
     fsevents "~2.3.2"
 
+vue-daum-postcode@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vue-daum-postcode/-/vue-daum-postcode-1.2.0.tgz#327fd20bcf9e40abe6134d2e0ae11c8b83968f4b"
+  integrity sha512-uJIOixcmHRHpXbfXCq2H/M7s4Vg2Kr2DFqBF9YW82XGG6mf2By2ynDh66iRCyvKa3l7EnIA/22XwA3zTBtulHw==
+
 vue-demi@*:
   version "0.13.11"
   resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
