@@ -212,7 +212,7 @@ const tableDataSet = ref({
 	isLoading: true,
 	startDate: '',
 	endDate: '',
-	name: '',
+	employeeId: '',
 	columnList: [
 		// 테이블 컬럼정보 정의 및 커스텀
 		{
@@ -249,7 +249,7 @@ const getDataByFilter = (emitData: any) => {
 
 	tableDataSet.value.startDate = emitData.startDate;
 	tableDataSet.value.endDate = emitData.endDate;
-	tableDataSet.value.name = emitData.name;
+	tableDataSet.value.employeeId = emitData.employeeId;
 
 	uiStore.emitter.emit('filter', true);
 

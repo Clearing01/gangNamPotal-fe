@@ -529,7 +529,7 @@ const excelDown = async () => {
 		const response = await attendanceService.exportExcelCommute(
 			propDataSet.value?.startDate,
 			propDataSet.value?.endDate,
-			propDataSet.value?.name
+			propDataSet.value?.employeeId
 		);
 		const list = response.data.data.map((v: any) => {
 			return {
@@ -600,7 +600,6 @@ onMounted(() => {
 	color: #ffffff;
 	display: none;
 	z-index: 1;
-	// visibility: none;
 }
 
 .email-hidden-info-wrapper:hover {

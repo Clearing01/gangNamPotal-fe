@@ -21,7 +21,8 @@ interface CommuteVO {
 	start: string;
 	end: string;
 	display: string;
-	name: string;
+	startDate: string;
+	endDate: string;
 }
 
 const uiStore = useUiStore();
