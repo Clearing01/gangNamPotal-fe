@@ -1,12 +1,12 @@
 # build stage
 FROM node:14-alpine as build-stage
-ARG MODE
+ARG ENV
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install
 COPY . .
-RUN yarn run build-prod
+RUN yarn run build-${ENV}
 
 # production stage
 FROM nginx:stable-alpine as production-stage
