@@ -243,11 +243,6 @@ const currentDate = () => {
 	uiStore.timeString = timeString;
 };
 
-const locationVO = {
-	latitude: 0,
-	longitude: 0,
-};
-
 const getWeatherImageSrc = (weaterInfo: any) => {
 	const pty = weaterInfo.pty;
 	const sky = weaterInfo.sky;
@@ -320,24 +315,7 @@ const getWeatherImageSrc = (weaterInfo: any) => {
 };
 
 const getLocation = async () => {
-	if (!navigator.geolocation) {
-		const notification = {
-			caption: '위치 정보를 찾을 수 없습니다.',
-			type: 'negative',
-			icon: 'warning',
-			classes: 'app-notify',
-			timeout: 3,
-		};
-
-		uiStore.showNotification(notification);
-	} else {
-		navigator.geolocation.getCurrentPosition(function (location) {
-			locationVO.latitude = location.coords.latitude;
-			locationVO.longitude = location.coords.longitude;
-
-			onRequest();
-		});
-	}
+	onRequest();
 };
 
 const getSubwayInfo = async () => {
@@ -380,21 +358,29 @@ const setSubwayList = () => {
 };
 
 const onRequest = async () => {
-	const weaterInfo = await getWeatherInfo(locationVO);
+	const weaterInfo = await getWeatherInfo();
 
 	weatherInfo.value = weaterInfo;
 };
 
-const getWeatherInfo = async (locationVO: any) => {
+const getWeatherInfo = async () => {
 	weatherVisible.value = true;
 	showWeaterSimulatedReturnData.value = false;
 
 	try {
-		const response = await etcService.getWeatherInfo(locationVO);
+		const response = await etcService.getWeatherInfo();
 		const result = response.data.data;
 
 		return result;
 	} catch (error: any) {
+		const notification = {
+			caption: '위치 정보를 찾을 수 없습니다.',
+			type: 'negative',
+			icon: 'warning',
+			classes: 'app-notify',
+			timeout: 3,
+		};
+		uiStore.showNotification(notification);
 	} finally {
 		weatherVisible.value = false;
 		showWeaterSimulatedReturnData.value = true;
