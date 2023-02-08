@@ -438,6 +438,7 @@ const createChart = async () => {
 };
 
 const addChart = (labels: string[], datas: any[]) => {
+	const date = `${attendanceVO.value?.startDate} ~ ${attendanceVO.value?.endDate} 총 근무시간`;
 	const ctx: any = document.getElementById('myChart');
 	const config: any = {
 		type: 'bar',
@@ -445,7 +446,7 @@ const addChart = (labels: string[], datas: any[]) => {
 			labels: labels,
 			datasets: [
 				{
-					label: '# of Votes',
+					label: date,
 					data: datas,
 					borderWidth: 1,
 				},
