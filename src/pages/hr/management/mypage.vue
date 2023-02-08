@@ -107,7 +107,7 @@
 												style="width: 79%; margin-right: auto"
 												outlined
 												v-model="result"
-												placeholder="주소"
+												placeholder="주소를 검색하세요"
 												readonly
 											/>
 											<q-btn disable style="width: 80px" outline @click="postModal(true)">검색</q-btn>
@@ -120,8 +120,8 @@
 												style="width: 79%; margin-right: auto"
 												outlined
 												v-model="result"
-												placeholder="주소"
-												readonly
+												placeholder="주소를 검색하세요"
+												@click="postModal(true)"
 											/>
 											<q-btn style="width: 80px" outline @click="postModal(true)">검색</q-btn>
 										</div>
@@ -135,7 +135,13 @@
 										<q-input class="app-input" outlined v-model="detailAddress" readonly />
 									</template>
 									<template v-else>
-										<q-input class="app-input" outlined v-model="detailAddress" @change="addAddress" />
+										<q-input
+											class="app-input"
+											outlined
+											v-model="detailAddress"
+											@change="addAddress"
+											:disable="result === null"
+										/>
 									</template>
 								</div>
 							</div>
@@ -326,7 +332,6 @@ const onComplete = (newResult: any) => {
 	result.value = newResult.address;
 	employeeData.value.address = newResult.address;
 	postModal(false);
-	console.log(result.value);
 };
 
 const showButton = (flag: boolean) => {
@@ -460,7 +465,6 @@ const updateInfo = async (nameEn: string, phone: string, address: string) => {
 		successNotify(response.data.message);
 		showButton(true);
 		isUpdateMode();
-		onMypage();
 	} catch (error: any) {
 		updateValue.value = false;
 	} finally {
