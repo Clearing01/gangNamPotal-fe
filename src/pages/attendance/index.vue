@@ -1,6 +1,6 @@
 <template>
 	<div class="app-pageheader">
-		<span class="main-title">출퇴근 현황</span>
+		<span class="main-title" @dblclick="showChart(true)">출퇴근 현황</span>
 		<q-space />
 		<q-btn class="app-btn btn-basic btn-primary" flat v-if="authStore.user.permission" @click="insertModal(true)">등록</q-btn>
 	</div>
@@ -100,6 +100,10 @@
 			</q-card-actions>
 		</q-card>
 	</q-dialog>
+
+	<q-dialog v-model="chartModal">
+		<canvas id="myChart"></canvas>
+	</q-dialog>
 </template>
 
 <script setup lang="ts">
@@ -111,7 +115,7 @@ import { useUiStore } from '@/store/ui';
 import { useAuthStore } from '@/store/auth';
 import attendanceService from '@/service/attendanceService';
 import hrService from '@/service/hrService';
-
+import Chart from 'chart.js/auto';
 import { Moment } from '@/composables/util';
 
 const uiStore = useUiStore();
@@ -121,6 +125,14 @@ const commuteInsertModal = ref(false);
 const employeeList = ref([]);
 const nameList = ref([]);
 const filterNameList = ref([]);
+const chartModal = ref(false);
+
+let myChart: any = null;
+
+const showChart = (flag: boolean) => {
+	chartModal.value = flag;
+	createChart();
+};
 
 const commuteRegisterDTO = ref({
 	employeeId: '',
@@ -359,12 +371,113 @@ const insertAdminCommute = async () => {
 	}
 };
 
+const createChart = async () => {
+	await uiStore.showLoading();
+	let cloneList: any = [];
+	try {
+		const response = await attendanceService.exportExcelCommute(
+			attendanceVO.value?.startDate,
+			attendanceVO.value?.endDate,
+			attendanceVO.value?.employeeId
+		);
+		const list = response.data.data.map((v: any) => {
+			return {
+				employeeNo: v.employeeNo,
+				nameKr: v.nameKr,
+				totalCommuteTime: v.totalCommuteTime,
+			};
+		});
+
+		const set = new Set(list.map((employee: any) => employee.employeeNo));
+
+		const employeeNoList = [...set];
+
+		employeeNoList.forEach((employeeNo: any) => {
+			const employeeList = list.filter((obj: any) => obj.employeeNo === employeeNo);
+			let totalTime = 0;
+			let name = '';
+
+			employeeList.forEach((employee: any) => {
+				totalTime = totalTime + employee.totalCommuteTime;
+				name = employee.nameKr;
+			});
+
+			cloneList.push({
+				employeeNo,
+				name,
+				time: totalTime,
+			});
+		});
+
+		const labels = cloneList.map((v: any) => {
+			return `${v.name} (${v.employeeNo})`;
+		});
+
+		const datas = cloneList.map((v: any) => {
+			return v.time;
+		});
+
+		const labelList = [...labels];
+		const dataList = [...datas];
+
+		addChart(labelList, dataList);
+
+		let notify = {
+			caption: response.data.message,
+			type: 'positive',
+			icon: 'info',
+			classes: 'app-notify',
+			timeout: 500,
+		};
+
+		uiStore.showNotification(notify);
+	} catch (error: any) {
+	} finally {
+		uiStore.hideLoading();
+	}
+};
+
+const addChart = (labels: string[], datas: any[]) => {
+	const ctx: any = document.getElementById('myChart');
+	const config: any = {
+		type: 'bar',
+		data: {
+			labels: labels,
+			datasets: [
+				{
+					label: '# of Votes',
+					data: datas,
+					borderWidth: 1,
+				},
+			],
+		},
+		options: {
+			scales: {
+				y: {
+					beginAtZero: true,
+				},
+			},
+		},
+	};
+
+	myChart = new Chart(ctx, config);
+};
+
 onMounted(() => {
 	setNameList();
 });
 </script>
 
 <style scoped lang="scss">
+#myChart {
+	position: relative;
+	z-index: 20000;
+	width: 50%;
+	padding: 20px;
+	border: 1px solid #333;
+	background-color: white;
+	border-radius: 20px;
+}
 .dialog-wrapper {
 	.app-input {
 		margin-top: 10px;

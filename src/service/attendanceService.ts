@@ -13,7 +13,7 @@ class attendanceService {
 		return api.put('/commute/admin', commuteRegisterDTO);
 	}
 
-	static async exportExcelCommute(startDate: string, endDate: string, employeeId: string) {
+	static async exportExcelCommute(startDate: string, endDate: string, employeeId: any) {
 		return api.get('/commute/excel', { params: { startDate: startDate, endDate: endDate, employeeId: employeeId } });
 	}
 }
