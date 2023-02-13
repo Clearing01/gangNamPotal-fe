@@ -218,6 +218,7 @@
 			:columns="propDataSet?.columnList"
 			v-model:pagination="pagination"
 			hide-pagination
+			style="z-index: 999"
 			row-key="rowNum"
 			:table-class="'common-table'"
 			:no-data-label="'데이터를 찾을 수 없습니다'"
@@ -587,6 +588,7 @@ onMounted(() => {
 		margin-top: 10px;
 	}
 }
+
 .email-info-wrapper {
 	cursor: pointer;
 	margin: 0px;
@@ -594,21 +596,20 @@ onMounted(() => {
 }
 
 .email-hidden-info-wrapper {
-	padding: 15px 20px;
+	padding: 15px 15px;
 	background-color: hsl(0, 0%, 24%);
 	border-radius: 5px;
 	color: #ffffff;
 	display: none;
-	z-index: 1;
 }
 
 .email-hidden-info-wrapper:hover {
 	display: block;
-	position: absolute;
+	position: fixed;
 }
 .email-info-wrapper:hover + .email-hidden-info-wrapper {
 	display: block;
-	position: absolute;
+	position: fixed;
 }
 
 .email-hidden-info {

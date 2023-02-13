@@ -140,7 +140,7 @@
 					</div>
 					<div class="fortune-message-wrapper">
 						<template v-if="fortuneMessage.isOpened">
-							<p>{{ fortuneMessage.message }}</p>
+							<p id="fortune-message">{{ fortuneMessage.message }}</p>
 						</template>
 						<template v-else>
 							<q-btn @click="showMessage"><q-icon name="touch_app" class="fortune-message-open-icon" />클릭해주세요~</q-btn>
@@ -164,6 +164,7 @@ import { useAuthStore } from '@/store/auth';
 import etcService from '@/service/etcService';
 import authService from '@/service/authService';
 import _ from 'lodash';
+import { TextScramble2 } from '@/modules/util';
 
 const authStore = useAuthStore();
 const uiStore = useUiStore();
@@ -404,6 +405,13 @@ const showMessage = async () => {
 	const result = await getFortuneMessage();
 
 	fortuneMessage.value.isOpened = true;
+	setTimeout(() => {
+		const el = document.getElementById('fortune-message');
+		if (el) {
+			const textScramble = new TextScramble2(el);
+			textScramble.setText(fortuneMessage.value.message);
+		}
+	}, 0);
 };
 
 const setShowWeather = () => {
