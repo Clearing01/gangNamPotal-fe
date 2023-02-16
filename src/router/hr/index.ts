@@ -5,6 +5,7 @@ const hr = [
 		meta: {
 			title: '인력',
 			isActive: false,
+			isAdmin: false,
 		},
 	},
 	{
@@ -13,6 +14,16 @@ const hr = [
 		meta: {
 			title: '소속/부서',
 			isActive: false,
+			isAdmin: false,
+		},
+	},
+	{
+		path: '/hr/create/admin',
+		component: () => import('@/pages/hr/management/hrAdmin.vue'),
+		meta: {
+			title: '사원 추가',
+			isActive: false,
+			isAdmin: true,
 		},
 	},
 ];

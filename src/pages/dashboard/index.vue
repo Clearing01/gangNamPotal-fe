@@ -48,6 +48,7 @@ const onRequest = async () => {
 	commuteList.value = list.map((v: any) => {
 		let startDate = v.startDate.substring(11, 16);
 		let endDate = '';
+		let end = '';
 
 		if (v.endDate !== null && v.endDate.length > 0) {
 			endDate = v.endDate.substring(11, 16);

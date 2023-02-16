@@ -20,6 +20,8 @@ const getToken = async () => {
 		authStore.user.refreshToken = route.query.refreshToken;
 		if (route.query.role === 'ROLE_ADMIN') {
 			authStore.user.permission = true;
+		} else {
+			authStore.user.permission = false;
 		}
 
 		router.push('/dashboard');

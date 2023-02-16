@@ -274,6 +274,8 @@ const getWeatherImageSrc = (weaterInfo: any) => {
 	// 눈 - 낮
 	const snowNight = 'https://i.ibb.co/jbTk8Bq/image.png';
 
+	console.log(sky);
+
 	if (pty === '없음') {
 		if (sky === '맑음') {
 			if (isNight === false) {

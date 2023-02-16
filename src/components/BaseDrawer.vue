@@ -49,6 +49,7 @@ import main from '@/router/main';
 import SubDrawer from '@/components/SubDrawer.vue';
 import { debounce } from 'lodash-es';
 import { useUiStore } from '@/store/ui';
+import { aU } from '@fullcalendar/core/internal-common';
 
 const uiStore = useUiStore();
 const selectMenu = ref();
