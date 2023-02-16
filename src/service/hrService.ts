@@ -17,12 +17,16 @@ class hrService {
 		return api.get('/hr/dept');
 	}
 
-	static async getInfo() {
-		return api.get('/hr/info');
+	static async getUserInfo(employeeId: number) {
+		return api.get('/hr/info', { params: { employeeId: employeeId } });
 	}
 
-	static async updateInfo(nameEn: string, phone: string, address: string) {
-		return api.put('/hr/info', { nameEn: nameEn, phone: phone, address: address });
+	static async getMy() {
+		return api.get('/hr/my');
+	}
+
+	static async updateMy(nameEn: string, phone: string, address: string) {
+		return api.put('/hr/my', { nameEn: nameEn, phone: phone, address: address });
 	}
 
 	static async getNames() {

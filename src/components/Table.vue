@@ -256,7 +256,14 @@
 							</template>
 						</template>
 						<template v-else>
-							{{ col.value }}
+							<template v-if="col.label === '이름'">
+								<div @click="showUserInfo(true, props.row.employeeId)" style="cursor: pointer">
+									{{ col.value }}
+								</div>
+							</template>
+							<template v-else>
+								{{ col.value }}
+							</template>
 						</template>
 					</q-td>
 				</q-tr>
@@ -335,6 +342,58 @@
 				</q-select>
 			</div>
 		</div>
+
+		<q-dialog v-model="userInfoModal" class="dialog-wrapper">
+			<q-card>
+				<q-card-section class="items-center">
+					<q-btn
+						class="app-btn btn-basic btn-primary"
+						style="width: 80px"
+						flat
+						v-if="authStore.user.permission"
+						@click="updateUser()"
+						>수정</q-btn
+					>
+					<p class="q-ml-sm">사원 정보 조회</p>
+					<q-btn flat label="X" color="primary" v-close-popup class="modal-botton" />
+				</q-card-section>
+				<div class="info-wrapper">
+					<div class="info-profile-wrapper">
+						<div class="info-profile-section">
+							<img class="img-cursor" src="@/assets/images/teemo.png" alt="" />
+						</div>
+					</div>
+					<q-card-section class="userInfo">
+						<div class="info-label">이름</div>
+						<q-input v-model="employeeInfo.nameKr" class="app-input input-medium" outlined readonly />
+					</q-card-section>
+					<q-card-section class="userInfo">
+						<div class="info-label">연락처</div>
+						<q-input v-model="employeeInfo.phone" class="app-input input-medium" outlined readonly />
+					</q-card-section>
+					<q-card-section class="userInfo">
+						<div class="info-label">소속</div>
+						<q-input v-model="employeeInfo.affiliation" class="app-input input-medium" outlined readonly />
+					</q-card-section>
+					<q-card-section class="userInfo">
+						<div class="info-label">부서</div>
+						<q-input v-model="employeeInfo.department" class="app-input input-medium" outlined readonly />
+					</q-card-section>
+					<q-card-section class="userInfo">
+						<div class="info-label">직급</div>
+						<q-input v-model="employeeInfo.rank" class="app-input input-medium" outlined readonly />
+					</q-card-section>
+				</div>
+
+				<q-card-section> 이메일 정보 </q-card-section>
+				<div class="info-wrapper">
+					<q-card-section class="userInfo">
+						<div class="info-label">이메일</div>
+						<q-input v-model="employeeInfo.email" class="app-input input-medium email" outlined readonly />
+					</q-card-section>
+				</div>
+			</q-card>
+		</q-dialog>
 	</template>
 </template>
 
@@ -343,6 +402,7 @@ import router from '@/router';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useUiStore } from '@/store/ui';
 import attendanceService from '@/service/attendanceService';
+import hrService from '@/service/hrService';
 import { useAuthStore } from '@/store/auth';
 import { utils, writeFile } from 'xlsx';
 import { Moment } from '@/composables/util';
@@ -363,12 +423,39 @@ const rowEnd = computed(() => pagination.value.page * pagination.value.rowsPerPa
 const firstPage = computed(() => pagination.value.page * pagination.value.rowsPerPage);
 
 const commuteUpdateModal = ref(false);
+const userInfoModal = ref(false);
+
+const showUserInfo = (flag: boolean, employeeId: number) => {
+	userInfoModal.value = true;
+	employeeInfo.value.employeeId = employeeId;
+	getEmployeeInfo();
+};
+
 const employeeData = ref({
 	id: '',
 	nameKr: '',
 	registerDate: '',
 	startDate: '',
 	endDate: '',
+});
+
+const employeeInfo = ref({
+	address: '',
+	affiliation: '',
+	birthday: '',
+	department: '',
+	email: '',
+	employeeId: 0,
+	employeeNo: 0,
+	gender: '',
+	joinDate: '',
+	nameEn: '',
+	nameKr: '',
+	phone: '',
+	profileImg: '',
+	rank: '',
+	role: '',
+	state: '',
 });
 
 const pagination = ref({
@@ -390,6 +477,10 @@ const input = ref({
 		to: '',
 	},
 });
+
+const updateUser = () => {
+	router.push('/hr/create/admin');
+};
 
 const getEndDateView = (startDt: string) => {
 	let result;
@@ -524,6 +615,38 @@ const updateAdminCommute = async () => {
 	}
 };
 
+const getEmployeeInfo = async () => {
+	await uiStore.showLoading();
+	try {
+		const response = await hrService.getUserInfo(employeeInfo.value.employeeId);
+
+		const list = response.data.data.email.split(',');
+
+		const email = list.filter((v: string) => {
+			if (v.includes('@twolinecode.com')) {
+				return v;
+			}
+		});
+
+		response.data.data.email = email;
+
+		employeeInfo.value = response.data.data;
+
+		let notify = {
+			caption: response.data.message,
+			type: 'positive',
+			icon: 'info',
+			classes: 'app-notify',
+			timeout: 500,
+		};
+
+		uiStore.showNotification(notify);
+	} catch (error: any) {
+	} finally {
+		uiStore.hideLoading();
+	}
+};
+
 const excelDown = async () => {
 	await uiStore.showLoading();
 	try {
@@ -582,10 +705,59 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.q-card {
+	width: 600px;
+	height: 800px;
+}
+
 .dialog-wrapper {
-	.app-input,
+	.app-input {
+		width: 400px;
+	}
 	.app-input-picker {
 		margin-top: 10px;
+	}
+}
+
+.info-wrapper {
+	padding: 10px;
+	margin: 10px;
+	background: rgb(229, 226, 226);
+}
+
+.userInfo {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.info-label {
+	width: 70px;
+}
+
+.items-center {
+	display: flex;
+}
+
+.info-profile-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 20px 0 10px;
+	.info-profile-section {
+		width: 150px;
+		height: 150px;
+		border-radius: 50%;
+		overflow: hidden;
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+	.btn-upload {
+		margin-top: 16px;
 	}
 }
 

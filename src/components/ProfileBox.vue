@@ -46,14 +46,14 @@ const employeeData = ref({
 });
 
 const onMypage = async () => {
-	const info = await getInfo();
-	employeeData.value = info;
+	const My = await getMy();
+	employeeData.value = My;
 };
 
-const getInfo = async () => {
+const getMy = async () => {
 	await uiStore.showLoading();
 	try {
-		const response = await hrService.getInfo();
+		const response = await hrService.getMy();
 		const result = response.data.data;
 
 		return result;
