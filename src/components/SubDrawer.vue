@@ -2,7 +2,9 @@
 	<q-menu v-model="isShow" class="sub-menu-wrapper" fit anchor="top right" self="top left" scroll-target=".scroll">
 		<q-list>
 			<template v-for="(currentMenu, index) of parentMenu" :key="index">
-				<template v-if="currentMenu.meta.isAdmin === true && authStore.getPermission === false"></template>
+				<template
+					v-if="currentMenu.meta.isActive === false || (currentMenu.meta.isAdmin === true && authStore.getPermission === false)"
+				></template>
 				<template v-else>
 					<q-item clickable @click="handlePageMove(currentMenu)">
 						<q-item-section class="menu-list-section">

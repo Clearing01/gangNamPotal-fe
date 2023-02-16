@@ -354,19 +354,19 @@ const employeeData = ref({
 // 	// employeeData.value.email = info.email.split(',');
 // };
 
-const getInfo = async () => {
-	await uiStore.showLoading();
-	try {
-		// 토큰 전달
-		const response = await hrService.getInfo();
-		const result = response.data.data;
+// const getInfo = async () => {
+// 	await uiStore.showLoading();
+// 	try {
+// 		// 토큰 전달
+// 		const response = await hrService.getInfo();
+// 		const result = response.data.data;
 
-		return result;
-	} catch (error: any) {
-	} finally {
-		uiStore.hideLoading();
-	}
-};
+// 		return result;
+// 	} catch (error: any) {
+// 	} finally {
+// 		uiStore.hideLoading();
+// 	}
+// };
 
 const selectOption = ref({
 	stat: [

@@ -401,18 +401,18 @@ const sampleData = ref({
 });
 
 const onMypage = async () => {
-	const info = await getInfo();
+	const My = await getMy();
 	result.value = null;
 	detailAddress.value = '';
-	employeeData.value = info;
-	employeeData.value.email = info.email.split(',');
+	employeeData.value = My;
+	employeeData.value.email = My.email.split(',');
 };
 
-const getInfo = async () => {
+const getMy = async () => {
 	await uiStore.showLoading();
 	try {
 		// 토큰 전달
-		const response = await hrService.getInfo();
+		const response = await hrService.getMy();
 		const result = response.data.data;
 
 		return result;
@@ -459,7 +459,7 @@ const onRequest = async () => {
 const updateInfo = async (nameEn: string, phone: string, address: string) => {
 	await uiStore.showLoading();
 	try {
-		const response = await hrService.updateInfo(nameEn, phone, address);
+		const response = await hrService.updateMy(nameEn, phone, address);
 		const result = response.status;
 
 		successNotify(response.data.message);
