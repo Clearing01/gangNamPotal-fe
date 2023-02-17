@@ -33,12 +33,12 @@ class hrService {
 		return api.get('/hr/names');
 	}
 
-	static async insertStartCommute(date: any) {
-		return api.post('/commute/start', { date: date.date });
+	static async insertStartCommute() {
+		return api.post('/commute/start');
 	}
 
-	static async insertEndCommute(date: any) {
-		return api.post('/commute/end', { date: date.date });
+	static async insertEndCommute() {
+		return api.post('/commute/end');
 	}
 
 	static async getAffiliation() {
