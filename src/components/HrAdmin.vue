@@ -2,7 +2,7 @@
 	<div class="app-pageheader">
 		<span class="main-title">{{ getTitle(props.mode as string) }}</span>
 		<q-space />
-		<q-btn class="app-btn btn-basic btn-primary" flat @click="$emit('function', employeeData)">저장</q-btn>
+		<q-btn class="app-btn btn-basic btn-primary" flat @click="clickButton(mode)">저장</q-btn>
 	</div>
 	<div class="employee-info-container">
 		<div class="personal-info-container flex no-wrap">
@@ -48,7 +48,7 @@
 							<div class="row-info info-birth">
 								<div class="info-title">생년월일<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="employeeData.birthday" />
+									<q-input class="app-input" outlined v-model="employeeData.birthday" mask="####-##-##" />
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
 										<div class="num-text"></div>
@@ -132,7 +132,7 @@
 										class="app-btn btn-radio read-only"
 										v-model="employeeData.state"
 										:label="stat.label"
-										:val="stat.id"
+										:val="stat.label"
 									/>
 								</template>
 							</div>
@@ -140,7 +140,7 @@
 							<div class="row-info info-order">
 								<div class="info-title">입사일<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="employeeData.joinDate" />
+									<q-input class="app-input" outlined v-model="employeeData.joinDate" mask="####-##-##" />
 									<div class="hint-text-wrapper">
 										<div class="hint-text"></div>
 										<div class="num-text"></div>
@@ -149,7 +149,7 @@
 
 								<div class="info-title">사번<span class="aster" v-if="1 !== 1">*</span></div>
 								<div class="app-input-wrapper">
-									<q-input class="app-input" outlined v-model="employeeData.employeeNo" />
+									<q-input class="app-input" type="number" outlined v-model="employeeData.employeeNo" />
 									<div>
 										<div class="hint-text">
 											<!-- checkErrorEmployeeNo -->
@@ -173,9 +173,9 @@
 								<template v-for="(permission, index) of selectOption.permission" :key="index">
 									<q-radio
 										class="app-btn btn-radio read-only"
-										v-model="permission.id"
+										v-model="employeeData.roleId"
 										:label="permission.label"
-										:val="employeeData.role"
+										:val="permission.id"
 									/>
 								</template>
 							</div>
@@ -242,7 +242,11 @@
 					<div class="info-content-wrapper">
 						<div class="info-content-section">
 							<div class="row-info info-email">
-								<div class="info-title">이메일<span class="aster" v-if="1 !== 1">*</span></div>
+								<div class="info-title">
+									<p class="email">회사 이메일</p>
+									<!-- <span class="aster" v-if="1 !== 1">*</span> -->
+									<p class="email">카카오 이메일</p>
+								</div>
 
 								<div class="email-wrapper">
 									<div class="email-info">
@@ -274,14 +278,37 @@ import { VueDaumPostcode } from 'vue-daum-postcode';
 import { em } from '@fullcalendar/core/internal-common';
 
 const uiStore = useUiStore();
-const buttonValue = ref(true);
-const updateValue = ref(false);
 const openPost = ref(false);
 
 const props = defineProps({
 	mode: String,
-	data: Array,
-	function: Function,
+	employeeId: String,
+});
+
+const employeeId = computed(() => props.employeeId);
+
+const employeeData = ref({
+	state: '',
+	address: '',
+	affiliationId: 0,
+	affiliation: '',
+	birthday: '',
+	departmentId: 0,
+	department: '',
+	googleEmail: '',
+	kakaoEmail: '',
+	employeeId: 0,
+	employeeNo: 0,
+	gen: 0,
+	gender: '',
+	joinDate: '',
+	nameEn: '',
+	nameKr: '',
+	phone: '',
+	profileImg: '',
+	rankId: 0,
+	rank: '',
+	roleId: -1,
 });
 
 const getTitle = (mode: string) => {
@@ -307,88 +334,16 @@ const onComplete = (newResult: any) => {
 	postModal(false);
 };
 
-const showButton = (flag: boolean) => {
-	buttonValue.value = flag;
-
-	if (flag === false) {
-		isUpdateMode();
-	} else {
-		openPost.value = false;
-		// onMypage();
-	}
-};
-
-const isUpdateMode = () => {
-	updateValue.value = !updateValue.value;
-};
-
-const employeeData = ref({
-	state: -1,
-	address: '',
-	affiliationId: 0,
-	affiliation: '',
-	birthday: '',
-	departmentId: 0,
-	department: '',
-	googleEmail: '',
-	kakaoEmail: '',
-	employeeId: 0,
-	employeeNo: '',
-	gen: 0,
-	gender: '',
-	joinDate: '',
-	nameEn: '',
-	nameKr: '',
-	phone: '',
-	profileImg: '',
-	rankId: 0,
-	rank: '',
-	role: '',
-});
-
-// const onMypage = async () => {
-// 	const info = await getInfo();
-// 	result.value = null;
-// 	detailAddress.value = '';
-// 	employeeData.value = info;
-// 	// employeeData.value.email = info.email.split(',');
-// };
-
-// const getInfo = async () => {
-// 	await uiStore.showLoading();
-// 	try {
-// 		// 토큰 전달
-// 		const response = await hrService.getInfo();
-// 		const result = response.data.data;
-
-// 		return result;
-// 	} catch (error: any) {
-// 	} finally {
-// 		uiStore.hideLoading();
-// 	}
-// };
-
 const selectOption = ref({
 	stat: [
 		{ label: '재직', id: 0 },
 		{ label: '퇴직', id: 1 },
 	],
 	permission: [
-		{ label: '일반사용자', id: 'USER' },
-		{ label: '관리자', id: 'ADMIN' },
+		{ label: '일반사용자', id: 1 },
+		{ label: '관리자', id: 2 },
 	],
-	affi: [
-		{
-			affiliationId: 0,
-			affiliationName: '',
-			departmentNameList: [
-				{
-					departmentId: 0,
-					departmentName: '',
-				},
-			],
-		},
-	],
+	affi: [],
 	department: [
 		{
 			departmentId: 0,
@@ -434,32 +389,71 @@ const getRanks = async () => {
 	selectOption.value.rank = response.data.data;
 };
 
-const sampleSelectData = ref({
-	stat: '재직',
-	permission: '일반사용자',
-	dept: '개발',
-	affi: '개발',
-	rank: '선임',
-});
+const getEmployeeInfo = async () => {
+	const response = await hrService.getUserInfo(Number(props.employeeId));
 
-const onRequest = async () => {
-	await updateInfo(employeeData.value.nameEn, employeeData.value.phone, employeeData.value.address);
+	employeeData.value = response.data.data;
+
+	const split = response.data.data.email.split(',');
+	const email1 = split[0];
+	const email2 = split[1];
+
+	if (email1.includes('@twolinecode.com')) {
+		employeeData.value.googleEmail = email1.split('@twolinecode.com')[0];
+		employeeData.value.kakaoEmail = email2;
+	} else {
+		employeeData.value.googleEmail = email2.split('@twolinecode.com')[0];
+		employeeData.value.kakaoEmail = email1;
+	}
 };
 
-const updateInfo = async (nameEn: string, phone: string, address: string) => {
-	await uiStore.showLoading();
-	try {
-		const response = await hrService.updateInfo(nameEn, phone, address);
-		const result = response.status;
-
-		successNotify(response.data.message);
-		showButton(true);
-		isUpdateMode();
-	} catch (error: any) {
-		updateValue.value = false;
-	} finally {
-		uiStore.hideLoading();
+const clickButton = (mode: string) => {
+	if (mode === 'createMode') {
+		// 추가
+		saveEmployee();
+	} else {
+		// 수정
+		updateEmployee();
 	}
+};
+
+const saveEmployee = async () => {
+	const response = await hrService.saveEmployeeInfo(employeeData.value);
+
+	successNotify(response.data.message);
+
+	employeeData.value = {
+		state: '',
+		address: '',
+		affiliationId: 0,
+		affiliation: '',
+		birthday: '',
+		departmentId: 0,
+		department: '',
+		googleEmail: '',
+		kakaoEmail: '',
+		employeeId: 0,
+		employeeNo: 0,
+		gen: 0,
+		gender: '',
+		joinDate: '',
+		nameEn: '',
+		nameKr: '',
+		phone: '',
+		profileImg: '',
+		rankId: 0,
+		rank: '',
+		roleId: -1,
+	};
+
+	result.value = null;
+	detailAddress.value = '';
+};
+
+const updateEmployee = async () => {
+	const response = await hrService.updateEmployeeInfo(employeeData.value);
+
+	successNotify(response.data.message);
 };
 
 const successNotify = (message: string) => {
@@ -475,9 +469,12 @@ const successNotify = (message: string) => {
 };
 
 onMounted(() => {
-	// onMypage();
 	getDepartment();
 	getRanks();
+
+	if (props.mode === 'updateMode') {
+		getEmployeeInfo();
+	}
 });
 </script>
 
@@ -581,7 +578,7 @@ onMounted(() => {
 				display: flex;
 				.info-title {
 					flex-shrink: 0;
-					width: 54px;
+					width: 80px;
 					margin-top: 12px;
 					font-size: $font-02;
 					line-height: $font-06;
@@ -594,6 +591,10 @@ onMounted(() => {
 						line-height: $font-06;
 						font-weight: 500;
 						color: #ff6161;
+					}
+
+					.email {
+						padding-bottom: 10px;
 					}
 				}
 				.info-title + * {
@@ -681,7 +682,7 @@ onMounted(() => {
 						}
 						&.info-email {
 							.info-title {
-								width: 74px;
+								width: 90px;
 							}
 							.append-address {
 								margin-left: 12px;

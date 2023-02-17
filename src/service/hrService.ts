@@ -58,11 +58,11 @@ class hrService {
 	}
 
 	static async saveEmployeeInfo(data: any) {
-		return api.get('/hr/admin', { data: data });
+		return api.post('/hr/admin', data);
 	}
 
 	static async updateEmployeeInfo(data: any) {
-		return api.put('/hr/admin', { data: data });
+		return api.put('/hr/admin', data);
 	}
 }
 

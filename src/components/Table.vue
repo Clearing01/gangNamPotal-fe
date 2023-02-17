@@ -480,7 +480,7 @@ const input = ref({
 
 const updateUser = () => {
 	commuteUpdateModal.value = false;
-	router.push('/hr/update/admin');
+	router.push({ name: 'UpdateEmployee', query: { employeeId: employeeInfo.value.employeeId } });
 };
 
 const getEndDateView = (startDt: string) => {
