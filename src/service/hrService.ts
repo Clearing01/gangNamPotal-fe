@@ -58,7 +58,11 @@ class hrService {
 	}
 
 	static async saveEmployeeInfo(data: any) {
-		return api.post('/hr/admin', data);
+		return api.post('/hr/admin', data, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		});
 	}
 
 	static async updateEmployeeInfo(data: any) {

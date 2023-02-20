@@ -2,7 +2,7 @@
 	<div class="app-pageheader">
 		<span class="main-title">{{ getTitle(props.mode as string) }}</span>
 		<q-space />
-		<q-btn class="app-btn btn-basic btn-primary" flat @click="clickButton(mode)">저장</q-btn>
+		<q-btn class="app-btn btn-basic btn-primary" flat @click="clickButton(mode as string)">저장</q-btn>
 	</div>
 	<div class="employee-info-container">
 		<div class="personal-info-container flex no-wrap">
@@ -15,14 +15,28 @@
 					<div class="info-content-wrapper">
 						<div class="info-profile-wrapper">
 							<div class="info-profile-section">
-								<template v-if="employeeData.profileImg.length !== 0">
-									<img :src="employeeData.profileImg" alt="" />
+								<template v-if="String(employeeData.profileImg) !== 'null'">
+									<img id="profile-preview" :src="employeeData.profileImg" alt="이미지 추가" @click="changeImg" />
 								</template>
 								<template v-else>
 									<img src="@/assets/images/teemo.png" />
 								</template>
 							</div>
+
+							<input id="profile-select" type="file" class="upload-image" accept="image/*" @change="updateProfile" />
+
+							<!-- <div class="info-profile-input">
+								<q-uploader
+									label="프로필 이미지 변경"
+									text-color="black"
+									dark
+									style="max-width: 300px"
+									hide-upload-btn
+									@added="updateProfile"
+								/>
+							</div> -->
 						</div>
+
 						<div class="info-content-section">
 							<div class="row-info">
 								<div class="info-title">이름<span class="aster" v-if="1 !== 1">*</span></div>
@@ -187,7 +201,7 @@
 										class="app-input input-select"
 										popup-content-class="select-popup"
 										outlined
-										v-model="employeeData.affiliation"
+										v-model="employeeData.affiliationName"
 										:options="selectOption.affi"
 										disable
 									>
@@ -291,10 +305,10 @@ const employeeData = ref({
 	state: '',
 	address: '',
 	affiliationId: 0,
-	affiliation: '',
+	affiliationName: '',
 	birthday: '',
 	departmentId: 0,
-	department: '',
+	departmentName: '',
 	googleEmail: '',
 	kakaoEmail: '',
 	employeeId: 0,
@@ -306,9 +320,24 @@ const employeeData = ref({
 	nameKr: '',
 	phone: '',
 	profileImg: '',
+	newProfileImg: new Blob(),
 	rankId: 0,
-	rank: '',
+	rankName: '',
+
 	roleId: -1,
+
+	rank: {
+		rankId: 0,
+		rankName: '',
+	},
+
+	department: {
+		departmentId: 0,
+		departmentName: '',
+
+		affiliationId: 0,
+		affiliationName: '',
+	},
 });
 
 const getTitle = (mode: string) => {
@@ -365,16 +394,16 @@ const changeDepartment = () => {
 	const data = employeeData.value.department;
 
 	employeeData.value.departmentId = data.departmentId;
-	employeeData.value.department = data.departmentName;
+	employeeData.value.departmentName = data.departmentName;
 	employeeData.value.affiliationId = data.affiliationId;
-	employeeData.value.affiliation = data.affiliationName;
+	employeeData.value.affiliationName = data.affiliationName;
 };
 
 const changeRank = () => {
 	const data = employeeData.value.rank;
 
 	employeeData.value.rankId = data.rankId;
-	employeeData.value.rank = data.rankName;
+	employeeData.value.rankName = data.rankName;
 };
 
 const getDepartment = async () => {
@@ -394,6 +423,13 @@ const getEmployeeInfo = async () => {
 
 	employeeData.value = response.data.data;
 
+	employeeData.value.department = {
+		departmentId: response.data.data.departmentId,
+		departmentName: response.data.data.departmentName,
+		affiliationId: response.data.data.affiliationId,
+		affiliationName: response.data.data.affiliationName,
+	};
+
 	const split = response.data.data.email.split(',');
 	const email1 = split[0];
 	const email2 = split[1];
@@ -405,6 +441,23 @@ const getEmployeeInfo = async () => {
 		employeeData.value.googleEmail = email2.split('@twolinecode.com')[0];
 		employeeData.value.kakaoEmail = email1;
 	}
+
+	console.log(employeeData.value);
+};
+
+const updateProfile = (e: Event) => {
+	const target = e.target as HTMLInputElement;
+	const file: File = (target.files as FileList)[0];
+	// var file = e.target?.files;
+	let url = URL.createObjectURL(file);
+	employeeData.value.profileImg = url;
+	employeeData.value.newProfileImg = file as Blob;
+};
+
+const changeImg = () => {
+	document.getElementById('profile-select')?.click();
+
+	console.log(employeeData.value.profileImg);
 };
 
 const clickButton = (mode: string) => {
@@ -418,7 +471,16 @@ const clickButton = (mode: string) => {
 };
 
 const saveEmployee = async () => {
-	const response = await hrService.saveEmployeeInfo(employeeData.value);
+	var data = new FormData();
+	data.append('newProfileImg', employeeData.value.newProfileImg);
+	data.append(
+		'employeeSaveInfo',
+		new Blob([JSON.stringify(employeeData.value)], {
+			type: 'application/json',
+		})
+	);
+
+	const response = await hrService.saveEmployeeInfo(data);
 
 	successNotify(response.data.message);
 
@@ -426,10 +488,10 @@ const saveEmployee = async () => {
 		state: '',
 		address: '',
 		affiliationId: 0,
-		affiliation: '',
+		affiliationName: '',
 		birthday: '',
 		departmentId: 0,
-		department: '',
+		departmentName: '',
 		googleEmail: '',
 		kakaoEmail: '',
 		employeeId: 0,
@@ -441,9 +503,23 @@ const saveEmployee = async () => {
 		nameKr: '',
 		phone: '',
 		profileImg: '',
+		newProfileImg: new Blob(),
 		rankId: 0,
-		rank: '',
+		rankName: '',
 		roleId: -1,
+
+		rank: {
+			rankId: 0,
+			rankName: '',
+		},
+
+		department: {
+			departmentId: 0,
+			departmentName: '',
+
+			affiliationId: 0,
+			affiliationName: '',
+		},
 	};
 
 	result.value = null;
@@ -451,7 +527,18 @@ const saveEmployee = async () => {
 };
 
 const updateEmployee = async () => {
-	const response = await hrService.updateEmployeeInfo(employeeData.value);
+	var data = new FormData();
+	data.append('newProfileImg', employeeData.value.newProfileImg);
+	data.append(
+		'employeeUpdateInfo',
+		new Blob([JSON.stringify(employeeData.value)], {
+			type: 'application/json',
+		})
+	);
+
+	console.log(employeeData.value);
+
+	const response = await hrService.updateEmployeeInfo(data);
 
 	successNotify(response.data.message);
 };
@@ -525,6 +612,10 @@ onMounted(() => {
 	}
 }
 
+.upload-image {
+	display: none;
+}
+
 .app-input-google {
 	width: 60%;
 }
@@ -556,14 +647,21 @@ onMounted(() => {
 						height: 150px;
 						border-radius: 50%;
 						overflow: hidden;
+						text-align: center;
+						line-height: 150px;
 						img {
 							width: 100%;
 							height: 100%;
 							object-fit: cover;
+							cursor: pointer;
 						}
 					}
 					.btn-upload {
 						margin-top: 16px;
+					}
+
+					.info-profile-input {
+						padding-top: 15px;
 					}
 				}
 				.info-content-section {
