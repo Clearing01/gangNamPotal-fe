@@ -10,7 +10,7 @@
 			{{ employeeData.nameKr }}
 		</div>
 		<div class="profile-info flex justify-center items-center">
-			{{ employeeData.department }}
+			{{ employeeData.departmentName }}
 			<q-separator class="app-divider" vertical />
 			{{ employeeData.rank }}
 		</div>
@@ -28,9 +28,9 @@ const uiStore = useUiStore();
 
 const employeeData = ref({
 	address: '',
-	affiliation: '',
+	affiliationName: '',
 	birthday: '',
-	department: '',
+	departmentName: '',
 	email: '',
 	employeeId: 0,
 	employeeNo: 0,

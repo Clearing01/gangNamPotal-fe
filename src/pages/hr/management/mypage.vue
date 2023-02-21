@@ -234,7 +234,7 @@
 										class="app-input input-select"
 										popup-content-class="select-popup"
 										outlined
-										v-model="employeeData.affiliation"
+										v-model="employeeData.affiliationName"
 										:options="selectOption.affi"
 										readonly
 									>
@@ -250,7 +250,7 @@
 										class="app-input input-select"
 										popup-content-class="select-popup"
 										outlined
-										v-model="employeeData.department"
+										v-model="employeeData.departmentName"
 										:options="selectOption.affi[0].dept"
 										readonly
 									>
@@ -351,9 +351,9 @@ const isUpdateMode = () => {
 
 const employeeData = ref({
 	address: '',
-	affiliation: '',
+	affiliationName: '',
 	birthday: '',
-	department: '',
+	departmentName: '',
 	email: [''],
 	employeeId: 0,
 	employeeNo: 0,
