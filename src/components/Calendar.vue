@@ -24,7 +24,15 @@
 				</div>
 				<div class="time-wrapper">
 					<q-icon name="icon-notifications-paused" class="mr-8" />
-					<span class="endDate">{{ arg.event.extendedProps.endDate }}</span>
+					<template v-if="arg.event.end !== null && dateFormat(arg.event.end) !== dateFormat(arg.event.start)">
+						<span class="endDate-over">{{ arg.event.extendedProps.endDate }}</span>
+						<span class="endDate-over-hidden"
+							>{{ moment(arg.event.end).format('YYYY-MM-DD') }} {{ arg.event.extendedProps.endDate }}</span
+						>
+					</template>
+					<template v-else>
+						<span class="endDate">{{ arg.event.extendedProps.endDate }}</span>
+					</template>
 				</div>
 			</div>
 		</template>
@@ -46,6 +54,10 @@ const propDataSet = computed(() => props.commuteList);
 const uiStore = useUiStore();
 
 const emit = defineEmits(['emitCalendar']);
+
+const dateFormat = (value) => {
+	return moment(value).format('YYYY-MM-DD');
+};
 
 const filter = ref(['전체', '본인']);
 const selectFilter = ref({
@@ -365,6 +377,30 @@ $fc-magin-top: 16px;
 		}
 	}
 }
+
+.endDate-over {
+	color: rgb(225, 0, 255);
+	cursor: pointer;
+}
+
+.endDate-over-hidden {
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: 40px;
+
+	background-color: rgb(111, 113, 247);
+	color: white;
+	width: 120px;
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+}
+
+.endDate-over:hover + .endDate-over-hidden {
+	display: block;
+}
+
 // tbody {
 // 	height: 700px;
 // }

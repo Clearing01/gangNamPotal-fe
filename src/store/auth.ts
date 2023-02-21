@@ -14,6 +14,7 @@ export const useAuthStore = defineStore('auth', {
 		isAuthenticated: (state) => !!state.user.token,
 		getAuthorization: (state) => state.user.token,
 		getRefreshToken: (state) => state.user.refreshToken,
+		getPermission: (state) => state.user.permission,
 	},
 	actions: {
 		// login: ({ state, payload }: { state: any; payload: any }) => {

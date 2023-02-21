@@ -63,8 +63,7 @@ const date = ref({
 const insertStartCommute = async () => {
 	await uiStore.showLoading();
 	try {
-		date.value.date = uiStore.currentDate;
-		const response = await hrService.insertStartCommute(date.value);
+		const response = await hrService.insertStartCommute();
 
 		// uiStore.emitter.emit('update', true);
 		uiStore.dataReload = false;
@@ -79,8 +78,7 @@ const insertStartCommute = async () => {
 const insertEndCommute = async () => {
 	await uiStore.showLoading();
 	try {
-		date.value.date = uiStore.currentDate;
-		const response = await hrService.insertEndCommute(date.value);
+		const response = await hrService.insertEndCommute();
 		uiStore.dataReload = false;
 		uiStore.dataReload = true;
 

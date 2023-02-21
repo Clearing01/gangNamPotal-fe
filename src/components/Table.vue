@@ -360,7 +360,7 @@
 				<div class="info-wrapper">
 					<div class="info-profile-wrapper">
 						<div class="info-profile-section">
-							<img class="img-cursor" src="@/assets/images/teemo.png" alt="" />
+							<img id="profile-preview" :src="employeeInfo.profileImg" alt="No Image" />
 						</div>
 					</div>
 					<q-card-section class="userInfo">
@@ -373,11 +373,11 @@
 					</q-card-section>
 					<q-card-section class="userInfo">
 						<div class="info-label">소속</div>
-						<q-input v-model="employeeInfo.affiliation" class="app-input input-medium" outlined readonly />
+						<q-input v-model="employeeInfo.affiliationName" class="app-input input-medium" outlined readonly />
 					</q-card-section>
 					<q-card-section class="userInfo">
 						<div class="info-label">부서</div>
-						<q-input v-model="employeeInfo.department" class="app-input input-medium" outlined readonly />
+						<q-input v-model="employeeInfo.departmentName" class="app-input input-medium" outlined readonly />
 					</q-card-section>
 					<q-card-section class="userInfo">
 						<div class="info-label">직급</div>
@@ -441,9 +441,9 @@ const employeeData = ref({
 
 const employeeInfo = ref({
 	address: '',
-	affiliation: '',
+	affiliationName: '',
 	birthday: '',
-	department: '',
+	departmentName: '',
 	email: '',
 	employeeId: 0,
 	employeeNo: 0,
@@ -479,7 +479,8 @@ const input = ref({
 });
 
 const updateUser = () => {
-	router.push('/hr/create/admin');
+	commuteUpdateModal.value = false;
+	router.push({ name: 'UpdateEmployee', query: { employeeId: employeeInfo.value.employeeId } });
 };
 
 const getEndDateView = (startDt: string) => {

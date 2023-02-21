@@ -24,13 +24,13 @@ export class TextScramble2 {
 		const shuffle = document.getElementById('shuffle');
 
 		if (this.out < this.text.length) {
-			let delay = 40;
+			let delay = 30;
 
 			if (anim) {
 				if ('.,!? '.indexOf(this.text[this.out]) !== -1) delay = 50;
 				anim.appendChild(document.createTextNode(this.text[this.out++]));
 				if ('.!?'.indexOf(this.text[this.out - 1]) !== -1) {
-					anim.appendChild(document.createElement('br'));
+					// anim.appendChild(document.createElement('br'));
 					delay = 120;
 				}
 			}

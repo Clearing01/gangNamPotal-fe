@@ -33,12 +33,40 @@ class hrService {
 		return api.get('/hr/names');
 	}
 
-	static async insertStartCommute(date: any) {
-		return api.post('/commute/start', { date: date.date });
+	static async insertStartCommute() {
+		return api.post('/commute/start');
 	}
 
-	static async insertEndCommute(date: any) {
-		return api.post('/commute/end', { date: date.date });
+	static async insertEndCommute() {
+		return api.post('/commute/end');
+	}
+
+	static async getAffiliation() {
+		return api.get('/hr/admin');
+	}
+
+	static async getDepartment(affiliationId: number) {
+		return api.get('/department', { params: { affiliationId: affiliationId } });
+	}
+
+	static async getDepartmentList() {
+		return api.get('/department/list');
+	}
+
+	static async getRanks() {
+		return api.get('/ranks');
+	}
+
+	static async saveEmployeeInfo(data: any) {
+		return api.post('/hr/admin', data, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		});
+	}
+
+	static async updateEmployeeInfo(data: any) {
+		return api.put('/hr/admin', data);
 	}
 }
 
