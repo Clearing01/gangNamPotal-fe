@@ -15,11 +15,11 @@
 					<div class="info-content-wrapper">
 						<div class="info-profile-wrapper">
 							<div class="info-profile-section">
-								<template v-if="String(employeeData.profileImg) !== 'null'">
+								<template v-if="String(employeeData.profileImg) !== 'null' && employeeData.profileImg.length > 0">
 									<img id="profile-preview" :src="employeeData.profileImg" alt="이미지 추가" @click="changeImg" />
 								</template>
 								<template v-else>
-									<img src="@/assets/images/teemo.png" />
+									<img src="@/assets/images/No-Image.jpg" @click="changeImg" />
 								</template>
 							</div>
 
@@ -471,6 +471,8 @@ const clickButton = (mode: string) => {
 };
 
 const saveEmployee = async () => {
+	console.log(employeeData.value.newProfileImg);
+
 	var data = new FormData();
 	data.append('newProfileImg', employeeData.value.newProfileImg);
 	data.append(
