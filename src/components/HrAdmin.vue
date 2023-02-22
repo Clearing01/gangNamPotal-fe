@@ -19,7 +19,7 @@
 									<img id="profile-preview" :src="employeeData.profileImg" alt="이미지 추가" @click="changeImg" />
 								</template>
 								<template v-else>
-									<img src="@/assets/images/No-Image.jpg" />
+									<img src="@/assets/images/No-Image.jpg" @click="changeImg" />
 								</template>
 							</div>
 

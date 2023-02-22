@@ -25,7 +25,8 @@ interface Notification {
 const TIMEOUT = 30000;
 
 const api: AxiosInstance = Axios.create({
-	baseURL: import.meta.env.VITE_APP_BASE_URL,
+	// baseURL: import.meta.env.VITE_APP_BASE_URL,
+	baseURL: 'http://localhost:8081',
 	headers: {
 		'Access-Control-Allow-Origin': '*',
 	},
